@@ -1,4 +1,4 @@
-# Virb Lite
+# short_vibration
 
 Virb Lite is a lightweight Android notification vibration app focused on low power usage.
 
@@ -37,12 +37,12 @@ cmd /c "set JAVA_HOME=C:\Program Files\Java\jdk-17&& set PATH=%JAVA_HOME%\bin;%P
 
 APK output:
 
-- `app/build/outputs/apk/debug/app-debug.apk`
+- `app/build/outputs/apk/debug/short_vibration-debug.apk`
 
 ## Install
 
 ```bat
-cmd /c "C:\Users\leile\AppData\Local\Android\Sdk\platform-tools\adb.exe install -r d:\virb\app\build\outputs\apk\debug\app-debug.apk"
+cmd /c "C:\Users\leile\AppData\Local\Android\Sdk\platform-tools\adb.exe install -r d:\virb\app\build\outputs\apk\debug\short_vibration-debug.apk"
 ```
 
 ## Notes for MIUI/HyperOS

@@ -39,6 +39,14 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+    applicationVariants.all {
+        outputs.all {
+            @Suppress("DEPRECATION")
+            (this as com.android.build.gradle.internal.api.BaseVariantOutputImpl)
+                .outputFileName = "short_vibration-${name}.apk"
+        }
+    }
 }
 
 dependencies {
