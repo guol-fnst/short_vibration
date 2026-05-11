@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Virb Lite</string>
+    <string name="title">System Managed Light Vibrator</string>
+    <string name="listener_service_label">Virb Notification Listener</string>
+    <string name="open_notification_access">Open Notification Access</string>
+    <string name="enable_switch">Enable Light Vibrations</string>
+    <string name="vibration_ms_hint">Vibration Duration (ms, 1-1000, default 10)</string>
+    <string name="global_gap_ms_hint">Global Gap (ms, default 3000)</string>
+    <string name="save">Save</string>
+    <string name="test_vibration">Test Vibration</string>
+    <string name="saved">Saved</string>
+    <string name="invalid_input">Please enter valid numbers</string>
+    <string name="access_enabled">Notification access: enabled</string>
+    <string name="access_disabled">Notification access: disabled</string>
+    <string name="access_unknown">Notification access: unknown</string>
+    <string name="test_done">Test vibration sent (%1$d ms)</string>
+    <string name="no_vibrator">Vibrator is not available on this device</string>
+    <string name="silent_mode_warning">⚠️ 手机处于静音模式 — 请切换为振动或正常模式</string>
+    <string name="vibration_ok">振动: 正常</string>
+    <string name="fix_haptic">打开声音设置</string>
+    <string name="haptic_disabled_hint">触感反馈已关闭，请点击"去开启触感反馈"按钮开启后重试</string>
+    <string name="haptic_off_warning">⚠️ 触感反馈已关闭 — 振动可能无效！点击修复按钮开启</string>
+    <string name="haptic_on">触感反馈: 已开启</string>
+    <string name="notif_channel_name">Virb 运行状态</string>
+    <string name="notif_fg_title">Virb Lite 正在运行</string>
+    <string name="notif_fg_text">通知监听已启用，等待消息…</string>
+</resources>

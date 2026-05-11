@@ -1,0 +1,21 @@
+# Gradle
+.gradle/
+build/
+**/build/
+
+# Local environment
+local.properties
+
+# Logs and temporary artifacts
+*.log
+logcat*.txt
+notif_*.txt
+ui*.xml
+
+# Downloaded tools
+gradle-8.7/
+gradle-8.7-bin.zip
+
+# OS/editor
+.DS_Store
+Thumbs.db
