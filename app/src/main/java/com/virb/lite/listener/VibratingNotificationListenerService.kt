@@ -5,8 +5,10 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.KeyguardManager
+import android.content.ComponentName
 import android.content.pm.ApplicationInfo
 import android.content.Intent
+import android.os.SystemClock
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
@@ -30,6 +32,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
     override fun onListenerConnected() {
         super.onListenerConnected()
         debugLog("onListenerConnected — listener is active")
+        resetRebindBackoff()
         // Promote to foreground service so MIUI/HyperOS cannot freeze this process.
         // Without this, MIUI's process-freezing kills the binder connection silently.
         startForeground(FOREGROUND_NOTIF_ID, buildForegroundNotification())
@@ -39,6 +42,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         super.onListenerDisconnected()
         Log.w(TAG, "onListenerDisconnected — listener was killed by system")
         stopForeground(STOP_FOREGROUND_REMOVE)
+        requestListenerRebind()
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
@@ -74,8 +78,33 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         val result = VibrationHelper.vibrate(this, ms, acquireWakeLock = deviceLocked)
         if (result) {
             lastVibrationAtMs = now
+            prefs.markVibrationNow(now)
         }
         debugLog("vibrate result=$result")
+    }
+
+    private fun requestListenerRebind() {
+        val nowElapsed = SystemClock.elapsedRealtime()
+        val intervalMs = currentRebindIntervalMs
+        if (nowElapsed - lastRebindElapsedMs < intervalMs) {
+            debugLog("skip rebind: backoff active interval=$intervalMs")
+            return
+        }
+
+        try {
+            val component = ComponentName(this, VibratingNotificationListenerService::class.java)
+            requestRebind(component)
+            lastRebindElapsedMs = nowElapsed
+            currentRebindIntervalMs = (intervalMs * 2).coerceAtMost(MAX_REBIND_INTERVAL_MS)
+            Log.d(TAG, "requestRebind called after listener disconnect, nextIntervalMs=$currentRebindIntervalMs")
+        } catch (e: Exception) {
+            Log.w(TAG, "requestRebind failed: ${e.message}")
+        }
+    }
+
+    private fun resetRebindBackoff() {
+        lastRebindElapsedMs = 0L
+        currentRebindIntervalMs = INITIAL_REBIND_INTERVAL_MS
     }
 
     private fun isDeviceLocked(): Boolean {
@@ -133,5 +162,13 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         private const val CHANNEL_ID = "virb_fg_channel"
         private const val FOREGROUND_NOTIF_ID = 1
         private const val ENABLE_VERBOSE_LOGS = false
+        private const val INITIAL_REBIND_INTERVAL_MS = 15_000L
+        private const val MAX_REBIND_INTERVAL_MS = 5 * 60_000L
+
+        @Volatile
+        private var lastRebindElapsedMs: Long = 0L
+
+        @Volatile
+        private var currentRebindIntervalMs: Long = INITIAL_REBIND_INTERVAL_MS
     }
 }
