@@ -4,7 +4,8 @@
     <string name="title">System Managed Light Vibrator</string>
     <string name="listener_service_label">Virb Notification Listener</string>
     <string name="open_notification_access">Open Notification Access</string>
-    <string name="enable_switch">Enable Light Vibrations</string>
+    <string name="enable_switch">启用通知振动</string>
+    <string name="lockscreen_only_switch">仅锁屏时振动</string>
     <string name="vibration_ms_hint">Vibration Duration (ms, 1-1000, default 10)</string>
     <string name="global_gap_ms_hint">Global Gap (ms, default 3000)</string>
     <string name="save">Save</string>

@@ -54,6 +54,13 @@
             android:layout_marginTop="16dp"
             android:text="@string/enable_switch" />
 
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/switchLockedOnly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/lockscreen_only_switch" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

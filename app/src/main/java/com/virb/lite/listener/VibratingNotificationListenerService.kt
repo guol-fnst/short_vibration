@@ -4,6 +4,7 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.app.KeyguardManager
 import android.content.pm.ApplicationInfo
 import android.content.Intent
 import android.service.notification.NotificationListenerService
@@ -40,10 +41,18 @@ class VibratingNotificationListenerService : NotificationListenerService() {
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         val pkg = sbn.packageName
-        Log.d(TAG, "onNotificationPosted: pkg=$pkg id=${sbn.id} enabled=${prefs.isEnabled()}")
+        Log.d(
+            TAG,
+            "onNotificationPosted: pkg=$pkg id=${sbn.id} enabled=${prefs.isEnabled()} lockedOnly=${prefs.vibrateOnlyWhenLocked()}"
+        )
 
         if (!prefs.isEnabled()) {
             Log.d(TAG, "skip: switch disabled")
+            return
+        }
+
+        if (prefs.vibrateOnlyWhenLocked() && !isDeviceLocked()) {
+            Log.d(TAG, "skip: device unlocked")
             return
         }
 
@@ -52,10 +61,26 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             return
         }
 
+        val now = System.currentTimeMillis()
+        val gapMs = prefs.globalGapMs().toLong()
+        val lastVibrationAt = prefs.lastVibrationAtMs()
+        if (lastVibrationAt > 0L && now - lastVibrationAt < gapMs) {
+            Log.d(TAG, "skip: within global gap, delta=${now - lastVibrationAt} gap=$gapMs")
+            return
+        }
+
         val ms = prefs.vibrationMs().toLong()
         Log.d(TAG, "vibrating for pkg=$pkg ms=$ms")
-        val result = VibrationHelper.vibrate(this, ms)
+        val result = VibrationHelper.vibrate(this, ms, acquireWakeLock = isDeviceLocked())
+        if (result) {
+            prefs.markVibrationNow(now)
+        }
         Log.d(TAG, "vibrate result=$result")
+    }
+
+    private fun isDeviceLocked(): Boolean {
+        val keyguardManager = getSystemService(KeyguardManager::class.java)
+        return keyguardManager?.isKeyguardLocked == true
     }
 
     private fun shouldIgnorePackage(packageName: String): Boolean {

@@ -13,6 +13,12 @@ class AppPrefs(context: Context) {
         prefs.edit().putBoolean(KEY_ENABLED, enabled).apply()
     }
 
+    fun vibrateOnlyWhenLocked(): Boolean = prefs.getBoolean(KEY_LOCKED_ONLY, true)
+
+    fun setVibrateOnlyWhenLocked(lockedOnly: Boolean) {
+        prefs.edit().putBoolean(KEY_LOCKED_ONLY, lockedOnly).apply()
+    }
+
     fun vibrationMs(): Int {
         val raw = prefs.getInt(KEY_VIBRATION_MS, DEFAULT_VIBRATION_MS)
         val clamped = raw.coerceIn(MIN_VIBRATION_MS, MAX_VIBRATION_MS)
@@ -40,12 +46,20 @@ class AppPrefs(context: Context) {
 
     fun lastBootAtMs(): Long = prefs.getLong(KEY_LAST_BOOT_AT_MS, 0L)
 
+    fun lastVibrationAtMs(): Long = prefs.getLong(KEY_LAST_VIBRATION_AT_MS, 0L)
+
+    fun markVibrationNow(epochMs: Long) {
+        prefs.edit().putLong(KEY_LAST_VIBRATION_AT_MS, epochMs).apply()
+    }
+
     companion object {
         private const val PREF_FILE = "virb_prefs"
         private const val KEY_ENABLED = "enabled"
+        private const val KEY_LOCKED_ONLY = "locked_only"
         private const val KEY_VIBRATION_MS = "vibration_ms"
         private const val KEY_GLOBAL_GAP_MS = "global_gap_ms"
         private const val KEY_LAST_BOOT_AT_MS = "last_boot_at_ms"
+        private const val KEY_LAST_VIBRATION_AT_MS = "last_vibration_at_ms"
 
         const val DEFAULT_VIBRATION_MS = 10
         const val MIN_VIBRATION_MS = 1
