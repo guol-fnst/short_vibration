@@ -129,9 +129,9 @@ class MainActivity : AppCompatActivity() {
             val component = ComponentName(this, VibratingNotificationListenerService::class.java)
             if (!didForceRebind) {
                 forceRebind(component)
+                NotificationListenerService.requestRebind(component)
                 didForceRebind = true
             }
-            NotificationListenerService.requestRebind(component)
         }
 
         val am = getSystemService(AudioManager::class.java)

@@ -18,10 +18,7 @@ object VibrationHelper {
 
     fun vibrate(context: Context, durationMs: Long, acquireWakeLock: Boolean): Boolean {
         val safeDuration = durationMs.coerceIn(1L, 2000L)
-        Log.d(
-            TAG,
-            "vibrate() called: durationMs=$safeDuration, SDK=${Build.VERSION.SDK_INT}, acquireWakeLock=$acquireWakeLock"
-        )
+        debugLog("vibrate() called: durationMs=$safeDuration, SDK=${Build.VERSION.SDK_INT}, acquireWakeLock=$acquireWakeLock")
 
         val audioAttrs = AudioAttributes.Builder()
             .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
@@ -52,13 +49,13 @@ object VibrationHelper {
                     return legacyVibrate(appCtx, effect, audioAttrs)
                 }
                 val vibrator = manager.defaultVibrator
-                Log.d(TAG, "hasVibrator=${vibrator.hasVibrator()}, hasFreeformEffect=${vibrator.areEffectsSupported(VibrationEffect.EFFECT_CLICK).any { it == 0 }}")
+                debugLog("hasVibrator=${vibrator.hasVibrator()}, hasFreeformEffect=${vibrator.areEffectsSupported(VibrationEffect.EFFECT_CLICK).any { it == 0 }}")
                 if (!vibrator.hasVibrator()) {
                     Log.w(TAG, "hasVibrator=false on API31+, trying legacy")
                     return legacyVibrate(appCtx, effect, audioAttrs)
                 }
                 vibrator.vibrate(effect, audioAttrs)
-                Log.d(TAG, "vibrate dispatched via VibratorManager+AudioAttrs")
+                debugLog("vibrate dispatched via VibratorManager+AudioAttrs")
                 true
             } else {
                 legacyVibrate(appCtx, effect, audioAttrs)
@@ -78,10 +75,18 @@ object VibrationHelper {
             Log.w(TAG, "legacy Vibrator is null")
             return false
         }
-        Log.d(TAG, "legacy hasVibrator=${vibrator.hasVibrator()}")
+        debugLog("legacy hasVibrator=${vibrator.hasVibrator()}")
         if (!vibrator.hasVibrator()) return false
         vibrator.vibrate(effect, audioAttrs)
-        Log.d(TAG, "vibrate dispatched via legacy Vibrator+AudioAttrs")
+        debugLog("vibrate dispatched via legacy Vibrator+AudioAttrs")
         return true
     }
+
+    private fun debugLog(message: String) {
+        if (ENABLE_VERBOSE_LOGS) {
+            Log.d(TAG, message)
+        }
+    }
+
+    private const val ENABLE_VERBOSE_LOGS = false
 }

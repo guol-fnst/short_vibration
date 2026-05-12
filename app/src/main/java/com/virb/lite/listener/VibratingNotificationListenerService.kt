@@ -17,17 +17,19 @@ import com.virb.lite.vibe.VibrationHelper
 
 class VibratingNotificationListenerService : NotificationListenerService() {
     private lateinit var prefs: AppPrefs
+    private var lastVibrationAtMs: Long = 0L
 
     override fun onCreate() {
         super.onCreate()
         prefs = AppPrefs(this)
-        Log.d(TAG, "Service onCreate")
+        lastVibrationAtMs = prefs.lastVibrationAtMs()
+        debugLog("Service onCreate")
         createNotificationChannel()
     }
 
     override fun onListenerConnected() {
         super.onListenerConnected()
-        Log.d(TAG, "onListenerConnected — listener is active")
+        debugLog("onListenerConnected — listener is active")
         // Promote to foreground service so MIUI/HyperOS cannot freeze this process.
         // Without this, MIUI's process-freezing kills the binder connection silently.
         startForeground(FOREGROUND_NOTIF_ID, buildForegroundNotification())
@@ -41,41 +43,39 @@ class VibratingNotificationListenerService : NotificationListenerService() {
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         val pkg = sbn.packageName
-        Log.d(
-            TAG,
-            "onNotificationPosted: pkg=$pkg id=${sbn.id} enabled=${prefs.isEnabled()} lockedOnly=${prefs.vibrateOnlyWhenLocked()}"
-        )
+        val deviceLocked = isDeviceLocked()
+        debugLog("onNotificationPosted: pkg=$pkg id=${sbn.id} locked=$deviceLocked")
 
         if (!prefs.isEnabled()) {
-            Log.d(TAG, "skip: switch disabled")
+            debugLog("skip: switch disabled")
             return
         }
 
-        if (prefs.vibrateOnlyWhenLocked() && !isDeviceLocked()) {
-            Log.d(TAG, "skip: device unlocked")
+        if (prefs.vibrateOnlyWhenLocked() && !deviceLocked) {
+            debugLog("skip: device unlocked")
             return
         }
 
         if (shouldIgnorePackage(pkg)) {
-            Log.d(TAG, "skip: system package $pkg")
+            debugLog("skip: system package $pkg")
             return
         }
 
         val now = System.currentTimeMillis()
         val gapMs = prefs.globalGapMs().toLong()
-        val lastVibrationAt = prefs.lastVibrationAtMs()
+        val lastVibrationAt = lastVibrationAtMs
         if (lastVibrationAt > 0L && now - lastVibrationAt < gapMs) {
-            Log.d(TAG, "skip: within global gap, delta=${now - lastVibrationAt} gap=$gapMs")
+            debugLog("skip: within global gap, delta=${now - lastVibrationAt} gap=$gapMs")
             return
         }
 
         val ms = prefs.vibrationMs().toLong()
-        Log.d(TAG, "vibrating for pkg=$pkg ms=$ms")
-        val result = VibrationHelper.vibrate(this, ms, acquireWakeLock = isDeviceLocked())
+        debugLog("vibrating for pkg=$pkg ms=$ms")
+        val result = VibrationHelper.vibrate(this, ms, acquireWakeLock = deviceLocked)
         if (result) {
-            prefs.markVibrationNow(now)
+            lastVibrationAtMs = now
         }
-        Log.d(TAG, "vibrate result=$result")
+        debugLog("vibrate result=$result")
     }
 
     private fun isDeviceLocked(): Boolean {
@@ -122,9 +122,16 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             .build()
     }
 
+    private fun debugLog(message: String) {
+        if (ENABLE_VERBOSE_LOGS) {
+            Log.d(TAG, message)
+        }
+    }
+
     companion object {
         private const val TAG = "VirbListen"
         private const val CHANNEL_ID = "virb_fg_channel"
         private const val FOREGROUND_NOTIF_ID = 1
+        private const val ENABLE_VERBOSE_LOGS = false
     }
 }

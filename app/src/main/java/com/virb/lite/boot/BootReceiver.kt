@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.os.SystemClock
 import android.service.notification.NotificationListenerService
 import android.util.Log
 import com.virb.lite.listener.VibratingNotificationListenerService
@@ -16,24 +17,31 @@ class BootReceiver : BroadcastReceiver() {
             Intent.ACTION_BOOT_COMPLETED,
             Intent.ACTION_LOCKED_BOOT_COMPLETED -> {
                 AppPrefs(context).markBootNow(System.currentTimeMillis())
-                rebindListener(context)
+                rebindListener(context, force = true)
             }
             Intent.ACTION_USER_PRESENT -> {
                 // Phone unlocked — MIUI may have killed the NLS binding while screen was off.
-                // requestRebind is instant and does nothing if already bound.
-                rebindListener(context)
+                // Throttle repeated unlock rebinds to avoid redundant binder churn.
+                rebindListener(context, force = false)
             }
         }
     }
 
-    private fun rebindListener(context: Context) {
+    private fun rebindListener(context: Context, force: Boolean) {
+        val nowElapsed = SystemClock.elapsedRealtime()
+        if (!force && nowElapsed - lastRebindElapsedMs < MIN_REBIND_INTERVAL_MS) {
+            Log.d(TAG, "skip rebind: throttled")
+            return
+        }
+
         try {
             val component = ComponentName(
                 context.packageName,
                 VibratingNotificationListenerService::class.java.name
             )
             NotificationListenerService.requestRebind(component)
-            Log.d(TAG, "requestRebind called")
+            lastRebindElapsedMs = nowElapsed
+            Log.d(TAG, "requestRebind called force=$force")
         } catch (e: Exception) {
             Log.w(TAG, "requestRebind failed: ${e.message}")
         }
@@ -41,5 +49,8 @@ class BootReceiver : BroadcastReceiver() {
 
     companion object {
         private const val TAG = "VirbBoot"
+        private const val MIN_REBIND_INTERVAL_MS = 15_000L
+        @Volatile
+        private var lastRebindElapsedMs: Long = 0L
     }
 }
