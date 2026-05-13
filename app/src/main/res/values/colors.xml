@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="ic_launcher_background">#0E1B2A</color>
+    
+    <!-- 更现代的绿色调，参考Material You设计 -->
+    <color name="virb_primary">#1F8B6D</color>
+    <color name="virb_on_primary">#FFFFFF</color>
+    <color name="virb_primary_container">#B1E8D9</color>
+    <color name="virb_on_primary_container">#001F19</color>
+    <color name="virb_secondary">#4F7369</color>
+    
+    <!-- 浅色背景，增加对比度 -->
+    <color name="virb_surface">#FAFCFB</color>
+    <color name="virb_surface_container">#F0F4F3</color>
+    <color name="virb_on_surface">#0F1513</color>
+    <color name="virb_on_surface_variant">#526B66</color>
+    <color name="virb_outline_variant">#CDD9D6</color>
 </resources>

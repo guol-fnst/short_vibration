@@ -12,6 +12,9 @@ import android.util.Log
 import android.view.HapticFeedbackConstants
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import com.virb.lite.databinding.ActivityMainBinding
 import com.virb.lite.listener.VibratingNotificationListenerService
 import com.virb.lite.prefs.AppPrefs
@@ -28,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         prefs = AppPrefs(this)
+        applySystemBarInsets()
         bindInitialUi()
         bindListeners()
     }
@@ -40,6 +44,7 @@ class MainActivity : AppCompatActivity() {
     private fun bindInitialUi() {
         binding.switchEnabled.isChecked = prefs.isEnabled()
         binding.switchLockedOnly.isChecked = prefs.vibrateOnlyWhenLocked()
+        binding.switchIgnoreSystem.isChecked = prefs.ignoreSystemPackages()
         binding.etDuration.setText(prefs.vibrationMs().toString())
         binding.etGlobalGap.setText(prefs.globalGapMs().toString())
         refreshPermissionState()
@@ -52,6 +57,10 @@ class MainActivity : AppCompatActivity() {
 
         binding.switchLockedOnly.setOnCheckedChangeListener { _, isChecked ->
             prefs.setVibrateOnlyWhenLocked(isChecked)
+        }
+
+        binding.switchIgnoreSystem.setOnCheckedChangeListener { _, isChecked ->
+            prefs.setIgnoreSystemPackages(isChecked)
         }
 
         binding.btnSave.setOnClickListener {
@@ -114,6 +123,23 @@ class MainActivity : AppCompatActivity() {
             } else {
                 toast(getString(R.string.test_done, ms))
             }
+        }
+    }
+
+    private fun applySystemBarInsets() {
+        val initialLeft = binding.rootScroll.paddingLeft
+        val initialTop = binding.rootScroll.paddingTop
+        val initialRight = binding.rootScroll.paddingRight
+        val initialBottom = binding.rootScroll.paddingBottom
+        ViewCompat.setOnApplyWindowInsetsListener(binding.rootScroll) { view, insets ->
+            val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePadding(
+                left = initialLeft + bars.left,
+                top = initialTop + bars.top,
+                right = initialRight + bars.right,
+                bottom = initialBottom + bars.bottom
+            )
+            insets
         }
     }
 
