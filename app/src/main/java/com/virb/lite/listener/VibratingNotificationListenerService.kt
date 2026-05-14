@@ -113,9 +113,11 @@ class VibratingNotificationListenerService : NotificationListenerService() {
     private fun shouldIgnorePackage(packageName: String): Boolean {
         return try {
             val appInfo = packageManager.getApplicationInfo(packageName, 0)
-            (appInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0 ||
-                    (appInfo.flags and ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0 ||
-                    appInfo.uid < 10_000
+            // Only ignore true OS core processes (uid < 10000).
+            // Do NOT filter by FLAG_SYSTEM / FLAG_UPDATED_SYSTEM_APP — pre-installed
+            // apps such as Feishu on OEM/enterprise devices carry that flag but are
+            // regular user-facing messaging apps that should trigger vibration.
+            appInfo.uid < 10_000
         } catch (_: Exception) {
             false
         }
