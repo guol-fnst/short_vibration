@@ -1,12 +1,19 @@
 package com.virb.lite.listener
 
 import android.app.KeyguardManager
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.ComponentName
+import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.os.SystemClock
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import com.virb.lite.MainActivity
+import com.virb.lite.R
 import com.virb.lite.prefs.AppPrefs
 import com.virb.lite.vibe.VibrationHelper
 
@@ -19,17 +26,20 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         prefs = AppPrefs(this)
         lastVibrationAtMs = prefs.lastVibrationAtMs()
         debugLog("Service onCreate")
+        createNotificationChannel()
     }
 
     override fun onListenerConnected() {
         super.onListenerConnected()
         debugLog("onListenerConnected — listener is active")
         resetRebindBackoff()
+        startForegroundRuntime()
     }
 
     override fun onListenerDisconnected() {
         super.onListenerDisconnected()
         Log.w(TAG, "onListenerDisconnected — listener was killed by system")
+        stopForeground(STOP_FOREGROUND_REMOVE)
         requestListenerRebind()
     }
 
@@ -74,7 +84,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
     private fun requestListenerRebind() {
         val nowElapsed = SystemClock.elapsedRealtime()
         val intervalMs = currentRebindIntervalMs
-        if (nowElapsed - lastRebindElapsedMs < intervalMs) {
+        if (lastRebindElapsedMs > 0L && nowElapsed - lastRebindElapsedMs < intervalMs) {
             debugLog("skip rebind: backoff active interval=$intervalMs")
             return
         }
@@ -111,6 +121,44 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         }
     }
 
+    private fun startForegroundRuntime() {
+        try {
+            startForeground(FOREGROUND_NOTIF_ID, buildForegroundNotification())
+        } catch (e: Exception) {
+            Log.w(TAG, "startForeground failed: ${e.javaClass.simpleName}: ${e.message}")
+        }
+    }
+
+    private fun createNotificationChannel() {
+        val channel = NotificationChannel(
+            CHANNEL_ID,
+            getString(R.string.notif_channel_name),
+            NotificationManager.IMPORTANCE_MIN
+        ).apply {
+            setShowBadge(false)
+            enableVibration(false)
+            enableLights(false)
+        }
+        getSystemService(NotificationManager::class.java)?.createNotificationChannel(channel)
+    }
+
+    private fun buildForegroundNotification(): Notification {
+        val tapIntent = PendingIntent.getActivity(
+            this,
+            0,
+            Intent(this, MainActivity::class.java),
+            PendingIntent.FLAG_IMMUTABLE
+        )
+
+        return Notification.Builder(this, CHANNEL_ID)
+            .setSmallIcon(android.R.drawable.ic_dialog_info)
+            .setContentTitle(getString(R.string.notif_fg_title))
+            .setContentText(getString(R.string.notif_fg_text))
+            .setContentIntent(tapIntent)
+            .setOngoing(true)
+            .build()
+    }
+
     private fun debugLog(message: String) {
         if (ENABLE_VERBOSE_LOGS) {
             Log.d(TAG, message)
@@ -119,6 +167,8 @@ class VibratingNotificationListenerService : NotificationListenerService() {
 
     companion object {
         private const val TAG = "VirbListen"
+        private const val CHANNEL_ID = "virb_fg_channel"
+        private const val FOREGROUND_NOTIF_ID = 1
         private const val ENABLE_VERBOSE_LOGS = false
         private const val INITIAL_REBIND_INTERVAL_MS = 15_000L
         private const val MAX_REBIND_INTERVAL_MS = 5 * 60_000L

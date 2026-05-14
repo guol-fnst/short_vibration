@@ -29,4 +29,7 @@
     <string name="haptic_disabled_hint">触感反馈已关闭，请点击"去开启触感反馈"按钮开启后重试</string>
     <string name="haptic_off_warning">触感反馈已关闭，振动可能无效，点击修复按钮开启</string>
     <string name="haptic_on">触感反馈: 已开启</string>
+    <string name="notif_channel_name">Virb 运行状态</string>
+    <string name="notif_fg_title">Virb Lite 正在运行</string>
+    <string name="notif_fg_text">通知监听已启用，等待消息</string>
 </resources>
