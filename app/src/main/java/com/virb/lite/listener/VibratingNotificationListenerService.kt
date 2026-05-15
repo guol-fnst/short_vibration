@@ -48,6 +48,11 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         val deviceLocked = isDeviceLocked()
         debugLog("onNotificationPosted: pkg=$pkg id=${sbn.id} locked=$deviceLocked")
 
+        if (pkg == packageName) {
+            debugLog("skip: own foreground/service notification")
+            return
+        }
+
         if (!prefs.isEnabled()) {
             debugLog("skip: switch disabled")
             return
