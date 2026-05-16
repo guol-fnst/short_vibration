@@ -53,3 +53,4 @@ env GRADLE_USER_HOME=/root/short_vibration/.gradle-user /opt/gradle/gradle-8.7/b
 - User is concerned about missed vibrations after long phone idle periods.
 - User is cautious about battery impact and whether frequent service rebind requests could stress the system.
 - Current implementation chooses a conservative exponential backoff rather than fixed frequent rebind attempts.
+- For every code update, also update the app version in `app/build.gradle.kts`.

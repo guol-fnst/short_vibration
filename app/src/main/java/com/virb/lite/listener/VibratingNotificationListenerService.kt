@@ -8,6 +8,7 @@ import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.ApplicationInfo
+import android.media.AudioManager
 import android.os.SystemClock
 import android.os.Handler
 import android.os.Looper
@@ -66,6 +67,12 @@ class VibratingNotificationListenerService : NotificationListenerService() {
 
         if (prefs.vibrateOnlyWhenLocked() && !deviceLocked) {
             debugLog("skip: device unlocked")
+            return
+        }
+
+        if (isCallActive()) {
+            debugLog("skip: call is active")
+            clearUnreadReminder()
             return
         }
 
@@ -130,6 +137,12 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         return keyguardManager?.isKeyguardLocked == true
     }
 
+    private fun isCallActive(): Boolean {
+        val audioManager = getSystemService(AudioManager::class.java) ?: return false
+        return audioManager.mode == AudioManager.MODE_IN_CALL ||
+                audioManager.mode == AudioManager.MODE_IN_COMMUNICATION
+    }
+
     private fun maybeStartUnreadReminder(sbn: StatusBarNotification) {
         if (!prefs.unreadReminderEnabled()) return
         if (anchorNotificationKey != null) return
@@ -157,6 +170,12 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         if (prefs.vibrateOnlyWhenLocked() && !isDeviceLocked()) {
             debugLog("skip unread reminder: device unlocked")
             anchorReminderFired = true
+            return
+        }
+
+        if (isCallActive()) {
+            debugLog("skip unread reminder: call is active")
+            clearUnreadReminder()
             return
         }
 
