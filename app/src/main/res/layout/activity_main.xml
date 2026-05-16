@@ -11,23 +11,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingStart="14dp"
+        android:paddingTop="14dp"
+        android:paddingEnd="14dp"
+        android:paddingBottom="14dp">
 
-        <!-- 头部渐变背景卡片 -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
             app:cardBackgroundColor="@color/virb_primary"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="8dp">
+            app:cardCornerRadius="18dp"
+            app:cardElevation="6dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="24dp">
+                android:paddingStart="18dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="14dp"
+                android:paddingBottom="16dp">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -40,165 +45,102 @@
                         android:layout_height="wrap_content"
                         android:includeFontPadding="false"
                         android:text="@string/title"
-                        android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
+                        android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
                         android:textColor="@color/virb_on_primary"
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tvAccessStatus"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
-                        android:text="@string/subtitle"
+                        android:text="@string/access_unknown"
                         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                         android:textColor="@color/virb_on_primary"
-                        android:alpha="0.9" />
+                        android:alpha="0.92" />
+
+                    <TextView
+                        android:id="@+id/tvHapticStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text=""
+                        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                        android:textColor="@color/virb_on_primary"
+                        android:alpha="0.82" />
                 </LinearLayout>
 
-                <!-- 圆形测试按钮 -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnTestVibration"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:layout_marginStart="16dp"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    android:layout_marginStart="12dp"
                     android:insetLeft="0dp"
                     android:insetTop="0dp"
                     android:insetRight="0dp"
                     android:insetBottom="0dp"
-                    android:text="✓"
-                    android:textSize="28sp"
-                    app:cornerRadius="28dp"
+                    android:minWidth="52dp"
+                    android:minHeight="52dp"
+                    android:text="@string/test_vibration_short"
+                    android:textSize="20sp"
                     app:backgroundTint="@color/virb_on_primary"
-                    app:strokeColor="@color/virb_on_primary"
-                    style="@style/Widget.Material3.Button.OutlinedButton" />
+                    app:cornerRadius="26dp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- 权限状态卡片 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnOpenAccess"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:minHeight="44dp"
+                android:text="@string/open_notification_access"
+                app:cornerRadius="12dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnFixHaptic"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:minHeight="44dp"
+                android:text="@string/fix_haptic"
+                android:visibility="gone"
+                app:cornerRadius="12dp" />
+        </LinearLayout>
+
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="12dp"
+            android:layout_marginTop="10dp"
             app:cardBackgroundColor="?attr/colorSurfaceContainer"
             app:cardCornerRadius="16dp"
-            app:cardElevation="4dp"
-            app:strokeColor="?attr/colorOutlineVariant"
-            app:strokeWidth="0dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="vertical"
-                android:paddingStart="16dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="16dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="⚙"
-                        android:textSize="24sp"
-                        android:layout_marginEnd="12dp" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tvAccessStatus"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:includeFontPadding="false"
-                            android:text="@string/access_unknown"
-                            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                            android:textColor="?attr/colorOnSurface"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvHapticStatus"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text=""
-                            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                            android:textColor="?attr/colorOnSurfaceVariant" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:baselineAligned="false"
-                    android:orientation="vertical">
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnOpenAccess"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:text="@string/open_notification_access"
-                        android:minHeight="44dp"
-                        style="@style/Widget.Material3.Button" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnFixHaptic"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/fix_haptic"
-                        android:visibility="gone"
-                        android:minHeight="44dp"
-                        style="@style/Widget.Material3.Button.OutlinedButton" />
-                </LinearLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- 功能开关卡片 -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="12dp"
-            app:cardBackgroundColor="?attr/colorSurfaceContainer"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="4dp"
-            app:strokeColor="?attr/colorOutlineVariant"
-            app:strokeWidth="0dp">
+            app:cardElevation="2dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingStart="16dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="8dp">
+                android:paddingStart="14dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="14dp"
+                android:paddingBottom="6dp">
 
-                <!-- 功能开关 1 -->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
+                    android:layout_height="48dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="📳"
-                        android:textSize="20sp"
-                        android:layout_marginEnd="12dp" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -212,28 +154,20 @@
                         android:id="@+id/switchEnabled"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="48dp" />
+                        android:minHeight="44dp" />
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?attr/colorOutlineVariant"
-                    android:alpha="0.4" />
+                    android:alpha="0.45"
+                    android:background="?attr/colorOutlineVariant" />
 
-                <!-- 功能开关 2 -->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
+                    android:layout_height="48dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="🔒"
-                        android:textSize="20sp"
-                        android:layout_marginEnd="12dp" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -247,28 +181,20 @@
                         android:id="@+id/switchLockedOnly"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="48dp" />
+                        android:minHeight="44dp" />
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?attr/colorOutlineVariant"
-                    android:alpha="0.4" />
+                    android:alpha="0.45"
+                    android:background="?attr/colorOutlineVariant" />
 
-                <!-- 功能开关 3 -->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
+                    android:layout_height="48dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="⚡"
-                        android:textSize="20sp"
-                        android:layout_marginEnd="12dp" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -282,106 +208,265 @@
                         android:id="@+id/switchIgnoreSystem"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="48dp" />
+                        android:minHeight="44dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:alpha="0.45"
+                    android:background="?attr/colorOutlineVariant" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/unread_reminder_switch"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                        android:textColor="?attr/colorOnSurface" />
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switchUnreadReminder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44dp" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- 振动参数卡片 -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="12dp"
+            android:layout_marginTop="10dp"
             app:cardBackgroundColor="?attr/colorSurfaceContainer"
             app:cardCornerRadius="16dp"
-            app:cardElevation="4dp"
-            app:strokeColor="?attr/colorOutlineVariant"
-            app:strokeWidth="0dp">
+            app:cardElevation="2dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:paddingStart="14dp"
+                android:paddingTop="12dp"
+                android:paddingEnd="14dp"
+                android:paddingBottom="12dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="⏱ 振动参数设置"
-                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                    android:includeFontPadding="false"
+                    android:text="@string/timing_settings"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
                     android:textColor="?attr/colorOnSurface"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="16dp" />
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:baselineAligned="false"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <com.google.android.material.textfield.TextInputLayout
+                    <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="@string/vibration_ms_hint"
-                        app:boxBackgroundMode="filled"
-                        app:boxCornerRadiusBottomEnd="12dp"
-                        app:boxCornerRadiusBottomStart="12dp"
-                        app:boxCornerRadiusTopEnd="12dp"
-                        app:boxCornerRadiusTopStart="12dp"
-                        app:helperText="@string/vibration_ms_helper">
+                        android:text="@string/vibration_ms_hint"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                        android:textColor="?attr/colorOnSurface" />
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etDuration"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="number"
-                            android:singleLine="true"
-                            android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnDurationMinus"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        android:minWidth="40dp"
+                        android:minHeight="40dp"
+                        android:text="@string/minus"
+                        android:textColor="@color/virb_stepper_text"
+                        android:textSize="20sp"
+                        app:backgroundTint="@color/virb_control_surface"
+                        app:cornerRadius="12dp" />
 
-                    <com.google.android.material.textfield.TextInputLayout
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etDuration"
+                        android:layout_width="72dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_number_input"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:selectAllOnFocus="true"
+                        android:singleLine="true"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                        android:textColor="@color/virb_on_primary_container" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnDurationPlus"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        android:minWidth="40dp"
+                        android:minHeight="40dp"
+                        android:text="@string/plus"
+                        android:textColor="@color/virb_stepper_text"
+                        android:textSize="20sp"
+                        app:backgroundTint="@color/virb_control_surface"
+                        app:cornerRadius="12dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
                         android:layout_weight="1"
-                        android:hint="@string/global_gap_ms_hint"
-                        app:boxBackgroundMode="filled"
-                        app:boxCornerRadiusBottomEnd="12dp"
-                        app:boxCornerRadiusBottomStart="12dp"
-                        app:boxCornerRadiusTopEnd="12dp"
-                        app:boxCornerRadiusTopStart="12dp"
-                        app:helperText="@string/global_gap_ms_helper">
+                        android:text="@string/global_gap_sec_hint"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                        android:textColor="?attr/colorOnSurface" />
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etGlobalGap"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="number"
-                            android:singleLine="true"
-                            android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnGlobalGapMinus"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        android:minWidth="40dp"
+                        android:minHeight="40dp"
+                        android:text="@string/minus"
+                        android:textColor="@color/virb_stepper_text"
+                        android:textSize="20sp"
+                        app:backgroundTint="@color/virb_control_surface"
+                        app:cornerRadius="12dp" />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etGlobalGap"
+                        android:layout_width="72dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_number_input"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:selectAllOnFocus="true"
+                        android:singleLine="true"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                        android:textColor="@color/virb_on_primary_container" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnGlobalGapPlus"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        android:minWidth="40dp"
+                        android:minHeight="40dp"
+                        android:text="@string/plus"
+                        android:textColor="@color/virb_stepper_text"
+                        android:textSize="20sp"
+                        app:backgroundTint="@color/virb_control_surface"
+                        app:cornerRadius="12dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/unread_reminder_delay_min_hint"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                        android:textColor="?attr/colorOnSurface" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnReminderDelayMinus"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        android:minWidth="40dp"
+                        android:minHeight="40dp"
+                        android:text="@string/minus"
+                        android:textColor="@color/virb_stepper_text"
+                        android:textSize="20sp"
+                        app:backgroundTint="@color/virb_control_surface"
+                        app:cornerRadius="12dp" />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etReminderDelay"
+                        android:layout_width="72dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_number_input"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:selectAllOnFocus="true"
+                        android:singleLine="true"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                        android:textColor="@color/virb_on_primary_container" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnReminderDelayPlus"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        android:minWidth="40dp"
+                        android:minHeight="40dp"
+                        android:text="@string/plus"
+                        android:textColor="@color/virb_stepper_text"
+                        android:textSize="20sp"
+                        app:backgroundTint="@color/virb_control_surface"
+                        app:cornerRadius="12dp" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- 保存按钮 -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSave"
+            style="@style/Widget.Material3.Button"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_margin="12dp"
-            android:minHeight="52dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:minHeight="50dp"
             android:text="@string/save"
             android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-            app:cornerRadius="12dp"
-            style="@style/Widget.Material3.Button" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="16dp" />
-
+            app:cornerRadius="14dp" />
     </LinearLayout>
 </ScrollView>

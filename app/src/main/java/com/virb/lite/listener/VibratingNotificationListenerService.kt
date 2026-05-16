@@ -9,6 +9,8 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.os.SystemClock
+import android.os.Handler
+import android.os.Looper
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
@@ -19,7 +21,11 @@ import com.virb.lite.vibe.VibrationHelper
 
 class VibratingNotificationListenerService : NotificationListenerService() {
     private lateinit var prefs: AppPrefs
+    private val reminderHandler = Handler(Looper.getMainLooper())
     private var lastVibrationAtMs: Long = 0L
+    private var anchorNotificationKey: String? = null
+    private var anchorReminderFired: Boolean = false
+    private var reminderRunnable: Runnable? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -68,6 +74,8 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             return
         }
 
+        maybeStartUnreadReminder(sbn)
+
         val now = System.currentTimeMillis()
         val gapMs = prefs.globalGapMs().toLong()
         val lastVibrationAt = lastVibrationAtMs
@@ -84,6 +92,13 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             prefs.markVibrationNow(now)
         }
         debugLog("vibrate result=$result")
+    }
+
+    override fun onNotificationRemoved(sbn: StatusBarNotification) {
+        if (sbn.key == anchorNotificationKey) {
+            debugLog("anchor notification removed, cancel unread reminder")
+            clearUnreadReminder()
+        }
     }
 
     private fun requestListenerRebind() {
@@ -113,6 +128,54 @@ class VibratingNotificationListenerService : NotificationListenerService() {
     private fun isDeviceLocked(): Boolean {
         val keyguardManager = getSystemService(KeyguardManager::class.java)
         return keyguardManager?.isKeyguardLocked == true
+    }
+
+    private fun maybeStartUnreadReminder(sbn: StatusBarNotification) {
+        if (!prefs.unreadReminderEnabled()) return
+        if (anchorNotificationKey != null) return
+
+        val delayMs = prefs.unreadReminderDelayMs().toLong()
+        anchorNotificationKey = sbn.key
+        anchorReminderFired = false
+
+        val runnable = Runnable {
+            fireUnreadReminderIfAnchorStillActive()
+        }
+        reminderRunnable = runnable
+        reminderHandler.postDelayed(runnable, delayMs)
+        debugLog("unread reminder armed: key=${sbn.key} delayMs=$delayMs")
+    }
+
+    private fun fireUnreadReminderIfAnchorStillActive() {
+        val anchorKey = anchorNotificationKey ?: return
+        reminderRunnable = null
+
+        if (anchorReminderFired || !prefs.isEnabled() || !prefs.unreadReminderEnabled()) {
+            return
+        }
+
+        if (prefs.vibrateOnlyWhenLocked() && !isDeviceLocked()) {
+            debugLog("skip unread reminder: device unlocked")
+            anchorReminderFired = true
+            return
+        }
+
+        val anchorStillActive = activeNotifications?.any { it.key == anchorKey } == true
+        if (!anchorStillActive) {
+            clearUnreadReminder()
+            return
+        }
+
+        val result = VibrationHelper.vibrateUnreadReminder(this, acquireWakeLock = isDeviceLocked())
+        anchorReminderFired = true
+        debugLog("unread reminder fired result=$result")
+    }
+
+    private fun clearUnreadReminder() {
+        reminderRunnable?.let { reminderHandler.removeCallbacks(it) }
+        reminderRunnable = null
+        anchorNotificationKey = null
+        anchorReminderFired = false
     }
 
     private fun shouldIgnorePackage(packageName: String): Boolean {

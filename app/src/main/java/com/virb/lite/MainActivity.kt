@@ -45,8 +45,10 @@ class MainActivity : AppCompatActivity() {
         binding.switchEnabled.isChecked = prefs.isEnabled()
         binding.switchLockedOnly.isChecked = prefs.vibrateOnlyWhenLocked()
         binding.switchIgnoreSystem.isChecked = prefs.ignoreSystemPackages()
+        binding.switchUnreadReminder.isChecked = prefs.unreadReminderEnabled()
         binding.etDuration.setText(prefs.vibrationMs().toString())
-        binding.etGlobalGap.setText(prefs.globalGapMs().toString())
+        binding.etGlobalGap.setText(msToSeconds(prefs.globalGapMs()).toString())
+        binding.etReminderDelay.setText(msToMinutes(prefs.unreadReminderDelayMs()).toString())
         refreshPermissionState()
     }
 
@@ -63,20 +65,87 @@ class MainActivity : AppCompatActivity() {
             prefs.setIgnoreSystemPackages(isChecked)
         }
 
+        binding.switchUnreadReminder.setOnCheckedChangeListener { _, isChecked ->
+            prefs.setUnreadReminderEnabled(isChecked)
+        }
+
+        binding.btnDurationMinus.setOnClickListener {
+            stepNumber(
+                currentText = binding.etDuration.text?.toString(),
+                delta = -1,
+                min = AppPrefs.MIN_VIBRATION_MS,
+                max = AppPrefs.MAX_VIBRATION_MS,
+                defaultValue = AppPrefs.DEFAULT_VIBRATION_MS
+            ) { binding.etDuration.setText(it.toString()) }
+        }
+
+        binding.btnDurationPlus.setOnClickListener {
+            stepNumber(
+                currentText = binding.etDuration.text?.toString(),
+                delta = 1,
+                min = AppPrefs.MIN_VIBRATION_MS,
+                max = AppPrefs.MAX_VIBRATION_MS,
+                defaultValue = AppPrefs.DEFAULT_VIBRATION_MS
+            ) { binding.etDuration.setText(it.toString()) }
+        }
+
+        binding.btnGlobalGapMinus.setOnClickListener {
+            stepNumber(
+                currentText = binding.etGlobalGap.text?.toString(),
+                delta = -1,
+                min = secondsFromMs(AppPrefs.MIN_GLOBAL_GAP_MS),
+                max = secondsFromMs(AppPrefs.MAX_GLOBAL_GAP_MS),
+                defaultValue = secondsFromMs(AppPrefs.DEFAULT_GLOBAL_GAP_MS)
+            ) { binding.etGlobalGap.setText(it.toString()) }
+        }
+
+        binding.btnGlobalGapPlus.setOnClickListener {
+            stepNumber(
+                currentText = binding.etGlobalGap.text?.toString(),
+                delta = 1,
+                min = secondsFromMs(AppPrefs.MIN_GLOBAL_GAP_MS),
+                max = secondsFromMs(AppPrefs.MAX_GLOBAL_GAP_MS),
+                defaultValue = secondsFromMs(AppPrefs.DEFAULT_GLOBAL_GAP_MS)
+            ) { binding.etGlobalGap.setText(it.toString()) }
+        }
+
+        binding.btnReminderDelayMinus.setOnClickListener {
+            stepNumber(
+                currentText = binding.etReminderDelay.text?.toString(),
+                delta = -1,
+                min = minutesFromMs(AppPrefs.MIN_UNREAD_REMINDER_DELAY_MS),
+                max = minutesFromMs(AppPrefs.MAX_UNREAD_REMINDER_DELAY_MS),
+                defaultValue = minutesFromMs(AppPrefs.DEFAULT_UNREAD_REMINDER_DELAY_MS)
+            ) { binding.etReminderDelay.setText(it.toString()) }
+        }
+
+        binding.btnReminderDelayPlus.setOnClickListener {
+            stepNumber(
+                currentText = binding.etReminderDelay.text?.toString(),
+                delta = 1,
+                min = minutesFromMs(AppPrefs.MIN_UNREAD_REMINDER_DELAY_MS),
+                max = minutesFromMs(AppPrefs.MAX_UNREAD_REMINDER_DELAY_MS),
+                defaultValue = minutesFromMs(AppPrefs.DEFAULT_UNREAD_REMINDER_DELAY_MS)
+            ) { binding.etReminderDelay.setText(it.toString()) }
+        }
+
         binding.btnSave.setOnClickListener {
             val duration = binding.etDuration.text.toString().toIntOrNull()
-            val gap = binding.etGlobalGap.text.toString().toIntOrNull()
+            val gapSeconds = binding.etGlobalGap.text.toString().toIntOrNull()
+            val reminderDelayMinutes = binding.etReminderDelay.text.toString().toIntOrNull()
 
-            if (duration == null || gap == null) {
+            if (duration == null || gapSeconds == null || reminderDelayMinutes == null) {
                 toast(getString(R.string.invalid_input))
                 return@setOnClickListener
             }
 
             prefs.setVibrationMs(duration)
-            prefs.setGlobalGapMs(gap)
+            prefs.setGlobalGapMs(secondsToMs(gapSeconds))
+            prefs.setUnreadReminderDelayMs(minutesToMs(reminderDelayMinutes))
 
             binding.etDuration.setText(prefs.vibrationMs().toString())
-            binding.etGlobalGap.setText(prefs.globalGapMs().toString())
+            binding.etGlobalGap.setText(msToSeconds(prefs.globalGapMs()).toString())
+            binding.etReminderDelay.setText(msToMinutes(prefs.unreadReminderDelayMs()).toString())
             toast(getString(R.string.saved))
         }
 
@@ -201,4 +270,28 @@ class MainActivity : AppCompatActivity() {
     private fun toast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
+
+    private fun stepNumber(
+        currentText: String?,
+        delta: Int,
+        min: Int,
+        max: Int,
+        defaultValue: Int,
+        applyValue: (Int) -> Unit
+    ) {
+        val current = currentText?.toIntOrNull() ?: defaultValue
+        applyValue((current + delta).coerceIn(min, max))
+    }
+
+    private fun msToSeconds(ms: Int): Int = (ms / 1000).coerceAtLeast(1)
+
+    private fun secondsFromMs(ms: Int): Int = msToSeconds(ms)
+
+    private fun secondsToMs(seconds: Int): Int = seconds.coerceAtLeast(1) * 1000
+
+    private fun msToMinutes(ms: Int): Int = (ms / 60_000).coerceAtLeast(1)
+
+    private fun minutesFromMs(ms: Int): Int = msToMinutes(ms)
+
+    private fun minutesToMs(minutes: Int): Int = minutes.coerceAtLeast(1) * 60_000
 }
