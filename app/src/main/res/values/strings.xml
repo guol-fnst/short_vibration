@@ -38,4 +38,6 @@
     <string name="global_gap_sec_hint">防重复间隔 (秒)</string>
     <string name="plus">+</string>
     <string name="minus">-</string>
+    <string name="decrease_value">减少数值</string>
+    <string name="increase_value">增加数值</string>
 </resources>

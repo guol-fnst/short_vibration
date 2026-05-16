@@ -70,22 +70,16 @@
                         android:alpha="0.82" />
                 </LinearLayout>
 
-                <com.google.android.material.button.MaterialButton
+                <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/btnTestVibration"
-                    style="@style/Widget.Material3.Button.TonalButton"
                     android:layout_width="52dp"
                     android:layout_height="52dp"
                     android:layout_marginStart="12dp"
-                    android:insetLeft="0dp"
-                    android:insetTop="0dp"
-                    android:insetRight="0dp"
-                    android:insetBottom="0dp"
-                    android:minWidth="52dp"
-                    android:minHeight="52dp"
-                    android:text="@string/test_vibration_short"
-                    android:textSize="20sp"
-                    app:backgroundTint="@color/virb_on_primary"
-                    app:cornerRadius="26dp" />
+                    android:background="@drawable/bg_circle_icon_button"
+                    android:contentDescription="@string/test_vibration"
+                    android:padding="13dp"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_vibration" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -281,22 +275,15 @@
                         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                         android:textColor="?attr/colorOnSurface" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <androidx.appcompat.widget.AppCompatImageButton
                         android:id="@+id/btnDurationMinus"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:insetLeft="0dp"
-                        android:insetTop="0dp"
-                        android:insetRight="0dp"
-                        android:insetBottom="0dp"
-                        android:minWidth="40dp"
-                        android:minHeight="40dp"
-                        android:text="@string/minus"
-                        android:textColor="@color/virb_stepper_text"
-                        android:textSize="20sp"
-                        app:backgroundTint="@color/virb_control_surface"
-                        app:cornerRadius="12dp" />
+                        android:background="@drawable/bg_stepper_button"
+                        android:contentDescription="@string/decrease_value"
+                        android:padding="10dp"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_minus" />
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etDuration"
@@ -312,22 +299,15 @@
                         android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
                         android:textColor="@color/virb_on_primary_container" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <androidx.appcompat.widget.AppCompatImageButton
                         android:id="@+id/btnDurationPlus"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:insetLeft="0dp"
-                        android:insetTop="0dp"
-                        android:insetRight="0dp"
-                        android:insetBottom="0dp"
-                        android:minWidth="40dp"
-                        android:minHeight="40dp"
-                        android:text="@string/plus"
-                        android:textColor="@color/virb_stepper_text"
-                        android:textSize="20sp"
-                        app:backgroundTint="@color/virb_control_surface"
-                        app:cornerRadius="12dp" />
+                        android:background="@drawable/bg_stepper_button"
+                        android:contentDescription="@string/increase_value"
+                        android:padding="10dp"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_plus" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -344,22 +324,15 @@
                         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                         android:textColor="?attr/colorOnSurface" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <androidx.appcompat.widget.AppCompatImageButton
                         android:id="@+id/btnGlobalGapMinus"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:insetLeft="0dp"
-                        android:insetTop="0dp"
-                        android:insetRight="0dp"
-                        android:insetBottom="0dp"
-                        android:minWidth="40dp"
-                        android:minHeight="40dp"
-                        android:text="@string/minus"
-                        android:textColor="@color/virb_stepper_text"
-                        android:textSize="20sp"
-                        app:backgroundTint="@color/virb_control_surface"
-                        app:cornerRadius="12dp" />
+                        android:background="@drawable/bg_stepper_button"
+                        android:contentDescription="@string/decrease_value"
+                        android:padding="10dp"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_minus" />
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etGlobalGap"
@@ -375,22 +348,15 @@
                         android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
                         android:textColor="@color/virb_on_primary_container" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <androidx.appcompat.widget.AppCompatImageButton
                         android:id="@+id/btnGlobalGapPlus"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:insetLeft="0dp"
-                        android:insetTop="0dp"
-                        android:insetRight="0dp"
-                        android:insetBottom="0dp"
-                        android:minWidth="40dp"
-                        android:minHeight="40dp"
-                        android:text="@string/plus"
-                        android:textColor="@color/virb_stepper_text"
-                        android:textSize="20sp"
-                        app:backgroundTint="@color/virb_control_surface"
-                        app:cornerRadius="12dp" />
+                        android:background="@drawable/bg_stepper_button"
+                        android:contentDescription="@string/increase_value"
+                        android:padding="10dp"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_plus" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -407,22 +373,15 @@
                         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                         android:textColor="?attr/colorOnSurface" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <androidx.appcompat.widget.AppCompatImageButton
                         android:id="@+id/btnReminderDelayMinus"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:insetLeft="0dp"
-                        android:insetTop="0dp"
-                        android:insetRight="0dp"
-                        android:insetBottom="0dp"
-                        android:minWidth="40dp"
-                        android:minHeight="40dp"
-                        android:text="@string/minus"
-                        android:textColor="@color/virb_stepper_text"
-                        android:textSize="20sp"
-                        app:backgroundTint="@color/virb_control_surface"
-                        app:cornerRadius="12dp" />
+                        android:background="@drawable/bg_stepper_button"
+                        android:contentDescription="@string/decrease_value"
+                        android:padding="10dp"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_minus" />
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etReminderDelay"
@@ -438,22 +397,15 @@
                         android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
                         android:textColor="@color/virb_on_primary_container" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <androidx.appcompat.widget.AppCompatImageButton
                         android:id="@+id/btnReminderDelayPlus"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:insetLeft="0dp"
-                        android:insetTop="0dp"
-                        android:insetRight="0dp"
-                        android:insetBottom="0dp"
-                        android:minWidth="40dp"
-                        android:minHeight="40dp"
-                        android:text="@string/plus"
-                        android:textColor="@color/virb_stepper_text"
-                        android:textSize="20sp"
-                        app:backgroundTint="@color/virb_control_surface"
-                        app:cornerRadius="12dp" />
+                        android:background="@drawable/bg_stepper_button"
+                        android:contentDescription="@string/increase_value"
+                        android:padding="10dp"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_plus" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
