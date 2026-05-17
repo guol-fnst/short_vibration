@@ -22,6 +22,7 @@ class BootReceiver : BroadcastReceiver() {
             Intent.ACTION_USER_PRESENT -> {
                 // Phone unlocked — MIUI may have killed the NLS binding while screen was off.
                 // Throttle repeated unlock rebinds to avoid redundant binder churn.
+                AppPrefs(context).markUserPresentNow(System.currentTimeMillis())
                 rebindListener(context, force = false)
             }
         }

@@ -72,6 +72,12 @@ class AppPrefs(context: Context) {
 
     fun lastBootAtMs(): Long = prefs.getLong(KEY_LAST_BOOT_AT_MS, 0L)
 
+    fun markUserPresentNow(epochMs: Long) {
+        prefs.edit().putLong(KEY_LAST_USER_PRESENT_AT_MS, epochMs).apply()
+    }
+
+    fun lastUserPresentAtMs(): Long = prefs.getLong(KEY_LAST_USER_PRESENT_AT_MS, 0L)
+
     fun lastVibrationAtMs(): Long = prefs.getLong(KEY_LAST_VIBRATION_AT_MS, 0L)
 
     fun markVibrationNow(epochMs: Long) {
@@ -88,6 +94,7 @@ class AppPrefs(context: Context) {
         private const val KEY_VIBRATION_MS = "vibration_ms"
         private const val KEY_GLOBAL_GAP_MS = "global_gap_ms"
         private const val KEY_LAST_BOOT_AT_MS = "last_boot_at_ms"
+        private const val KEY_LAST_USER_PRESENT_AT_MS = "last_user_present_at_ms"
         private const val KEY_LAST_VIBRATION_AT_MS = "last_vibration_at_ms"
 
         const val DEFAULT_VIBRATION_MS = 10

@@ -19,11 +19,14 @@ import com.virb.lite.MainActivity
 import com.virb.lite.R
 import com.virb.lite.prefs.AppPrefs
 import com.virb.lite.vibe.VibrationHelper
+import java.util.LinkedHashSet
 
 class VibratingNotificationListenerService : NotificationListenerService() {
     private lateinit var prefs: AppPrefs
     private val reminderHandler = Handler(Looper.getMainLooper())
+    private val reconnectReplayCandidateKeys = LinkedHashSet<String>()
     private var lastVibrationAtMs: Long = 0L
+    private var listenerConnectedAtMs: Long = 0L
     private var anchorNotificationKey: String? = null
     private var anchorReminderFired: Boolean = false
     private var reminderRunnable: Runnable? = null
@@ -39,6 +42,8 @@ class VibratingNotificationListenerService : NotificationListenerService() {
     override fun onListenerConnected() {
         super.onListenerConnected()
         debugLog("onListenerConnected — listener is active")
+        listenerConnectedAtMs = System.currentTimeMillis()
+        rememberCurrentlyActiveNotifications()
         resetRebindBackoff()
         startForegroundRuntime()
     }
@@ -53,6 +58,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         val pkg = sbn.packageName
         val deviceLocked = isDeviceLocked()
+        val now = System.currentTimeMillis()
         debugLog("onNotificationPosted: pkg=$pkg id=${sbn.id} locked=$deviceLocked")
 
         if (pkg == packageName) {
@@ -65,8 +71,20 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             return
         }
 
+        if (shouldSkipUnlockReplay(now)) {
+            debugLog("skip: unlock cooldown")
+            clearUnreadReminder()
+            return
+        }
+
         if (prefs.vibrateOnlyWhenLocked() && !deviceLocked) {
             debugLog("skip: device unlocked")
+            return
+        }
+
+        if (shouldSkipReconnectReplay(sbn)) {
+            debugLog("skip: reconnect replay key=${sbn.key}")
+            clearUnreadReminder()
             return
         }
 
@@ -83,7 +101,6 @@ class VibratingNotificationListenerService : NotificationListenerService() {
 
         maybeStartUnreadReminder(sbn)
 
-        val now = System.currentTimeMillis()
         val gapMs = prefs.globalGapMs().toLong()
         val lastVibrationAt = lastVibrationAtMs
         if (lastVibrationAt > 0L && now - lastVibrationAt < gapMs) {
@@ -135,6 +152,25 @@ class VibratingNotificationListenerService : NotificationListenerService() {
     private fun isDeviceLocked(): Boolean {
         val keyguardManager = getSystemService(KeyguardManager::class.java)
         return keyguardManager?.isKeyguardLocked == true
+    }
+
+    private fun shouldSkipUnlockReplay(now: Long): Boolean {
+        val lastUserPresentAt = prefs.lastUserPresentAtMs()
+        return lastUserPresentAt > 0L && now - lastUserPresentAt in 0 until UNLOCK_REPLAY_SUPPRESS_MS
+    }
+
+    private fun rememberCurrentlyActiveNotifications() {
+        reconnectReplayCandidateKeys.clear()
+        activeNotifications
+            ?.filterNot { it.packageName == packageName }
+            ?.forEach { reconnectReplayCandidateKeys.add(it.key) }
+        debugLog("reconnect replay candidates=${reconnectReplayCandidateKeys.size}")
+    }
+
+    private fun shouldSkipReconnectReplay(sbn: StatusBarNotification): Boolean {
+        if (!reconnectReplayCandidateKeys.remove(sbn.key)) return false
+        val connectedAt = listenerConnectedAtMs
+        return connectedAt > 0L && sbn.postTime <= connectedAt + RECONNECT_REPLAY_GRACE_MS
     }
 
     private fun isCallActive(): Boolean {
@@ -259,6 +295,8 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         private const val CHANNEL_ID = "virb_fg_channel"
         private const val FOREGROUND_NOTIF_ID = 1
         private const val ENABLE_VERBOSE_LOGS = false
+        private const val UNLOCK_REPLAY_SUPPRESS_MS = 8_000L
+        private const val RECONNECT_REPLAY_GRACE_MS = 1_000L
         private const val INITIAL_REBIND_INTERVAL_MS = 15_000L
         private const val MAX_REBIND_INTERVAL_MS = 5 * 60_000L
 
