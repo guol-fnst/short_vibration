@@ -27,21 +27,10 @@ object VibrationHelper {
 
         val effect = VibrationEffect.createOneShot(safeDuration, 255)
         val appCtx = context.applicationContext
-
-        // Acquire a short PARTIAL_WAKE_LOCK so that on MIUI/HyperOS when the screen
-        // is off the CPU doesn't sleep before the vibrator driver gets the command.
-        val wl = if (acquireWakeLock) {
-            val pm = appCtx.getSystemService(Context.POWER_SERVICE) as? PowerManager
-            pm?.newWakeLock(
-                PowerManager.PARTIAL_WAKE_LOCK,
-                "com.virb.lite:vibrate"
-            )
-        } else {
-            null
-        }
-        wl?.acquire(safeDuration + 500)
+        var wl: PowerManager.WakeLock? = null
 
         return try {
+            wl = acquireVibrationWakeLock(appCtx, safeDuration, acquireWakeLock)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 val manager = appCtx.getSystemService(VibratorManager::class.java)
                 if (manager == null) {
@@ -64,7 +53,7 @@ object VibrationHelper {
             Log.e(TAG, "vibrate() exception: ${e.javaClass.simpleName}: ${e.message}")
             false
         } finally {
-            if (wl?.isHeld == true) wl.release()
+            releaseWakeLock(wl)
         }
     }
 
@@ -98,18 +87,10 @@ object VibrationHelper {
             .build()
 
         val appCtx = context.applicationContext
-        val wl = if (acquireWakeLock) {
-            val pm = appCtx.getSystemService(Context.POWER_SERVICE) as? PowerManager
-            pm?.newWakeLock(
-                PowerManager.PARTIAL_WAKE_LOCK,
-                "com.virb.lite:vibrate"
-            )
-        } else {
-            null
-        }
-        wl?.acquire(totalDurationMs + 500)
+        var wl: PowerManager.WakeLock? = null
 
         return try {
+            wl = acquireVibrationWakeLock(appCtx, totalDurationMs, acquireWakeLock)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 val manager = appCtx.getSystemService(VibratorManager::class.java)
                 if (manager == null) {
@@ -130,7 +111,30 @@ object VibrationHelper {
             Log.e(TAG, "vibrateEffect() exception: ${e.javaClass.simpleName}: ${e.message}")
             false
         } finally {
+            releaseWakeLock(wl)
+        }
+    }
+
+    private fun acquireVibrationWakeLock(
+        appCtx: Context,
+        durationMs: Long,
+        acquireWakeLock: Boolean
+    ): PowerManager.WakeLock? {
+        if (!acquireWakeLock) return null
+
+        // Keep the CPU awake long enough for MIUI/HyperOS to dispatch vibration while screen-off.
+        val pm = appCtx.getSystemService(Context.POWER_SERVICE) as? PowerManager ?: return null
+        return pm.newWakeLock(
+            PowerManager.PARTIAL_WAKE_LOCK,
+            "com.virb.lite:vibrate"
+        ).also { it.acquire(durationMs + 500) }
+    }
+
+    private fun releaseWakeLock(wl: PowerManager.WakeLock?) {
+        try {
             if (wl?.isHeld == true) wl.release()
+        } catch (e: Exception) {
+            Log.w(TAG, "WakeLock release failed: ${e.javaClass.simpleName}: ${e.message}")
         }
     }
 

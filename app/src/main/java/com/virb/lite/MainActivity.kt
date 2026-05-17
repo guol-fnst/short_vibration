@@ -246,7 +246,10 @@ class MainActivity : AppCompatActivity() {
     private fun isNotificationListenerEnabled(): Boolean {
         val component = ComponentName(this, VibratingNotificationListenerService::class.java)
         val enabledListeners = Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
-        return enabledListeners?.contains(component.flattenToString()) == true
+        return enabledListeners
+            ?.split(':')
+            ?.mapNotNull { ComponentName.unflattenFromString(it) }
+            ?.any { it == component } == true
     }
 
     private fun forceRebind(component: ComponentName) {

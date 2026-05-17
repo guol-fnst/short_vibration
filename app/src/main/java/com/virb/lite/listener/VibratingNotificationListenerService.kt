@@ -71,7 +71,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             return
         }
 
-        if (shouldSkipUnlockReplay(now)) {
+        if (prefs.vibrateOnlyWhenLocked() && shouldSkipUnlockReplay(now)) {
             debugLog("skip: unlock cooldown")
             clearUnreadReminder()
             return
@@ -200,6 +200,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         reminderRunnable = null
 
         if (anchorReminderFired || !prefs.isEnabled() || !prefs.unreadReminderEnabled()) {
+            clearUnreadReminder()
             return
         }
 
