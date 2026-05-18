@@ -44,11 +44,8 @@ class MainActivity : AppCompatActivity() {
     private fun bindInitialUi() {
         binding.switchEnabled.isChecked = prefs.isEnabled()
         binding.switchLockedOnly.isChecked = prefs.vibrateOnlyWhenLocked()
-        binding.switchIgnoreSystem.isChecked = prefs.ignoreSystemPackages()
-        binding.switchUnreadReminder.isChecked = prefs.unreadReminderEnabled()
         binding.etDuration.setText(prefs.vibrationMs().toString())
         binding.etGlobalGap.setText(msToSeconds(prefs.globalGapMs()).toString())
-        binding.etReminderDelay.setText(msToMinutes(prefs.unreadReminderDelayMs()).toString())
         refreshPermissionState()
     }
 
@@ -59,14 +56,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.switchLockedOnly.setOnCheckedChangeListener { _, isChecked ->
             prefs.setVibrateOnlyWhenLocked(isChecked)
-        }
-
-        binding.switchIgnoreSystem.setOnCheckedChangeListener { _, isChecked ->
-            prefs.setIgnoreSystemPackages(isChecked)
-        }
-
-        binding.switchUnreadReminder.setOnCheckedChangeListener { _, isChecked ->
-            prefs.setUnreadReminderEnabled(isChecked)
         }
 
         binding.btnDurationMinus.setOnClickListener {
@@ -109,43 +98,20 @@ class MainActivity : AppCompatActivity() {
             ) { binding.etGlobalGap.setText(it.toString()) }
         }
 
-        binding.btnReminderDelayMinus.setOnClickListener {
-            stepNumber(
-                currentText = binding.etReminderDelay.text?.toString(),
-                delta = -1,
-                min = minutesFromMs(AppPrefs.MIN_UNREAD_REMINDER_DELAY_MS),
-                max = minutesFromMs(AppPrefs.MAX_UNREAD_REMINDER_DELAY_MS),
-                defaultValue = minutesFromMs(AppPrefs.DEFAULT_UNREAD_REMINDER_DELAY_MS)
-            ) { binding.etReminderDelay.setText(it.toString()) }
-        }
-
-        binding.btnReminderDelayPlus.setOnClickListener {
-            stepNumber(
-                currentText = binding.etReminderDelay.text?.toString(),
-                delta = 1,
-                min = minutesFromMs(AppPrefs.MIN_UNREAD_REMINDER_DELAY_MS),
-                max = minutesFromMs(AppPrefs.MAX_UNREAD_REMINDER_DELAY_MS),
-                defaultValue = minutesFromMs(AppPrefs.DEFAULT_UNREAD_REMINDER_DELAY_MS)
-            ) { binding.etReminderDelay.setText(it.toString()) }
-        }
-
         binding.btnSave.setOnClickListener {
             val duration = binding.etDuration.text.toString().toIntOrNull()
             val gapSeconds = binding.etGlobalGap.text.toString().toIntOrNull()
-            val reminderDelayMinutes = binding.etReminderDelay.text.toString().toIntOrNull()
 
-            if (duration == null || gapSeconds == null || reminderDelayMinutes == null) {
+            if (duration == null || gapSeconds == null) {
                 toast(getString(R.string.invalid_input))
                 return@setOnClickListener
             }
 
             prefs.setVibrationMs(duration)
             prefs.setGlobalGapMs(secondsToMs(gapSeconds))
-            prefs.setUnreadReminderDelayMs(minutesToMs(reminderDelayMinutes))
 
             binding.etDuration.setText(prefs.vibrationMs().toString())
             binding.etGlobalGap.setText(msToSeconds(prefs.globalGapMs()).toString())
-            binding.etReminderDelay.setText(msToMinutes(prefs.unreadReminderDelayMs()).toString())
             toast(getString(R.string.saved))
         }
 
@@ -154,7 +120,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnFixHaptic.setOnClickListener {
-            // Open Sound & vibration settings so user can enable Haptic feedback
             try {
                 startActivity(Intent(Settings.ACTION_SOUND_SETTINGS))
             } catch (_: Exception) {
@@ -165,7 +130,6 @@ class MainActivity : AppCompatActivity() {
         binding.btnTestVibration.setOnClickListener {
             val ms = (binding.etDuration.text.toString().toIntOrNull() ?: prefs.vibrationMs()).toLong()
 
-            // Strategy 1: performHapticFeedback — goes through system haptic channel
             binding.btnTestVibration.performHapticFeedback(
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     HapticFeedbackConstants.CONFIRM
@@ -177,7 +141,6 @@ class MainActivity : AppCompatActivity() {
                         HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
             )
 
-            // Strategy 2: Vibrator via RINGTONE channel (bypasses haptic_feedback_enabled=0 on MIUI)
             val ok = VibrationHelper.vibrate(this, ms)
 
             val am = getSystemService(AudioManager::class.java)
@@ -291,10 +254,4 @@ class MainActivity : AppCompatActivity() {
     private fun secondsFromMs(ms: Int): Int = msToSeconds(ms)
 
     private fun secondsToMs(seconds: Int): Int = seconds.coerceAtLeast(1) * 1000
-
-    private fun msToMinutes(ms: Int): Int = (ms / 60_000).coerceAtLeast(1)
-
-    private fun minutesFromMs(ms: Int): Int = msToMinutes(ms)
-
-    private fun minutesToMs(minutes: Int): Int = minutes.coerceAtLeast(1) * 60_000
 }

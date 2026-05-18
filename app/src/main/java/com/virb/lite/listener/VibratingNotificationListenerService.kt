@@ -1,14 +1,13 @@
 package com.virb.lite.listener
 
-import android.app.AlarmManager
 import android.app.KeyguardManager
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
+import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Intent
-import android.content.pm.ApplicationInfo
+import android.content.IntentFilter
 import android.media.AudioManager
 import android.os.SystemClock
 import android.service.notification.NotificationListenerService
@@ -17,7 +16,6 @@ import android.util.Log
 import com.virb.lite.MainActivity
 import com.virb.lite.R
 import com.virb.lite.prefs.AppPrefs
-import com.virb.lite.reminder.UnreadReminderReceiver
 import com.virb.lite.vibe.VibrationHelper
 import java.util.LinkedHashSet
 
@@ -26,17 +24,29 @@ class VibratingNotificationListenerService : NotificationListenerService() {
     private val reconnectReplayCandidateKeys = LinkedHashSet<String>()
     private var lastVibrationAtMs: Long = 0L
     private var listenerConnectedAtMs: Long = 0L
-    private var anchorNotificationKey: String? = null
-    private var anchorReminderFired: Boolean = false
+    private var lastScreenOnAtMs: Long = 0L
+
+    private val screenOnReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: android.content.Context, intent: Intent) {
+            if (intent.action == Intent.ACTION_SCREEN_ON) {
+                lastScreenOnAtMs = System.currentTimeMillis()
+                debugLog("screen on — replay suppression window started")
+            }
+        }
+    }
 
     override fun onCreate() {
         super.onCreate()
         prefs = AppPrefs(this)
         lastVibrationAtMs = prefs.lastVibrationAtMs()
-        anchorNotificationKey = prefs.anchorNotificationKey()
-        anchorReminderFired = prefs.anchorReminderFired()
+        registerReceiver(screenOnReceiver, IntentFilter(Intent.ACTION_SCREEN_ON))
         debugLog("Service onCreate")
         createNotificationChannel()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        try { unregisterReceiver(screenOnReceiver) } catch (_: Exception) {}
     }
 
     override fun onListenerConnected() {
@@ -71,39 +81,25 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             return
         }
 
+        if (now - lastScreenOnAtMs in 1 until SCREEN_ON_REPLAY_SUPPRESS_MS) {
+            debugLog("skip: screen-on replay window")
+            return
+        }
+
         if (prefs.vibrateOnlyWhenLocked() && shouldSkipUnlockReplay(now)) {
             debugLog("skip: unlock cooldown")
-            clearUnreadReminder()
             return
         }
 
         if (shouldSkipReconnectReplay(sbn)) {
             debugLog("skip: reconnect replay key=${sbn.key}")
-            clearUnreadReminder()
             return
         }
 
         if (isCallActive()) {
             debugLog("skip: call is active")
-            clearUnreadReminder()
             return
         }
-
-        if (prefs.ignoreSystemPackages() && shouldIgnorePackage(pkg)) {
-            debugLog("skip: system package $pkg")
-            return
-        }
-
-        // Clean up a fired anchor when device is unlocked so a new
-        // notification can arm a fresh reminder for the next lock session.
-        if (anchorReminderFired && !deviceLocked) {
-            clearUnreadReminder()
-        }
-
-        // Arm unread reminder BEFORE the global gap check — the gap throttles
-        // immediate vibration bursts but should not prevent a new anchor from
-        // being established after the previous one was cleared.
-        maybeStartUnreadReminder(sbn)
 
         if (prefs.vibrateOnlyWhenLocked() && !deviceLocked) {
             debugLog("skip: device unlocked")
@@ -125,13 +121,6 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             prefs.markVibrationNow(now)
         }
         debugLog("vibrate result=$result")
-    }
-
-    override fun onNotificationRemoved(sbn: StatusBarNotification) {
-        if (sbn.key == anchorNotificationKey) {
-            debugLog("anchor notification removed, cancel unread reminder")
-            clearUnreadReminder()
-        }
     }
 
     private fun requestListenerRebind() {
@@ -188,73 +177,6 @@ class VibratingNotificationListenerService : NotificationListenerService() {
                 audioManager.mode == AudioManager.MODE_IN_COMMUNICATION
     }
 
-    private fun maybeStartUnreadReminder(sbn: StatusBarNotification) {
-        if (!prefs.unreadReminderEnabled()) return
-        // Sync in-memory anchor against prefs: BootReceiver may have cleared it on unlock
-        // without going through this service instance.
-        if (anchorNotificationKey != null && prefs.anchorNotificationKey() == null) {
-            anchorNotificationKey = null
-            anchorReminderFired = false
-        }
-        if (anchorNotificationKey != null) return
-
-        val delayMs = prefs.unreadReminderDelayMs().toLong()
-        anchorNotificationKey = sbn.key
-        anchorReminderFired = false
-        prefs.setAnchorNotificationKey(sbn.key)
-        prefs.setAnchorReminderFired(false)
-
-        val alarmIntent = Intent(this, UnreadReminderReceiver::class.java).apply {
-            action = UnreadReminderReceiver.ACTION_REMIND
-        }
-        val pendingIntent = PendingIntent.getBroadcast(
-            this,
-            REMINDER_ALARM_REQUEST_CODE,
-            alarmIntent,
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-        )
-        val triggerAt = SystemClock.elapsedRealtime() + delayMs
-        try {
-            getSystemService(AlarmManager::class.java)
-                .setExactAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAt, pendingIntent)
-        } catch (e: SecurityException) {
-            getSystemService(AlarmManager::class.java)
-                .setAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAt, pendingIntent)
-        }
-        debugLog("unread reminder armed: key=${sbn.key} delayMs=$delayMs")
-    }
-
-    private fun clearUnreadReminder() {
-        val cancelIntent = Intent(this, UnreadReminderReceiver::class.java).apply {
-            action = UnreadReminderReceiver.ACTION_REMIND
-        }
-        val pendingIntent = PendingIntent.getBroadcast(
-            this,
-            REMINDER_ALARM_REQUEST_CODE,
-            cancelIntent,
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_NO_CREATE
-        )
-        pendingIntent?.let {
-            getSystemService(AlarmManager::class.java).cancel(it)
-        }
-        anchorNotificationKey = null
-        anchorReminderFired = false
-        prefs.clearReminderAnchor()
-    }
-
-    private fun shouldIgnorePackage(packageName: String): Boolean {
-        return try {
-            val appInfo = packageManager.getApplicationInfo(packageName, 0)
-            // Only ignore true OS core processes (uid < 10000).
-            // Do NOT filter by FLAG_SYSTEM / FLAG_UPDATED_SYSTEM_APP — pre-installed
-            // apps such as Feishu on OEM/enterprise devices carry that flag but are
-            // regular user-facing messaging apps that should trigger vibration.
-            appInfo.uid < 10_000
-        } catch (_: Exception) {
-            false
-        }
-    }
-
     private fun startForegroundRuntime() {
         try {
             startForeground(FOREGROUND_NOTIF_ID, buildForegroundNotification())
@@ -308,7 +230,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         private const val RECONNECT_REPLAY_GRACE_MS = 1_000L
         private const val INITIAL_REBIND_INTERVAL_MS = 15_000L
         private const val MAX_REBIND_INTERVAL_MS = 5 * 60_000L
-        private const val REMINDER_ALARM_REQUEST_CODE = 1001
+        private const val SCREEN_ON_REPLAY_SUPPRESS_MS = 5_000L
 
         @Volatile
         private var lastRebindElapsedMs: Long = 0L

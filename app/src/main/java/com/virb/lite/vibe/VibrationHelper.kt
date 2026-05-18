@@ -57,24 +57,6 @@ object VibrationHelper {
         }
     }
 
-    fun vibrateUnreadReminder(context: Context, acquireWakeLock: Boolean): Boolean {
-        val timings = longArrayOf(
-            0L,
-            1000L,
-            500L,
-            1000L
-        )
-        val amplitudes = intArrayOf(
-            0,
-            255,
-            0,
-            255
-        )
-        val effect = VibrationEffect.createWaveform(timings, amplitudes, -1)
-        val totalDurationMs = timings.sum()
-        return vibrateEffect(context, effect, totalDurationMs, acquireWakeLock)
-    }
-
     private fun vibrateEffect(
         context: Context,
         effect: VibrationEffect,

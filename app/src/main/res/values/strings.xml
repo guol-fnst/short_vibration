@@ -9,7 +9,6 @@
     <string name="timing_settings">振动参数</string>
     <string name="enable_switch">启用通知振动</string>
     <string name="lockscreen_only_switch">仅锁屏时振动</string>
-    <string name="ignore_system_switch">忽略系统应用通知</string>
     <string name="vibration_ms_hint">振动时长 (ms)</string>
     <string name="vibration_ms_helper">范围 1-1000，默认 10</string>
     <string name="global_gap_ms_hint">防重复间隔 (ms)</string>
@@ -33,8 +32,6 @@
     <string name="notif_channel_name">Virb 运行状态</string>
     <string name="notif_fg_title">Virb Lite 正在运行</string>
     <string name="notif_fg_text">通知监听已启用，等待消息</string>
-    <string name="unread_reminder_switch">通知未消失提醒</string>
-    <string name="unread_reminder_delay_min_hint">未消失提醒 (分钟)</string>
     <string name="global_gap_sec_hint">防重复间隔 (秒)</string>
     <string name="plus">+</string>
     <string name="minus">-</string>

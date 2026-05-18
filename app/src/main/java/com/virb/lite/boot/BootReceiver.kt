@@ -9,7 +9,6 @@ import android.service.notification.NotificationListenerService
 import android.util.Log
 import com.virb.lite.listener.VibratingNotificationListenerService
 import com.virb.lite.prefs.AppPrefs
-import com.virb.lite.reminder.UnreadReminderReceiver
 
 class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
@@ -21,10 +20,7 @@ class BootReceiver : BroadcastReceiver() {
                 rebindListener(context, force = true)
             }
             Intent.ACTION_USER_PRESENT -> {
-                // Phone unlocked — cancel any pending unread reminder alarm and reset anchor.
                 AppPrefs(context).markUserPresentNow(System.currentTimeMillis())
-                UnreadReminderReceiver.cancelPendingAlarm(context)
-                AppPrefs(context).clearReminderAnchor()
                 rebindListener(context, force = false)
             }
         }

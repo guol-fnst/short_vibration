@@ -19,32 +19,6 @@ class AppPrefs(context: Context) {
         prefs.edit().putBoolean(KEY_LOCKED_ONLY, lockedOnly).apply()
     }
 
-    fun ignoreSystemPackages(): Boolean = prefs.getBoolean(KEY_IGNORE_SYSTEM, true)
-
-    fun setIgnoreSystemPackages(ignore: Boolean) {
-        prefs.edit().putBoolean(KEY_IGNORE_SYSTEM, ignore).apply()
-    }
-
-    fun unreadReminderEnabled(): Boolean = prefs.getBoolean(KEY_UNREAD_REMINDER_ENABLED, false)
-
-    fun setUnreadReminderEnabled(enabled: Boolean) {
-        prefs.edit().putBoolean(KEY_UNREAD_REMINDER_ENABLED, enabled).apply()
-    }
-
-    fun unreadReminderDelayMs(): Int {
-        val raw = prefs.getInt(KEY_UNREAD_REMINDER_DELAY_MS, DEFAULT_UNREAD_REMINDER_DELAY_MS)
-        val clamped = raw.coerceIn(MIN_UNREAD_REMINDER_DELAY_MS, MAX_UNREAD_REMINDER_DELAY_MS)
-        if (raw != clamped) {
-            prefs.edit().putInt(KEY_UNREAD_REMINDER_DELAY_MS, clamped).apply()
-        }
-        return clamped
-    }
-
-    fun setUnreadReminderDelayMs(delayMs: Int) {
-        val clamped = delayMs.coerceIn(MIN_UNREAD_REMINDER_DELAY_MS, MAX_UNREAD_REMINDER_DELAY_MS)
-        prefs.edit().putInt(KEY_UNREAD_REMINDER_DELAY_MS, clamped).apply()
-    }
-
     fun vibrationMs(): Int {
         val raw = prefs.getInt(KEY_VIBRATION_MS, DEFAULT_VIBRATION_MS)
         val clamped = raw.coerceIn(MIN_VIBRATION_MS, MAX_VIBRATION_MS)
@@ -91,39 +65,15 @@ class AppPrefs(context: Context) {
         prefs.edit().putLong(KEY_LAST_VIBRATION_AT_MS, epochMs).apply()
     }
 
-    fun anchorNotificationKey(): String? = prefs.getString(KEY_REMINDER_ANCHOR_KEY, null)
-
-    fun setAnchorNotificationKey(key: String?) {
-        prefs.edit().putString(KEY_REMINDER_ANCHOR_KEY, key).apply()
-    }
-
-    fun anchorReminderFired(): Boolean = prefs.getBoolean(KEY_REMINDER_ANCHOR_FIRED, false)
-
-    fun setAnchorReminderFired(fired: Boolean) {
-        prefs.edit().putBoolean(KEY_REMINDER_ANCHOR_FIRED, fired).apply()
-    }
-
-    fun clearReminderAnchor() {
-        prefs.edit()
-            .remove(KEY_REMINDER_ANCHOR_KEY)
-            .remove(KEY_REMINDER_ANCHOR_FIRED)
-            .apply()
-    }
-
     companion object {
         private const val PREF_FILE = "virb_prefs"
         private const val KEY_ENABLED = "enabled"
         private const val KEY_LOCKED_ONLY = "locked_only"
-        private const val KEY_IGNORE_SYSTEM = "ignore_system"
-        private const val KEY_UNREAD_REMINDER_ENABLED = "unread_reminder_enabled"
-        private const val KEY_UNREAD_REMINDER_DELAY_MS = "unread_reminder_delay_ms"
         private const val KEY_VIBRATION_MS = "vibration_ms"
         private const val KEY_GLOBAL_GAP_MS = "global_gap_ms"
         private const val KEY_LAST_BOOT_AT_MS = "last_boot_at_ms"
         private const val KEY_LAST_USER_PRESENT_AT_MS = "last_user_present_at_ms"
         private const val KEY_LAST_VIBRATION_AT_MS = "last_vibration_at_ms"
-        private const val KEY_REMINDER_ANCHOR_KEY = "reminder_anchor_key"
-        private const val KEY_REMINDER_ANCHOR_FIRED = "reminder_anchor_fired"
 
         const val DEFAULT_VIBRATION_MS = 10
         const val MIN_VIBRATION_MS = 1
@@ -132,9 +82,5 @@ class AppPrefs(context: Context) {
         const val DEFAULT_GLOBAL_GAP_MS = 3000
         const val MIN_GLOBAL_GAP_MS = 500
         const val MAX_GLOBAL_GAP_MS = 10000
-
-        const val DEFAULT_UNREAD_REMINDER_DELAY_MS = 5 * 60 * 1000
-        const val MIN_UNREAD_REMINDER_DELAY_MS = 1 * 60 * 1000
-        const val MAX_UNREAD_REMINDER_DELAY_MS = 60 * 60 * 1000
     }
 }
