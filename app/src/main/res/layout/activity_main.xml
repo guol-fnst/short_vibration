@@ -186,6 +186,133 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:cardBackgroundColor="?attr/colorSurfaceContainer"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="14dp"
+                android:paddingTop="12dp"
+                android:paddingEnd="14dp"
+                android:paddingBottom="12dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:text="@string/timing_settings"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/vibration_ms_hint"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                        android:textColor="?attr/colorOnSurface" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/btnDurationMinus"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_stepper_button"
+                        android:contentDescription="@string/decrease_value"
+                        android:padding="10dp"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_minus" />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etDuration"
+                        android:layout_width="72dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_number_input"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:selectAllOnFocus="true"
+                        android:singleLine="true"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                        android:textColor="@color/virb_on_primary_container" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/btnDurationPlus"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_stepper_button"
+                        android:contentDescription="@string/increase_value"
+                        android:padding="10dp"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_plus" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/global_gap_sec_hint"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                        android:textColor="?attr/colorOnSurface" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/btnGlobalGapMinus"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_stepper_button"
+                        android:contentDescription="@string/decrease_value"
+                        android:padding="10dp"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_minus" />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etGlobalGap"
+                        android:layout_width="72dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_number_input"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:selectAllOnFocus="true"
+                        android:singleLine="true"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                        android:textColor="@color/virb_on_primary_container" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/btnGlobalGapPlus"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_stepper_button"
+                        android:contentDescription="@string/increase_value"
+                        android:padding="10dp"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_plus" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSave"
             style="@style/Widget.Material3.Button"
