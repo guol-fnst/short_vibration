@@ -77,11 +77,6 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             return
         }
 
-        if (prefs.vibrateOnlyWhenLocked() && !deviceLocked) {
-            debugLog("skip: device unlocked")
-            return
-        }
-
         if (shouldSkipReconnectReplay(sbn)) {
             debugLog("skip: reconnect replay key=${sbn.key}")
             clearUnreadReminder()
@@ -103,6 +98,11 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         // immediate vibration bursts but should not prevent a new anchor from
         // being established after the previous one was cleared.
         maybeStartUnreadReminder(sbn)
+
+        if (prefs.vibrateOnlyWhenLocked() && !deviceLocked) {
+            debugLog("skip: device unlocked")
+            return
+        }
 
         val gapMs = prefs.globalGapMs().toLong()
         val lastVibrationAt = lastVibrationAtMs
