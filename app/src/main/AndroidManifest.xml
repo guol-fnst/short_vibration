@@ -39,6 +39,11 @@
         </service>
 
         <receiver
+            android:name=".reminder.UnreadReminderReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
+        <receiver
             android:name=".boot.BootReceiver"
             android:enabled="true"
             android:exported="true">

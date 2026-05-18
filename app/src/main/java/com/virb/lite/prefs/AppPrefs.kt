@@ -91,6 +91,25 @@ class AppPrefs(context: Context) {
         prefs.edit().putLong(KEY_LAST_VIBRATION_AT_MS, epochMs).apply()
     }
 
+    fun anchorNotificationKey(): String? = prefs.getString(KEY_REMINDER_ANCHOR_KEY, null)
+
+    fun setAnchorNotificationKey(key: String?) {
+        prefs.edit().putString(KEY_REMINDER_ANCHOR_KEY, key).apply()
+    }
+
+    fun anchorReminderFired(): Boolean = prefs.getBoolean(KEY_REMINDER_ANCHOR_FIRED, false)
+
+    fun setAnchorReminderFired(fired: Boolean) {
+        prefs.edit().putBoolean(KEY_REMINDER_ANCHOR_FIRED, fired).apply()
+    }
+
+    fun clearReminderAnchor() {
+        prefs.edit()
+            .remove(KEY_REMINDER_ANCHOR_KEY)
+            .remove(KEY_REMINDER_ANCHOR_FIRED)
+            .apply()
+    }
+
     companion object {
         private const val PREF_FILE = "virb_prefs"
         private const val KEY_ENABLED = "enabled"
@@ -103,6 +122,8 @@ class AppPrefs(context: Context) {
         private const val KEY_LAST_BOOT_AT_MS = "last_boot_at_ms"
         private const val KEY_LAST_USER_PRESENT_AT_MS = "last_user_present_at_ms"
         private const val KEY_LAST_VIBRATION_AT_MS = "last_vibration_at_ms"
+        private const val KEY_REMINDER_ANCHOR_KEY = "reminder_anchor_key"
+        private const val KEY_REMINDER_ANCHOR_FIRED = "reminder_anchor_fired"
 
         const val DEFAULT_VIBRATION_MS = 10
         const val MIN_VIBRATION_MS = 1
