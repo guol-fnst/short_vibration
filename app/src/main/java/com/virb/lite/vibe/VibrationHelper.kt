@@ -17,7 +17,7 @@ object VibrationHelper {
     }
 
     fun vibrate(context: Context, durationMs: Long, acquireWakeLock: Boolean): Boolean {
-        val safeDuration = durationMs.coerceIn(1L, 2000L)
+        val safeDuration = durationMs.coerceIn(1L, 1000L)
         debugLog("vibrate() called: durationMs=$safeDuration, SDK=${Build.VERSION.SDK_INT}, acquireWakeLock=$acquireWakeLock")
 
         val audioAttrs = AudioAttributes.Builder()

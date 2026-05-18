@@ -59,7 +59,14 @@ class AppPrefs(context: Context) {
         prefs.edit().putInt(KEY_VIBRATION_MS, clamped).apply()
     }
 
-    fun globalGapMs(): Int = prefs.getInt(KEY_GLOBAL_GAP_MS, DEFAULT_GLOBAL_GAP_MS)
+    fun globalGapMs(): Int {
+        val raw = prefs.getInt(KEY_GLOBAL_GAP_MS, DEFAULT_GLOBAL_GAP_MS)
+        val clamped = raw.coerceIn(MIN_GLOBAL_GAP_MS, MAX_GLOBAL_GAP_MS)
+        if (raw != clamped) {
+            prefs.edit().putInt(KEY_GLOBAL_GAP_MS, clamped).apply()
+        }
+        return clamped
+    }
 
     fun setGlobalGapMs(gapMs: Int) {
         val clamped = gapMs.coerceIn(MIN_GLOBAL_GAP_MS, MAX_GLOBAL_GAP_MS)
@@ -108,8 +115,5 @@ class AppPrefs(context: Context) {
         const val DEFAULT_UNREAD_REMINDER_DELAY_MS = 5 * 60 * 1000
         const val MIN_UNREAD_REMINDER_DELAY_MS = 1 * 60 * 1000
         const val MAX_UNREAD_REMINDER_DELAY_MS = 60 * 60 * 1000
-        const val UNREAD_REMINDER_PULSE_MS = 1000L
-        const val UNREAD_REMINDER_PULSE_GAP_MS = 500L
-        const val UNREAD_REMINDER_PULSE_COUNT = 2
     }
 }

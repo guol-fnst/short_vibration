@@ -99,6 +99,9 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             return
         }
 
+        // Arm unread reminder BEFORE the global gap check — the gap throttles
+        // immediate vibration bursts but should not prevent a new anchor from
+        // being established after the previous one was cleared.
         maybeStartUnreadReminder(sbn)
 
         val gapMs = prefs.globalGapMs().toLong()

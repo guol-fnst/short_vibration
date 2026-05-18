@@ -163,7 +163,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnTestVibration.setOnClickListener {
-            val ms = prefs.vibrationMs().toLong()
+            val ms = (binding.etDuration.text.toString().toIntOrNull() ?: prefs.vibrationMs()).toLong()
 
             // Strategy 1: performHapticFeedback — goes through system haptic channel
             binding.btnTestVibration.performHapticFeedback(
