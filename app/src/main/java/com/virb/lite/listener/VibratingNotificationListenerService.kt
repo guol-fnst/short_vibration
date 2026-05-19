@@ -4,8 +4,11 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.BroadcastReceiver
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.media.AudioManager
 import android.os.Handler
 import android.os.Looper
@@ -29,6 +32,13 @@ class VibratingNotificationListenerService : NotificationListenerService() {
     private var listenerConnectedAtMs: Long = 0L
     private var hasPendingTrailingVibration = false
     private val trailingVibrationRunnable = Runnable { runTrailingVibrationIfNeeded() }
+    private val screenOffReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent?.action == Intent.ACTION_SCREEN_OFF && hasPendingTrailingVibration) {
+                runTrailingVibrationIfNeeded()
+            }
+        }
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -36,10 +46,16 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         lastVibrationAtMs = prefs.lastVibrationAtMs()
         debugLog("Service onCreate")
         createNotificationChannel()
+        registerReceiver(screenOffReceiver, IntentFilter(Intent.ACTION_SCREEN_OFF))
     }
 
     override fun onDestroy() {
         trailingVibrationHandler.removeCallbacks(trailingVibrationRunnable)
+        try {
+            unregisterReceiver(screenOffReceiver)
+        } catch (_: Exception) {
+            // Receiver may already be unregistered during service teardown.
+        }
         super.onDestroy()
     }
 
@@ -150,11 +166,11 @@ class VibratingNotificationListenerService : NotificationListenerService() {
 
     private fun runTrailingVibrationIfNeeded() {
         if (!hasPendingTrailingVibration) return
-        hasPendingTrailingVibration = false
 
         val now = System.currentTimeMillis()
         if (!canRunTrailingVibration(now)) return
 
+        hasPendingTrailingVibration = false
         val deviceLocked = isDeviceLocked()
         val result = vibrateNow(now, deviceLocked, "trailing")
         debugLog("trailing vibrate result=$result")
@@ -163,27 +179,26 @@ class VibratingNotificationListenerService : NotificationListenerService() {
     private fun canRunTrailingVibration(now: Long): Boolean {
         if (!prefs.isEnabled()) {
             debugLog("skip trailing: switch disabled")
+            hasPendingTrailingVibration = false
             return false
         }
 
         if (prefs.isInQuietHours()) {
             debugLog("skip trailing: quiet hours active")
-            return false
-        }
-
-        if (prefs.vibrateOnlyWhenLocked() && shouldSkipUnlockReplay(now)) {
-            debugLog("skip trailing: unlock cooldown")
+            hasPendingTrailingVibration = false
             return false
         }
 
         if (isCallActive()) {
             debugLog("skip trailing: call is active")
+            hasPendingTrailingVibration = false
             return false
         }
 
         val deviceLocked = isDeviceLocked()
         if (prefs.vibrateOnlyWhenLocked() && !deviceLocked) {
-            debugLog("skip trailing: device unlocked")
+            debugLog("defer trailing: device unlocked")
+            scheduleTrailingVibration(TRAILING_UNLOCKED_RETRY_MS)
             return false
         }
 
@@ -346,6 +361,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         private const val RECONNECT_REPLAY_GRACE_MS = 1_000L
         private const val INITIAL_REBIND_INTERVAL_MS = 15_000L
         private const val MAX_REBIND_INTERVAL_MS = 5 * 60_000L
+        private const val TRAILING_UNLOCKED_RETRY_MS = 1_000L
         private val ALLOWED_MESSAGING_PACKAGES = setOf(
             "com.ss.android.lark",
             "com.larksuite.suite",
