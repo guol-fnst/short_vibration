@@ -1,5 +1,6 @@
 package com.virb.lite
 
+import android.app.TimePickerDialog
 import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -18,10 +19,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import com.google.android.material.chip.Chip
 import com.virb.lite.databinding.ActivityMainBinding
 import com.virb.lite.listener.VibratingNotificationListenerService
 import com.virb.lite.prefs.AppPrefs
+import com.virb.lite.prefs.QuietPeriod
 import com.virb.lite.vibe.VibrationHelper
+import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -58,6 +62,7 @@ class MainActivity : AppCompatActivity() {
         binding.switchIgnoreSystem.isChecked = prefs.ignoreSystemPackages()
         binding.etDuration.setText(prefs.vibrationMs().toString())
         binding.etGlobalGap.setText(msToSeconds(prefs.globalGapMs()).toString())
+        refreshQuietPeriodsUi()
         refreshPermissionState()
     }
 
@@ -133,6 +138,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnAutoStart.setOnClickListener { openAutoStartSettings() }
         binding.btnBatteryOpt.setOnClickListener { openBatteryOptSettings() }
+        binding.btnAddQuietPeriod.setOnClickListener { showAddQuietPeriodDialog() }
 
         binding.btnOpenAccess.setOnClickListener {
             startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
@@ -318,4 +324,58 @@ class MainActivity : AppCompatActivity() {
     private fun secondsFromMs(ms: Int): Int = msToSeconds(ms)
 
     private fun secondsToMs(seconds: Int): Int = seconds.coerceAtLeast(1) * 1000
+
+    private fun refreshQuietPeriodsUi() {
+        val periods = prefs.quietPeriods()
+        binding.tvQuietPeriodsEmpty.visibility =
+            if (periods.isEmpty()) android.view.View.VISIBLE else android.view.View.GONE
+        binding.chipGroupQuietPeriods.removeAllViews()
+        periods.forEachIndexed { index, period ->
+            val chip = Chip(this).apply {
+                text = formatQuietPeriod(period)
+                isCloseIconVisible = true
+                isCheckable = false
+                setOnCloseIconClickListener {
+                    val updated = prefs.quietPeriods().toMutableList()
+                    updated.removeAt(index)
+                    prefs.setQuietPeriods(updated)
+                    refreshQuietPeriodsUi()
+                }
+            }
+            binding.chipGroupQuietPeriods.addView(chip)
+        }
+    }
+
+    private fun showAddQuietPeriodDialog() {
+        val cal = Calendar.getInstance()
+        TimePickerDialog(
+            this,
+            { _, startHour, startMinute ->
+                TimePickerDialog(
+                    this,
+                    { _, endHour, endMinute ->
+                        val period = QuietPeriod(
+                            startHour * 60 + startMinute,
+                            endHour * 60 + endMinute
+                        )
+                        val updated = prefs.quietPeriods().toMutableList()
+                        updated.add(period)
+                        prefs.setQuietPeriods(updated)
+                        refreshQuietPeriodsUi()
+                    },
+                    cal.get(Calendar.HOUR_OF_DAY),
+                    cal.get(Calendar.MINUTE),
+                    true
+                ).apply { setTitle(getString(R.string.quiet_hours_pick_end)) }.show()
+            },
+            cal.get(Calendar.HOUR_OF_DAY),
+            cal.get(Calendar.MINUTE),
+            true
+        ).apply { setTitle(getString(R.string.quiet_hours_pick_start)) }.show()
+    }
+
+    private fun formatQuietPeriod(period: QuietPeriod): String {
+        fun fmt(min: Int) = String.format("%02d:%02d", min / 60, min % 60)
+        return "${fmt(period.startMin)} ~ ${fmt(period.endMin)}"
+    }
 }

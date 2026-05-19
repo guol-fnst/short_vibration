@@ -75,6 +75,11 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             return
         }
 
+        if (prefs.isInQuietHours()) {
+            debugLog("skip: quiet hours active")
+            return
+        }
+
         if (prefs.vibrateOnlyWhenLocked() && shouldSkipUnlockReplay(now)) {
             debugLog("skip: unlock cooldown")
             return

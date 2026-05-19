@@ -2,6 +2,7 @@ package com.virb.lite.prefs
 
 import android.content.Context
 import android.content.SharedPreferences
+import java.util.Calendar
 
 class AppPrefs(context: Context) {
     private val prefs: SharedPreferences =
@@ -71,6 +72,32 @@ class AppPrefs(context: Context) {
         prefs.edit().putLong(KEY_LAST_VIBRATION_AT_MS, epochMs).apply()
     }
 
+    fun quietPeriods(): List<QuietPeriod> {
+        val raw = prefs.getString(KEY_QUIET_PERIODS, "") ?: ""
+        if (raw.isEmpty()) return emptyList()
+        return raw.split("|").mapNotNull { token ->
+            val parts = token.split(":")
+            if (parts.size == 2) {
+                val s = parts[0].toIntOrNull() ?: return@mapNotNull null
+                val e = parts[1].toIntOrNull() ?: return@mapNotNull null
+                QuietPeriod(s, e)
+            } else null
+        }
+    }
+
+    fun setQuietPeriods(periods: List<QuietPeriod>) {
+        val raw = periods.joinToString("|") { "${it.startMin}:${it.endMin}" }
+        prefs.edit().putString(KEY_QUIET_PERIODS, raw).apply()
+    }
+
+    fun isInQuietHours(): Boolean {
+        val periods = quietPeriods()
+        if (periods.isEmpty()) return false
+        val cal = Calendar.getInstance()
+        val now = cal.get(Calendar.HOUR_OF_DAY) * 60 + cal.get(Calendar.MINUTE)
+        return periods.any { it.contains(now) }
+    }
+
     companion object {
         private const val PREF_FILE = "virb_prefs"
         private const val KEY_ENABLED = "enabled"
@@ -81,6 +108,7 @@ class AppPrefs(context: Context) {
         private const val KEY_LAST_BOOT_AT_MS = "last_boot_at_ms"
         private const val KEY_LAST_USER_PRESENT_AT_MS = "last_user_present_at_ms"
         private const val KEY_LAST_VIBRATION_AT_MS = "last_vibration_at_ms"
+        private const val KEY_QUIET_PERIODS = "quiet_periods"
 
         const val DEFAULT_VIBRATION_MS = 10
         const val MIN_VIBRATION_MS = 1
@@ -90,4 +118,14 @@ class AppPrefs(context: Context) {
         const val MIN_GLOBAL_GAP_MS = 500
         const val MAX_GLOBAL_GAP_MS = 10000
     }
+}
+
+/**
+ * [startMin] 和 [endMin] 均为从午夜算起的分钟数（0–1439）。
+ * 支持跨午夜，例如 startMin=1320（22:00）, endMin=420（07:00）。
+ */
+data class QuietPeriod(val startMin: Int, val endMin: Int) {
+    fun contains(minuteOfDay: Int): Boolean =
+        if (startMin <= endMin) minuteOfDay in startMin..endMin
+        else minuteOfDay >= startMin || minuteOfDay <= endMin
 }
