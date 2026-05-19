@@ -21,6 +21,7 @@ import java.util.LinkedHashSet
 class VibratingNotificationListenerService : NotificationListenerService() {
     private lateinit var prefs: AppPrefs
     private val reconnectReplayCandidateKeys = LinkedHashSet<String>()
+    private val recentlyVibratedKeys = HashMap<String, Long>()  // key -> postTime
     private var lastVibrationAtMs: Long = 0L
     private var listenerConnectedAtMs: Long = 0L
 
@@ -34,6 +35,10 @@ class VibratingNotificationListenerService : NotificationListenerService() {
 
     override fun onDestroy() {
         super.onDestroy()
+    }
+
+    override fun onNotificationRemoved(sbn: StatusBarNotification) {
+        recentlyVibratedKeys.remove(sbn.key)
     }
 
     override fun onListenerConnected() {
@@ -80,6 +85,11 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             return
         }
 
+        if (recentlyVibratedKeys[sbn.key] == sbn.postTime) {
+            debugLog("skip: duplicate repost key=${sbn.key} postTime=${sbn.postTime}")
+            return
+        }
+
         if (isCallActive()) {
             debugLog("skip: call is active")
             return
@@ -106,6 +116,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         debugLog("vibrating for pkg=$pkg ms=$ms")
         val result = VibrationHelper.vibrate(this, ms, acquireWakeLock = deviceLocked)
         if (result) {
+            recentlyVibratedKeys[sbn.key] = sbn.postTime
             lastVibrationAtMs = now
             prefs.markVibrationNow(now)
         }
