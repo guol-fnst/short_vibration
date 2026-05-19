@@ -9,7 +9,6 @@ import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.ApplicationInfo
 import android.media.AudioManager
 import android.os.SystemClock
 import android.service.notification.NotificationListenerService
@@ -103,8 +102,8 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             return
         }
 
-        if (prefs.ignoreSystemPackages() && shouldIgnorePackage(pkg)) {
-            debugLog("skip: system package $pkg")
+        if (prefs.ignoreSystemPackages() && shouldIgnoreSystemNotification(sbn)) {
+            debugLog("skip: system notification pkg=$pkg category=${sbn.notification.category}")
             return
         }
 
@@ -184,7 +183,17 @@ class VibratingNotificationListenerService : NotificationListenerService() {
                 audioManager.mode == AudioManager.MODE_IN_COMMUNICATION
     }
 
-    private fun shouldIgnorePackage(packageName: String): Boolean {
+    private fun shouldIgnoreSystemNotification(sbn: StatusBarNotification): Boolean {
+        val packageName = sbn.packageName
+        if (isAllowedMessagingPackage(packageName)) return false
+
+        when (sbn.notification.category) {
+            Notification.CATEGORY_CALL,
+            Notification.CATEGORY_SERVICE,
+            Notification.CATEGORY_STATUS,
+            Notification.CATEGORY_SYSTEM -> return true
+        }
+
         return try {
             val appInfo = packageManager.getApplicationInfo(packageName, 0)
             // Only ignore true OS core processes (uid < 10000).
@@ -195,6 +204,10 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         } catch (_: Exception) {
             false
         }
+    }
+
+    private fun isAllowedMessagingPackage(packageName: String): Boolean {
+        return packageName in ALLOWED_MESSAGING_PACKAGES
     }
 
     private fun startForegroundRuntime() {
@@ -251,6 +264,12 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         private const val INITIAL_REBIND_INTERVAL_MS = 15_000L
         private const val MAX_REBIND_INTERVAL_MS = 5 * 60_000L
         private const val SCREEN_ON_REPLAY_SUPPRESS_MS = 5_000L
+
+        private val ALLOWED_MESSAGING_PACKAGES = setOf(
+            "com.ss.android.lark",
+            "com.larksuite.suite",
+            "com.bytedance.ee.lark"
+        )
 
         @Volatile
         private var lastRebindElapsedMs: Long = 0L
