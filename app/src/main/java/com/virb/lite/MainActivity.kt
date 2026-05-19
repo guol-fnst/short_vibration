@@ -1,6 +1,5 @@
 package com.virb.lite
 
-import android.app.TimePickerDialog
 import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -20,6 +19,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import com.google.android.material.chip.Chip
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import com.virb.lite.databinding.ActivityMainBinding
 import com.virb.lite.listener.VibratingNotificationListenerService
 import com.virb.lite.prefs.AppPrefs
@@ -348,30 +349,38 @@ class MainActivity : AppCompatActivity() {
 
     private fun showAddQuietPeriodDialog() {
         val cal = Calendar.getInstance()
-        TimePickerDialog(
-            this,
-            { _, startHour, startMinute ->
-                TimePickerDialog(
-                    this,
-                    { _, endHour, endMinute ->
-                        val period = QuietPeriod(
-                            startHour * 60 + startMinute,
-                            endHour * 60 + endMinute
-                        )
-                        val updated = prefs.quietPeriods().toMutableList()
-                        updated.add(period)
-                        prefs.setQuietPeriods(updated)
-                        refreshQuietPeriodsUi()
-                    },
-                    cal.get(Calendar.HOUR_OF_DAY),
-                    cal.get(Calendar.MINUTE),
-                    true
-                ).apply { setTitle(getString(R.string.quiet_hours_pick_end)) }.show()
-            },
-            cal.get(Calendar.HOUR_OF_DAY),
-            cal.get(Calendar.MINUTE),
-            true
-        ).apply { setTitle(getString(R.string.quiet_hours_pick_start)) }.show()
+
+        val startPicker = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_24H)
+            .setInputMode(MaterialTimePicker.INPUT_MODE_KEYBOARD)
+            .setHour(cal.get(Calendar.HOUR_OF_DAY))
+            .setMinute(cal.get(Calendar.MINUTE))
+            .setTitleText(getString(R.string.quiet_hours_pick_start))
+            .build()
+
+        startPicker.addOnPositiveButtonClickListener {
+            val startMin = startPicker.hour * 60 + startPicker.minute
+
+            val endPicker = MaterialTimePicker.Builder()
+                .setTimeFormat(TimeFormat.CLOCK_24H)
+                .setInputMode(MaterialTimePicker.INPUT_MODE_KEYBOARD)
+                .setHour(startPicker.hour)
+                .setMinute(startPicker.minute)
+                .setTitleText(getString(R.string.quiet_hours_pick_end))
+                .build()
+
+            endPicker.addOnPositiveButtonClickListener {
+                val period = QuietPeriod(startMin, endPicker.hour * 60 + endPicker.minute)
+                val updated = prefs.quietPeriods().toMutableList()
+                updated.add(period)
+                prefs.setQuietPeriods(updated)
+                refreshQuietPeriodsUi()
+            }
+
+            endPicker.show(supportFragmentManager, "end_time_picker")
+        }
+
+        startPicker.show(supportFragmentManager, "start_time_picker")
     }
 
     private fun formatQuietPeriod(period: QuietPeriod): String {
