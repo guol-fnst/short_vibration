@@ -1,15 +1,13 @@
 package com.virb.lite.listener
 
-import android.app.KeyguardManager
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Intent
-import android.content.IntentFilter
 import android.media.AudioManager
+import android.os.PowerManager
 import android.os.SystemClock
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
@@ -25,29 +23,17 @@ class VibratingNotificationListenerService : NotificationListenerService() {
     private val reconnectReplayCandidateKeys = LinkedHashSet<String>()
     private var lastVibrationAtMs: Long = 0L
     private var listenerConnectedAtMs: Long = 0L
-    private var lastScreenOnAtMs: Long = 0L
-
-    private val screenOnReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: android.content.Context, intent: Intent) {
-            if (intent.action == Intent.ACTION_SCREEN_ON) {
-                lastScreenOnAtMs = System.currentTimeMillis()
-                debugLog("screen on — replay suppression window started")
-            }
-        }
-    }
 
     override fun onCreate() {
         super.onCreate()
         prefs = AppPrefs(this)
         lastVibrationAtMs = prefs.lastVibrationAtMs()
-        registerReceiver(screenOnReceiver, IntentFilter(Intent.ACTION_SCREEN_ON))
         debugLog("Service onCreate")
         createNotificationChannel()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        try { unregisterReceiver(screenOnReceiver) } catch (_: Exception) {}
     }
 
     override fun onListenerConnected() {
@@ -79,11 +65,6 @@ class VibratingNotificationListenerService : NotificationListenerService() {
 
         if (!prefs.isEnabled()) {
             debugLog("skip: switch disabled")
-            return
-        }
-
-        if (now - lastScreenOnAtMs in 1 until SCREEN_ON_REPLAY_SUPPRESS_MS) {
-            debugLog("skip: screen-on replay window")
             return
         }
 
@@ -154,8 +135,12 @@ class VibratingNotificationListenerService : NotificationListenerService() {
     }
 
     private fun isDeviceLocked(): Boolean {
-        val keyguardManager = getSystemService(KeyguardManager::class.java)
-        return keyguardManager?.isKeyguardLocked == true
+        // 屏幕不亮 = 用户不在使用手机 = 视为锁屏，可以震动
+        // PowerManager.isInteractive 比 KeyguardManager.isKeyguardLocked
+        // 更可靠：不受 MIUI 锁屏延迟设置影响
+        val pm = getSystemService(PowerManager::class.java)
+        if (pm != null) return !pm.isInteractive
+        return false
     }
 
     private fun shouldSkipUnlockReplay(now: Long): Boolean {
@@ -263,8 +248,6 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         private const val RECONNECT_REPLAY_GRACE_MS = 1_000L
         private const val INITIAL_REBIND_INTERVAL_MS = 15_000L
         private const val MAX_REBIND_INTERVAL_MS = 5 * 60_000L
-        private const val SCREEN_ON_REPLAY_SUPPRESS_MS = 5_000L
-
         private val ALLOWED_MESSAGING_PACKAGES = setOf(
             "com.ss.android.lark",
             "com.larksuite.suite",
