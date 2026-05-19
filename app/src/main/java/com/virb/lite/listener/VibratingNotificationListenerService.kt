@@ -7,6 +7,8 @@ import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Intent
 import android.media.AudioManager
+import android.os.Handler
+import android.os.Looper
 import android.os.PowerManager
 import android.os.SystemClock
 import android.service.notification.NotificationListenerService
@@ -22,8 +24,11 @@ class VibratingNotificationListenerService : NotificationListenerService() {
     private lateinit var prefs: AppPrefs
     private val reconnectReplayCandidateKeys = LinkedHashSet<String>()
     private val recentlyVibratedKeys = HashMap<String, Long>()  // key -> postTime
+    private val trailingVibrationHandler = Handler(Looper.getMainLooper())
     private var lastVibrationAtMs: Long = 0L
     private var listenerConnectedAtMs: Long = 0L
+    private var hasPendingTrailingVibration = false
+    private val trailingVibrationRunnable = Runnable { runTrailingVibrationIfNeeded() }
 
     override fun onCreate() {
         super.onCreate()
@@ -34,6 +39,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
     }
 
     override fun onDestroy() {
+        trailingVibrationHandler.removeCallbacks(trailingVibrationRunnable)
         super.onDestroy()
     }
 
@@ -114,18 +120,92 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         val lastVibrationAt = lastVibrationAtMs
         if (lastVibrationAt > 0L && now - lastVibrationAt < gapMs) {
             debugLog("skip: within global gap, delta=${now - lastVibrationAt} gap=$gapMs")
+            recentlyVibratedKeys[sbn.key] = sbn.postTime
+            scheduleTrailingVibration(lastVibrationAt + gapMs - now)
             return
         }
 
-        val ms = prefs.vibrationMs().toLong()
-        debugLog("vibrating for pkg=$pkg ms=$ms")
-        val result = VibrationHelper.vibrate(this, ms, acquireWakeLock = deviceLocked)
+        cancelPendingTrailingVibration()
+        val result = vibrateNow(now, deviceLocked, "pkg=$pkg")
         if (result) {
             recentlyVibratedKeys[sbn.key] = sbn.postTime
+        }
+        debugLog("vibrate result=$result")
+    }
+
+    private fun scheduleTrailingVibration(delayMs: Long) {
+        hasPendingTrailingVibration = true
+        trailingVibrationHandler.removeCallbacks(trailingVibrationRunnable)
+        trailingVibrationHandler.postDelayed(
+            trailingVibrationRunnable,
+            delayMs.coerceAtLeast(0L)
+        )
+        debugLog("scheduled trailing vibration delayMs=$delayMs")
+    }
+
+    private fun cancelPendingTrailingVibration() {
+        hasPendingTrailingVibration = false
+        trailingVibrationHandler.removeCallbacks(trailingVibrationRunnable)
+    }
+
+    private fun runTrailingVibrationIfNeeded() {
+        if (!hasPendingTrailingVibration) return
+        hasPendingTrailingVibration = false
+
+        val now = System.currentTimeMillis()
+        if (!canRunTrailingVibration(now)) return
+
+        val deviceLocked = isDeviceLocked()
+        val result = vibrateNow(now, deviceLocked, "trailing")
+        debugLog("trailing vibrate result=$result")
+    }
+
+    private fun canRunTrailingVibration(now: Long): Boolean {
+        if (!prefs.isEnabled()) {
+            debugLog("skip trailing: switch disabled")
+            return false
+        }
+
+        if (prefs.isInQuietHours()) {
+            debugLog("skip trailing: quiet hours active")
+            return false
+        }
+
+        if (prefs.vibrateOnlyWhenLocked() && shouldSkipUnlockReplay(now)) {
+            debugLog("skip trailing: unlock cooldown")
+            return false
+        }
+
+        if (isCallActive()) {
+            debugLog("skip trailing: call is active")
+            return false
+        }
+
+        val deviceLocked = isDeviceLocked()
+        if (prefs.vibrateOnlyWhenLocked() && !deviceLocked) {
+            debugLog("skip trailing: device unlocked")
+            return false
+        }
+
+        val gapMs = prefs.globalGapMs().toLong()
+        val lastVibrationAt = lastVibrationAtMs
+        if (lastVibrationAt > 0L && now - lastVibrationAt < gapMs) {
+            scheduleTrailingVibration(lastVibrationAt + gapMs - now)
+            return false
+        }
+
+        return true
+    }
+
+    private fun vibrateNow(now: Long, deviceLocked: Boolean, reason: String): Boolean {
+        val ms = prefs.vibrationMs().toLong()
+        debugLog("vibrating for $reason ms=$ms")
+        val result = VibrationHelper.vibrate(this, ms, acquireWakeLock = deviceLocked)
+        if (result) {
             lastVibrationAtMs = now
             prefs.markVibrationNow(now)
         }
-        debugLog("vibrate result=$result")
+        return result
     }
 
     private fun requestListenerRebind() {

@@ -29,6 +29,7 @@
 
 ## Build Notes
 
+- Required versioning step: every code change must increment the Android app version in `app/build.gradle.kts` before building. Increase `versionCode` by `1` and update `versionName` to match the next patch version, for example `1.0.8` -> `1.0.9`.
 - There is no Gradle wrapper in the repo.
 - System Gradle used: `/opt/gradle/gradle-8.7/bin/gradle`
 - Android SDK path is configured in `local.properties` as `/opt/android-sdk`.
@@ -45,6 +46,13 @@ env GRADLE_USER_HOME=/root/short_vibration/.gradle-user /opt/gradle/gradle-8.7/b
 ## Current APK
 
 - APK path: `/root/short_vibration/app/build/outputs/apk/debug/short_vibration-debug.apk`
+- Required post-build step: after every successful debug build, copy the APK to `/mnt/disk/filebrowser/temp/short_vibration-debug.apk`.
+- Copy command:
+
+```bash
+cp /root/short_vibration/app/build/outputs/apk/debug/short_vibration-debug.apk /mnt/disk/filebrowser/temp/.
+```
+
 - Last confirmed size: about `9.6M`
 - Last build result after exponential backoff change: `BUILD SUCCESSFUL in 17s`
 
@@ -53,4 +61,3 @@ env GRADLE_USER_HOME=/root/short_vibration/.gradle-user /opt/gradle/gradle-8.7/b
 - User is concerned about missed vibrations after long phone idle periods.
 - User is cautious about battery impact and whether frequent service rebind requests could stress the system.
 - Current implementation chooses a conservative exponential backoff rather than fixed frequent rebind attempts.
-- For every code update, also update the app version in `app/build.gradle.kts`.
