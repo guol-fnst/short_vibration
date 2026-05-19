@@ -38,6 +38,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
 
     override fun onListenerConnected() {
         super.onListenerConnected()
+        isConnected = true
         debugLog("onListenerConnected — listener is active")
         listenerConnectedAtMs = System.currentTimeMillis()
         rememberCurrentlyActiveNotifications()
@@ -47,6 +48,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
 
     override fun onListenerDisconnected() {
         super.onListenerDisconnected()
+        isConnected = false
         Log.w(TAG, "onListenerDisconnected — listener was killed by system")
         stopForeground(STOP_FOREGROUND_REMOVE)
         requestListenerRebind()
@@ -253,6 +255,9 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             "com.larksuite.suite",
             "com.bytedance.ee.lark"
         )
+
+        @Volatile
+        var isConnected: Boolean = false
 
         @Volatile
         private var lastRebindElapsedMs: Long = 0L

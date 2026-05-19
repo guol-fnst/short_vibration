@@ -38,4 +38,8 @@
     <string name="minus">-</string>
     <string name="decrease_value">减少数值</string>
     <string name="increase_value">增加数值</string>
+    <string name="service_dead_title">⚠ 服务已停止运行</string>
+    <string name="service_dead_desc">振动功能暂时失效。请在应用详情中开启「自启动」权限，并在省电策略中选择「无限制」，以防止 MIUI 后台限制本服务。</string>
+    <string name="btn_autostart">开启自启动</string>
+    <string name="btn_battery_opt">关闭省电限制</string>
 </resources>

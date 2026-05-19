@@ -4,8 +4,11 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.AudioManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.service.notification.NotificationListenerService
 import android.util.Log
@@ -24,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var prefs: AppPrefs
     private var didForceRebind: Boolean = false
+    private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +43,13 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         refreshPermissionState()
+        // 给 onListenerConnected 留出时间，1.5 秒后再刻新一次状态
+        handler.postDelayed({ refreshPermissionState() }, 1500)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        handler.removeCallbacksAndMessages(null)
     }
 
     private fun bindInitialUi() {
@@ -120,6 +131,9 @@ class MainActivity : AppCompatActivity() {
             toast(getString(R.string.saved))
         }
 
+        binding.btnAutoStart.setOnClickListener { openAutoStartSettings() }
+        binding.btnBatteryOpt.setOnClickListener { openBatteryOptSettings() }
+
         binding.btnOpenAccess.setOnClickListener {
             startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
         }
@@ -188,6 +202,11 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.access_disabled)
         }
 
+        // 已开通权限但服务未连接（被 MIUI 杀掉）→ 显示警告卡
+        val serviceDead = enabled && !VibratingNotificationListenerService.isConnected
+        binding.cardServiceDead.visibility =
+            if (serviceDead) android.view.View.VISIBLE else android.view.View.GONE
+
         if (enabled) {
             val component = ComponentName(this, VibratingNotificationListenerService::class.java)
             if (!didForceRebind) {
@@ -207,6 +226,46 @@ class MainActivity : AppCompatActivity() {
             else -> {
                 binding.tvHapticStatus.text = getString(R.string.vibration_ok)
                 binding.btnFixHaptic.visibility = android.view.View.GONE
+            }
+        }
+    }
+
+    private fun openAutoStartSettings() {
+        // 尝试打开 MIUI 自启动管理页，失败则降级到应用详情
+        val miuiIntent = Intent().apply {
+            setClassName(
+                "com.miui.securitycenter",
+                "com.miui.permcenter.autostart.AutoStartManagementActivity"
+            )
+        }
+        try {
+            startActivity(miuiIntent)
+            return
+        } catch (_: Exception) {}
+        // 通用应用详情页
+        try {
+            startActivity(
+                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    data = Uri.fromParts("package", packageName, null)
+                }
+            )
+        } catch (_: Exception) {
+            startActivity(Intent(Settings.ACTION_SETTINGS))
+        }
+    }
+
+    private fun openBatteryOptSettings() {
+        try {
+            startActivity(
+                Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                    data = Uri.fromParts("package", packageName, null)
+                }
+            )
+        } catch (_: Exception) {
+            try {
+                startActivity(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))
+            } catch (_: Exception) {
+                startActivity(Intent(Settings.ACTION_SETTINGS))
             }
         }
     }
