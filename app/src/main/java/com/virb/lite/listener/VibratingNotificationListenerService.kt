@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.ApplicationInfo
 import android.media.AudioManager
 import android.os.SystemClock
 import android.service.notification.NotificationListenerService
@@ -102,6 +103,11 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             return
         }
 
+        if (prefs.ignoreSystemPackages() && shouldIgnorePackage(pkg)) {
+            debugLog("skip: system package $pkg")
+            return
+        }
+
         if (prefs.vibrateOnlyWhenLocked() && !deviceLocked) {
             debugLog("skip: device unlocked")
             return
@@ -176,6 +182,19 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         val audioManager = getSystemService(AudioManager::class.java) ?: return false
         return audioManager.mode == AudioManager.MODE_IN_CALL ||
                 audioManager.mode == AudioManager.MODE_IN_COMMUNICATION
+    }
+
+    private fun shouldIgnorePackage(packageName: String): Boolean {
+        return try {
+            val appInfo = packageManager.getApplicationInfo(packageName, 0)
+            // Only ignore true OS core processes (uid < 10000).
+            // Do NOT filter by FLAG_SYSTEM / FLAG_UPDATED_SYSTEM_APP — pre-installed
+            // apps such as Feishu on OEM/enterprise devices carry that flag but are
+            // regular user-facing messaging apps that should trigger vibration.
+            appInfo.uid < 10_000
+        } catch (_: Exception) {
+            false
+        }
     }
 
     private fun startForegroundRuntime() {

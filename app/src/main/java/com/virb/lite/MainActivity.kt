@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
     private fun bindInitialUi() {
         binding.switchEnabled.isChecked = prefs.isEnabled()
         binding.switchLockedOnly.isChecked = prefs.vibrateOnlyWhenLocked()
+        binding.switchIgnoreSystem.isChecked = prefs.ignoreSystemPackages()
         binding.etDuration.setText(prefs.vibrationMs().toString())
         binding.etGlobalGap.setText(msToSeconds(prefs.globalGapMs()).toString())
         refreshPermissionState()
@@ -56,6 +57,10 @@ class MainActivity : AppCompatActivity() {
 
         binding.switchLockedOnly.setOnCheckedChangeListener { _, isChecked ->
             prefs.setVibrateOnlyWhenLocked(isChecked)
+        }
+
+        binding.switchIgnoreSystem.setOnCheckedChangeListener { _, isChecked ->
+            prefs.setIgnoreSystemPackages(isChecked)
         }
 
         binding.btnDurationMinus.setOnClickListener {
