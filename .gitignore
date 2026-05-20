@@ -8,6 +8,7 @@ build/
 local.properties
 
 # Logs and temporary artifacts
+logs/
 *.log
 logcat*.txt
 notif_*.txt

@@ -12,14 +12,6 @@ import android.util.Log
 object VibrationHelper {
     private const val TAG = "VirbVibe"
 
-    fun vibrate(context: Context, durationMs: Long): Boolean {
-        return vibrate(context, durationMs, amplitude = 255, acquireWakeLock = true)
-    }
-
-    fun vibrate(context: Context, durationMs: Long, acquireWakeLock: Boolean): Boolean {
-        return vibrate(context, durationMs, amplitude = 255, acquireWakeLock = acquireWakeLock)
-    }
-
     fun vibrate(context: Context, durationMs: Long, amplitude: Int, acquireWakeLock: Boolean = true): Boolean {
         val safeDuration = durationMs.coerceIn(1L, 1000L)
         val safeAmplitude = amplitude.coerceIn(1, 255)
@@ -56,46 +48,6 @@ object VibrationHelper {
             }
         } catch (e: Exception) {
             Log.e(TAG, "vibrate() exception: ${e.javaClass.simpleName}: ${e.message}")
-            false
-        } finally {
-            releaseWakeLock(wl)
-        }
-    }
-
-    private fun vibrateEffect(
-        context: Context,
-        effect: VibrationEffect,
-        totalDurationMs: Long,
-        acquireWakeLock: Boolean
-    ): Boolean {
-        val audioAttrs = AudioAttributes.Builder()
-            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-            .setUsage(AudioAttributes.USAGE_ALARM)
-            .build()
-
-        val appCtx = context.applicationContext
-        var wl: PowerManager.WakeLock? = null
-
-        return try {
-            wl = acquireVibrationWakeLock(appCtx, totalDurationMs, acquireWakeLock)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                val manager = appCtx.getSystemService(VibratorManager::class.java)
-                if (manager == null) {
-                    Log.w(TAG, "VibratorManager null, falling back")
-                    return legacyVibrate(appCtx, effect, audioAttrs)
-                }
-                val vibrator = manager.defaultVibrator
-                if (!vibrator.hasVibrator()) {
-                    Log.w(TAG, "hasVibrator=false on API31+, trying legacy")
-                    return legacyVibrate(appCtx, effect, audioAttrs)
-                }
-                vibrator.vibrate(effect, audioAttrs)
-                true
-            } else {
-                legacyVibrate(appCtx, effect, audioAttrs)
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "vibrateEffect() exception: ${e.javaClass.simpleName}: ${e.message}")
             false
         } finally {
             releaseWakeLock(wl)

@@ -34,6 +34,7 @@ import com.virb.lite.prefs.AppPrefs
 import com.virb.lite.prefs.QuietPeriod
 import com.virb.lite.vibe.VibrationHelper
 import java.util.Calendar
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -48,6 +49,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         prefs = AppPrefs(this)
+        VibrationLogger.init(this)
         applySystemBarInsets()
         bindInitialUi()
         bindListeners()
@@ -375,7 +377,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateAmplitudeLabel(percent: Int) {
-        binding.tvAmplitudeValue.text = "$percent%"
+        binding.tvAmplitudeValue.text = getString(R.string.amplitude_percent, percent)
     }
 
     private fun stepNumber(
@@ -468,7 +470,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun formatQuietPeriod(period: QuietPeriod): String {
-        fun fmt(min: Int) = String.format("%02d:%02d", min / 60, min % 60)
+        fun fmt(min: Int) = String.format(Locale.US, "%02d:%02d", min / 60, min % 60)
         return "${fmt(period.startMin)} ~ ${fmt(period.endMin)}"
     }
 }

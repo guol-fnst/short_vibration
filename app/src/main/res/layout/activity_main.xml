@@ -4,7 +4,6 @@
     android:id="@+id/rootScroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSurface"
     android:clipToPadding="false"
     android:fillViewport="true">
 
@@ -28,6 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_header_gradient"
+                android:baselineAligned="false"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingStart="18dp"
@@ -106,7 +106,7 @@
                         android:alpha="0.82"
                         android:text="@string/test_vibration"
                         android:textColor="@color/virb_on_primary"
-                        android:textSize="10sp" />
+                        android:textSize="11sp" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -500,7 +500,7 @@
                         android:layout_width="36dp"
                         android:layout_height="wrap_content"
                         android:gravity="end"
-                        android:text="100%"
+                        android:text="@string/amplitude_percent_default"
                         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                         android:textColor="?attr/colorPrimary"
                         android:textStyle="bold" />

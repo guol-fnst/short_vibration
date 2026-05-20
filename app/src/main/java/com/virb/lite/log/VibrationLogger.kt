@@ -81,9 +81,6 @@ object VibrationLogger {
         write("EVT $message")
     }
 
-    /** Return the log [File], or null if [init] has not been called yet. */
-    fun getLogFile(): File? = logFile
-
     /**
      * Read the last [maxLines] lines from the log.
      * Safe to call on the main thread (file is small; UI usage only).

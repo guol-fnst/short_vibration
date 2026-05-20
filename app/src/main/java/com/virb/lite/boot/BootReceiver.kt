@@ -16,7 +16,6 @@ class BootReceiver : BroadcastReceiver() {
         when (action) {
             Intent.ACTION_BOOT_COMPLETED,
             Intent.ACTION_LOCKED_BOOT_COMPLETED -> {
-                AppPrefs(context).markBootNow(System.currentTimeMillis())
                 rebindListener(context, force = true)
             }
             Intent.ACTION_USER_PRESENT -> {
