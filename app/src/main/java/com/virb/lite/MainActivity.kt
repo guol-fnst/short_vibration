@@ -252,11 +252,18 @@ class MainActivity : AppCompatActivity() {
 
     private fun refreshPermissionState() {
         val enabled = isNotificationListenerEnabled()
-        binding.tvAccessStatus.text = if (enabled) {
-            getString(R.string.access_enabled)
+
+        // 权限未开启时在 header 中显示警告；已开启则不显示任何状态文字
+        if (enabled) {
+            binding.tvAccessStatus.visibility = android.view.View.GONE
         } else {
-            getString(R.string.access_disabled)
+            binding.tvAccessStatus.text = getString(R.string.access_disabled)
+            binding.tvAccessStatus.visibility = android.view.View.VISIBLE
         }
+
+        // 访问按钮：权限未开启时显示，已开启时隐藏
+        binding.btnOpenAccess.visibility =
+            if (enabled) android.view.View.GONE else android.view.View.VISIBLE
 
         // 已开通权限但服务未连接（被 MIUI 杀掉）→ 显示警告卡
         val serviceDead = enabled && !VibratingNotificationListenerService.isConnected
@@ -277,13 +284,20 @@ class MainActivity : AppCompatActivity() {
         when (ringerMode) {
             AudioManager.RINGER_MODE_SILENT -> {
                 binding.tvHapticStatus.text = getString(R.string.silent_mode_warning)
+                binding.tvHapticStatus.visibility = android.view.View.VISIBLE
                 binding.btnFixHaptic.visibility = android.view.View.VISIBLE
             }
             else -> {
-                binding.tvHapticStatus.text = getString(R.string.vibration_ok)
+                binding.tvHapticStatus.visibility = android.view.View.GONE
                 binding.btnFixHaptic.visibility = android.view.View.GONE
             }
         }
+
+        // 整个访问按钮行：两个按钮都隐藏时隐藏整行
+        binding.rowAccessButtons.visibility =
+            if (binding.btnOpenAccess.visibility == android.view.View.VISIBLE
+                || binding.btnFixHaptic.visibility == android.view.View.VISIBLE
+            ) android.view.View.VISIBLE else android.view.View.GONE
     }
 
     private fun openAutoStartSettings() {
