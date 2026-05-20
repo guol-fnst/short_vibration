@@ -1,0 +1,332 @@
+﻿
+logs\dumpsys_notification.txt:3:    NotificationRecord(0x061f9737: pkg=com.ss.android.lark user=UserHandle{0} id=116477
+1399 tag=null importance=3 key=0|com.ss.android.lark|1164771399|null|10398 bbbc=0: Notification(channel=mipush|com.ss.a
+ndroid.lark|100852 shortcut=null contentView=null vibrate=null sound=null defaults=0 flags=AUTO_CANCEL|GROUP_SUMMARY co
+lor=0x00000000 groupKey=com.ss.android.lark vis=PRIVATE focusType=null))
+logs\dumpsys_notification.txt:69:      effectiveNotificationChannel=NotificationChannel{mId='mipush|com.ss.android.lark
+|100852', mName=普通消息, mDescription=hasDescription , mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSoun
+d=android.resource://com.ss.android.lark/raw/notification, mLights=false, mLightColor=0, mVibrationPattern=null, mVibra
+tionEffect=null, mUserLockedFields=0, mUserVisibleTaskShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=fa
+lse, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_
+SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false
+, mOriginalImp=3, mParent=null, mConversationId=null, mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTim
+eMs=0}
+logs\dumpsys_notification.txt:76:    NotificationRecord(0x044175c2: pkg=com.ss.android.lark user=UserHandle{0} id=-1894
+910359 tag=null importance=3 key=0|com.ss.android.lark|-1894910359|null|10398 bbbc=0: Notification(channel=mipush|com.s
+s.android.lark|100852 shortcut=null contentView=null vibrate=default sound=android.resource://com.ss.android.lark/raw/n
+otification defaults=VIBRATE flags=AUTO_CANCEL color=0x00000000 groupKey=com.ss.android.lark vis=PRIVATE focusType=null
+))
+logs\dumpsys_notification.txt:154:      effectiveNotificationChannel=NotificationChannel{mId='mipush|com.ss.android.lar
+k|100852', mName=普通消息, mDescription=hasDescription , mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSou
+nd=android.resource://com.ss.android.lark/raw/notification, mLights=false, mLightColor=0, mVibrationPattern=null, mVibr
+ationEffect=null, mUserLockedFields=0, mUserVisibleTaskShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=f
+alse, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE
+_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=fals
+e, mOriginalImp=3, mParent=null, mConversationId=null, mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTi
+meMs=0}
+logs\dumpsys_notification.txt:161:    NotificationRecord(0x0b80e209: pkg=com.ss.android.lark user=UserHandle{0} id=1521
+023916 tag=null importance=3 key=0|com.ss.android.lark|1521023916|null|10398 bbbc=0: Notification(channel=mipush|com.ss
+.android.lark|100852 shortcut=null contentView=null vibrate=default sound=android.resource://com.ss.android.lark/raw/no
+tification defaults=VIBRATE flags=AUTO_CANCEL color=0x00000000 groupKey=com.ss.android.lark vis=PRIVATE focusType=null)
+)
+logs\dumpsys_notification.txt:237:      effectiveNotificationChannel=NotificationChannel{mId='mipush|com.ss.android.lar
+k|100852', mName=普通消息, mDescription=hasDescription , mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSou
+nd=android.resource://com.ss.android.lark/raw/notification, mLights=false, mLightColor=0, mVibrationPattern=null, mVibr
+ationEffect=null, mUserLockedFields=0, mUserVisibleTaskShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=f
+alse, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE
+_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=fals
+e, mOriginalImp=3, mParent=null, mConversationId=null, mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTi
+meMs=0}
+logs\dumpsys_notification.txt:947:    NotificationRecord(0x01cab4be: pkg=com.xiaomi.aicr user=UserHandle{0} id=1 tag=nu
+ll importance=3 key=0|com.xiaomi.aicr|1|null|10133 bbbc=2: Notification(channel=aicr_service_notification shortcut=null
+ contentView=null vibrate=null sound=null defaults=0 flags=ONGOING_EVENT|NO_CLEAR|FOREGROUND_SERVICE color=0x00000000 g
+roupKey=aicr_service_notification_autogroup vis=PRIVATE focusType=null))
+logs\dumpsys_notification.txt:949:      opPkg=com.xiaomi.aicr
+logs\dumpsys_notification.txt:950:      icon=Icon(typ=RESOURCE pkg=com.xiaomi.aicr id=0x7f080170)
+logs\dumpsys_notification.txt:954:      key=0|com.xiaomi.aicr|1|null|10133
+logs\dumpsys_notification.txt:956:      groupKey=0|com.xiaomi.aicr|g:aicr_service_notification_autogroup
+logs\dumpsys_notification.txt:973:                android.appInfo=ApplicationInfo (ApplicationInfo{f55091f com.xiaomi.a
+icr})
+logs\dumpsys_notification.txt:1009:      effectiveNotificationChannel=NotificationChannel{mId='aicr_service_notificatio
+n', mName=Xiaomi HyperAI Engine notification, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-10
+00, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibrationPattern=null, mVibrati
+onEffect=null, mUserLockedFields=0, mUserVisibleTaskShown=true, mVibrationEnabled=false, mShowBadge=true, mDeleted=fals
+e, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SO
+NIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, 
+mOriginalImp=3, mParent=null, mConversationId=null, mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTimeM
+s=0}
+logs\dumpsys_notification.txt:1290:        NotificationChannel{mId='mipush|com.mipay.wallet|100371', mName=优惠活动, mDescr
+iption=hasDescription , mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLigh
+tColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLockedFields=0, mUserVisibleTaskShown=false, mVibrationEn
+abled=false, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: usage
+=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubb
+les=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mParent=null, mConversationId=null, mDemoted=false, mImporta
+ntConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:1291:        NotificationChannel{mId='mipush|com.mipay.wallet|100372', mName=业务活动, mDescr
+iption=hasDescription , mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLigh
+tColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLockedFields=0, mUserVisibleTaskShown=false, mVibrationEn
+abled=false, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: usage
+=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubb
+les=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mParent=null, mConversationId=null, mDemoted=false, mImporta
+ntConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:1343:        NotificationChannel{mId='com.baidu.baidumap.mipush.carguide', mName= , mDesc
+ription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_s
+ound, mLights=false, mLightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLockedFields=0, mUserVisibleTas
+kShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttribu
+tes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockab
+leSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mParent=null, mConversationId=null
+, mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:1344:        NotificationChannel{mId='com.baidu.baidumap.mipush.walkguide', mName= , mDes
+cription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_
+sound, mLights=false, mLightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLockedFields=0, mUserVisibleTa
+skShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttrib
+utes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlocka
+bleSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mParent=null, mConversationId=nul
+l, mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:1347:        NotificationChannel{mId='com.baidu.baidumap.mipush.render', mName= , mDescri
+ption=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sou
+nd, mLights=false, mLightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLockedFields=0, mUserVisibleTaskS
+hown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttribute
+s=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockable
+System=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mParent=null, mConversationId=null, 
+mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:1445:        NotificationChannel{mId='mipush|com.miui.gallery|100002', mName=用户调研, mDescr
+iption=hasDescription , mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLigh
+tColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLockedFields=0, mUserVisibleTaskShown=false, mVibrationEn
+abled=false, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: usage
+=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubb
+les=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mParent=null, mConversationId=null, mDemoted=false, mImporta
+ntConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:1474:        NotificationChannel{mId='mipush|com.yipiao|126235', mName=营销类通知, mDescriptio
+n=hasDescription , mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLightColo
+r=0, mVibrationPattern=null, mVibrationEffect=null, mUserLockedFields=0, mUserVisibleTaskShown=false, mVibrationEnabled
+=false, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAG
+E_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-
+1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mParent=null, mConversationId=null, mDemoted=false, mImportantCon
+vo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:1508:        NotificationChannel{mId='com.android.server.wm.AlertWindowNotification - com
+.tencent.mm', mName=“微信”正在其他应用的上层显示内容, mDescription=, mImportance=1, mBypassDnd=false, mLockscreenVisibility=-1000, mSo
+und=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibrationPattern=null, mVibrationEffec
+t=null, mUserLockedFields=0, mUserVisibleTaskShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=true, mDel
+etedTimeMs=1778938344791, mGroup='com.android.server.wm.AlertWindowNotification - ', mAudioAttributes=AudioAttributes: 
+usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=true, mAllow
+Bubbles=-1, mImportanceLockedDefaultApp=true, mOriginalImp=1, mParent=null, mConversationId=null, mDemoted=false, mImpo
+rtantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:1608:      AppSettings: com.tencent.mm (10344) importance=DEFAULT userSet=false
+logs\dumpsys_notification.txt:1609:        NotificationChannel{mId='com.tencent.mm', mName=直播控制, mDescription=hasDescri
+ption , mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sou
+nd, mLights=false, mLightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLockedFields=0, mUserVisibleTaskS
+hown=true, mVibrationEnabled=false, mShowBadge=true, mDeleted=true, mDeletedTimeMs=1778974893281, mGroup='null', mAudio
+Attributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, m
+BlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=2, mParent=null, mConversation
+Id=null, mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:1610:        NotificationChannel{mId='message_channel_new_id', mName=新消息通知, mDescription=
+hasDescription , mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notific
+ation_sound, mLights=true, mLightColor=-16711936, mVibrationPattern=[300, 200, 300, 200], mVibrationEffect=Composed{seg
+ments=[Step{amplitude=0.0, frequencyHz=0.0, duration=300}, Step{amplitude=-1.0, frequencyHz=0.0, duration=200}, Step{am
+plitude=0.0, frequencyHz=0.0, duration=300}, Step{amplitude=-1.0, frequencyHz=0.0, duration=200}], repeat=-1}, mUserLoc
+kedFields=0, mUserVisibleTaskShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, m
+Group='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 
+tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=4, mParent
+=null, mConversationId=null, mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:1611:        NotificationChannel{mId='voip_norify_channel_silent1759064566561', mName=音视频
+通话邀请通知, mDescription=hasDescription , mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://co
+m.tencent.mm.external.fileprovider/DefaultRingtone/phonering.mp3, mLights=true, mLightColor=-16711936, mVibrationPatter
+n=null, mVibrationEffect=null, mUserLockedFields=0, mUserVisibleTaskShown=false, mVibrationEnabled=true, mShowBadge=tru
+e, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content
+=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDe
+faultApp=false, mOriginalImp=4, mParent=null, mConversationId=null, mDemoted=false, mImportantConvo=false, mLastNotific
+ationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:1702:      AppSettings: com.xiaomi.aicr (10133) importance=DEFAULT userSet=false
+logs\dumpsys_notification.txt:1704:        NotificationChannel{mId='aicr_service_notification', mName=Xiaomi HyperAI En
+gine notification, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settin
+gs/system/notification_sound, mLights=false, mLightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLockedF
+ields=0, mUserVisibleTaskShown=true, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGrou
+p='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags
+= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mParent=nul
+l, mConversationId=null, mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:1739:        NotificationChannel{mId='mipush|com.sankuai.meituan|102328', mName=订单通知, mDe
+scription=hasDescription , mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/syst
+em/notification_sound, mLights=false, mLightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLockedFields=0
+, mUserVisibleTaskShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='null
+', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundl
+e=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mParent=null, mCon
+versationId=null, mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:1740:        NotificationChannel{mId='mipush|com.sankuai.meituan|102333', mName=优惠福利, mDe
+scription=hasDescription , mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mL
+ightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLockedFields=0, mUserVisibleTaskShown=false, mVibratio
+nEnabled=false, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: us
+age=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowB
+ubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mParent=null, mConversationId=null, mDemoted=false, mImpo
+rtantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:1746:        NotificationChannel{mId='mipush|com.sankuai.meituan|msa_notification_ad_com.
+sankuai.meituan', mName=营销推广, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null,
+ mLights=false, mLightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLockedFields=0, mUserVisibleTaskShow
+n=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=A
+udioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSys
+tem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=4, mParent=null, mConversationId=null, mDe
+moted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:1764:        NotificationChannel{mId='mipush|com.miui.cloudservice|107385', mName=服务提醒, m
+Description=hasDescription , mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/sy
+stem/notification_sound, mLights=false, mLightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLockedFields
+=0, mUserVisibleTaskShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='nu
+ll', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bun
+dle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mParent=null, mC
+onversationId=null, mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:1890:        NotificationChannel{mId='mipush|com.ss.android.lark|100852', mName=普通消息, mDe
+scription=hasDescription , mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=android.resource://com.
+ss.android.lark/raw/notification, mLights=false, mLightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLoc
+kedFields=0, mUserVisibleTaskShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, m
+Group='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 
+tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mParent
+=null, mConversationId=null, mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:1891:        NotificationChannel{mId='mipush|com.ss.android.lark|101336', mName=@消息, mDes
+cription=hasDescription , mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=android.resource://com.s
+s.android.lark/raw/notification_at, mLights=false, mLightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserL
+ockedFields=0, mUserVisibleTaskShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1,
+ mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x80
+0 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mPare
+nt=null, mConversationId=null, mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:1892:        NotificationChannel{mId='mipush|com.ss.android.lark|104549', mName=音视频通话邀请通知
+, mDescription=hasDescription , mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=android.resource:/
+/com.ss.android.lark/raw/dialing, mLights=false, mLightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLoc
+kedFields=0, mUserVisibleTaskShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, m
+Group='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 
+tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mParent
+=null, mConversationId=null, mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:1893:        NotificationChannel{mId='mipush|com.ss.android.lark|112263', mName=文档通知类消息, 
+mDescription=hasDescription , mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=android.resource://c
+om.ss.android.lark/raw/notification, mLights=false, mLightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUser
+LockedFields=0, mUserVisibleTaskShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1
+, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x8
+00 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mPar
+ent=null, mConversationId=null, mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:1894:        NotificationChannel{mId='mipush|com.ss.android.lark|131523', mName=日程提醒消息修正,
+ mDescription=hasDescription , mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=android.resource://
+com.ss.android.lark/raw/notification_calendar, mLights=false, mLightColor=0, mVibrationPattern=null, mVibrationEffect=n
+ull, mUserLockedFields=0, mUserVisibleTaskShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mDelete
+dTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION
+ flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalI
+mp=3, mParent=null, mConversationId=null, mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:1895:        NotificationChannel{mId='mipush|com.ss.android.lark|crit_voip', mName=VoIP, 
+mDescription=hasDescription , mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=android.resource://c
+om.ss.android.lark/raw/dialing_mi, mLights=true, mLightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLoc
+kedFields=0, mUserVisibleTaskShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, m
+Group='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 
+tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=4, mParent
+=null, mConversationId=null, mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:2024:      AppSettings: com.xtc.watch (10443) importance=DEFAULT userSet=false
+logs\dumpsys_notification.txt:2028:        NotificationChannel{mId='mipush|com.xtc.watch|109141', mName=微聊消息, mDescript
+ion=hasDescription , mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/not
+ification_sound, mLights=false, mLightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLockedFields=0, mUse
+rVisibleTaskShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAu
+dioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mParent=null, mConversat
+ionId=null, mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:2029:        NotificationChannel{mId='mipush|com.xtc.watch|109142', mName=设备提醒, mDescript
+ion=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound
+, mLights=false, mLightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLockedFields=0, mUserVisibleTaskSho
+wn=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=A
+udioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSys
+tem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mParent=null, mConversationId=null, mDe
+moted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:2227:        NotificationChannel{mId='mipush|com.android.browser|103177', mName=突发事件, mDe
+scription=hasDescription , mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/syst
+em/notification_sound, mLights=false, mLightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLockedFields=0
+, mUserVisibleTaskShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='null
+', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundl
+e=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mParent=null, mCon
+versationId=null, mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:2229:        NotificationChannel{mId='mipush|com.android.browser|msa_notification_ad_com.
+android.browser', mName=营销推广, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null,
+ mLights=false, mLightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLockedFields=0, mUserVisibleTaskShow
+n=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=A
+udioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSys
+tem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=4, mParent=null, mConversationId=null, mDe
+moted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:2283:        NotificationChannel{mId='mipush|com.eg.android.AlipayGphone|msa_notification
+_ad_com.eg.android.AlipayGphone', mName=营销推广, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-10
+00, mSound=null, mLights=false, mLightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLockedFields=0, mUse
+rVisibleTaskShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mA
+udioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=nul
+l, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=4, mParent=null, mConversa
+tionId=null, mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:2284:        NotificationChannel{mId='mipush|com.eg.android.AlipayGphone|100058', mName=朋
+友消息提醒, mDescription=hasDescription , mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://set
+tings/system/notification_sound, mLights=false, mLightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLock
+edFields=0, mUserVisibleTaskShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mG
+roup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 t
+ags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mParent=
+null, mConversationId=null, mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:2285:        NotificationChannel{mId='mipush|com.eg.android.AlipayGphone|100060', mName=交
+易与账号安全通知, mDescription=hasDescription , mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://
+settings/system/notification_sound, mLights=false, mLightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserL
+ockedFields=0, mUserVisibleTaskShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1,
+ mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x80
+0 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mPare
+nt=null, mConversationId=null, mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:2286:        NotificationChannel{mId='mipush|com.eg.android.AlipayGphone|100061', mName=订
+单物流, mDescription=hasDescription , mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://setti
+ngs/system/notification_sound, mLights=false, mLightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLocked
+Fields=0, mUserVisibleTaskShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGro
+up='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tag
+s= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mParent=nu
+ll, mConversationId=null, mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:2287:        NotificationChannel{mId='mipush|com.eg.android.AlipayGphone|100064', mName=活
+动通知, mDescription=hasDescription , mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=f
+alse, mLightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLockedFields=0, mUserVisibleTaskShown=false, m
+VibrationEnabled=false, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttrib
+utes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false,
+ mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mParent=null, mConversationId=null, mDemoted=fals
+e, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:2333:      AppSettings: com.tencent.mobileqq (10349) importance=DEFAULT userSet=false
+logs\dumpsys_notification.txt:2334:        NotificationChannel{mId='mipush|com.tencent.mobileqq|105584', mName=即时消息, mD
+escription=hasDescription , mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/sys
+tem/notification_sound, mLights=false, mLightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLockedFields=
+0, mUserVisibleTaskShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='nul
+l', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bund
+le=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=4, mParent=null, mCo
+nversationId=null, mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:2442:        NotificationChannel{mId='mipush|com.sdu.didi.psnger|msa_notification_ad_com.
+sdu.didi.psnger', mName=营销推广, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null,
+ mLights=false, mLightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLockedFields=0, mUserVisibleTaskShow
+n=false, mVibrationEnabled=false, mShowBadge=false, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=
+AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSy
+stem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=4, mParent=null, mConversationId=null, mD
+emoted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:2445:        NotificationChannel{mId='mipush|com.sdu.didi.psnger|110899', mName=营销类通知, mD
+escription=hasDescription , mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, m
+LightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLockedFields=0, mUserVisibleTaskShown=false, mVibrati
+onEnabled=false, mShowBadge=false, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: 
+usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllo
+wBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mParent=null, mConversationId=null, mDemoted=false, mIm
+portantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:2446:        NotificationChannel{mId='mipush|com.sdu.didi.psnger|123141', mName=实时打车消息提醒,
+ mDescription=hasDescription , mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/
+system/notification_sound, mLights=false, mLightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLockedFiel
+ds=0, mUserVisibleTaskShown=false, mVibrationEnabled=true, mShowBadge=false, mDeleted=false, mDeletedTimeMs=-1, mGroup=
+'null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= 
+bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mParent=null,
+ mConversationId=null, mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:2447:        NotificationChannel{mId='mipush|com.sdu.didi.psnger|126365', mName=业务类通知私有通道
+, mDescription=hasDescription , mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings
+/system/notification_sound, mLights=false, mLightColor=0, mVibrationPattern=null, mVibrationEffect=null, mUserLockedFie
+lds=0, mUserVisibleTaskShown=false, mVibrationEnabled=true, mShowBadge=false, mDeleted=false, mDeletedTimeMs=-1, mGroup
+='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags=
+ bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mParent=null
+, mConversationId=null, mDemoted=false, mImportantConvo=false, mLastNotificationUpdateTimeMs=0}
+logs\dumpsys_notification.txt:2849:      key='com.tencent.mm',
+logs\dumpsys_notification.txt:3049:      key='com.tencent.mobileqq',
+logs\dumpsys_notification.txt:3809:      key='com.xtc.watch',
+logs\dumpsys_notification.txt:3849:      key='com.xiaomi.aicr',
+logs\dumpsys_notification.txt:4012:    mKeys [Pair{259253376 0|com.xiaomi.mi_connect_service|1|null|1000}, Pair{2592535
+83 0|com.xiaomi.mi_connect_service|2|null|1000}, Pair{259253961 0|com.xiaomi.mirror|10|null|1000}, Pair{421243569 0|com
+.ss.android.lark|1521023916|null|10398}, Pair{421410242 0|com.ss.android.lark|-1894910359|null|10398}, Pair{462366556 0
+|com.miui.securitycenter|20006|null|1000}, Pair{465476834 0|com.milink.service|993718950|null|10181}, Pair{506448445 0|
+com.xiaomi.mi_connect_service|20055|null|1000}, Pair{506448552 0|com.miui.misound|887|null|10182}, Pair{507424152 0|com
+.xiaomi.aicr|1|null|10133}, Pair{507453986 -1|android|32|null|1000}, Pair{507453989 -1|android|26|null|1000}, Pair{5078
+10245 0|com.ss.android.lark|1164771399|null|10398}]
+logs\dumpsys_notification.txt:4020:        0|com.xiaomi.aicr|g:Aggregate_AlertingSection
+logs\dumpsys_notification.txt:4021:            0|com.xiaomi.aicr|1|null|10133
+
+

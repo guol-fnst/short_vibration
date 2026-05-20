@@ -240,8 +240,10 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         reason: String,
     ): Boolean {
         val ms = prefs.vibrationMs().toLong()
-        debugLog("vibrating for $reason ms=$ms")
-        val result = VibrationHelper.vibrate(this, ms, acquireWakeLock = deviceLocked)
+        val amplitudePercent = prefs.vibrationAmplitude()
+        val amplitude = ((amplitudePercent * 255 + 50) / 100).coerceIn(1, 255)
+        debugLog("vibrating for $reason ms=$ms amplitude=$amplitude")
+        val result = VibrationHelper.vibrate(this, ms, amplitude, acquireWakeLock = deviceLocked)
         if (result) {
             lastVibrationAtMs = now
             prefs.markVibrationNow(now)

@@ -1,0 +1,1433 @@
+﻿
+logs\virb_filtered_logcat.txt:898:05-20 09:19:46.305 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockInterna
+l: lock=101804800, flags=0x1, tag="*alarm*", ws=WorkSource{1000 chains=WorkChain{(10286), (1000, JobScheduler)}}, uid=1
+000, pid=3598
+logs\virb_filtered_logcat.txt:899:05-20 09:19:46.327 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockInterna
+l: lock=101804800 [*alarm*], flags=0x0
+logs\virb_filtered_logcat.txt:900:05-20 09:19:48.115 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockInterna
+l: lock=70117241, flags=0x1, tag="NotificationManagerService:post:com.tencent.mobileqq", ws=WorkSource{10210 com.tencen
+t.mobileqq}, uid=1000, pid=3598
+logs\virb_filtered_logcat.txt:901:05-20 09:19:48.383 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockInterna
+l: lock=70117241 [NotificationManagerService:post:com.tencent.mobileqq], flags=0x0
+logs\virb_filtered_logcat.txt:902:05-20 09:19:48.400 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockInterna
+l: lock=57368635, flags=0x1, tag="com.virb.lite:vibrate", ws=null, uid=10374, pid=21503
+logs\virb_filtered_logcat.txt:903:05-20 09:19:48.408 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockInterna
+l: lock=66102029, flags=0x1, tag="*vibrator*", ws=WorkSource{10374}, uid=1000, pid=3598
+logs\virb_filtered_logcat.txt:904:05-20 09:19:48.409 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockInterna
+l: lock=57368635 [com.virb.lite:vibrate], flags=0x0
+logs\virb_filtered_logcat.txt:905:05-20 09:19:48.481 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockInterna
+l: lock=66102029 [*vibrator*], flags=0x0
+logs\virb_filtered_logcat.txt:906:05-20 09:19:48.672 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockInterna
+l: lock=246913971, flags=0x1, tag="RingtonePlayer", ws=null, uid=10227, pid=6086
+logs\virb_filtered_logcat.txt:907:05-20 09:19:49.042 I/PowerManagerService( 3598): Waking up from Dozing (uid=10227, re
+ason=WAKE_REASON_UNKNOWN, details=com.android.systemui:NOTIFICATION)...
+logs\virb_filtered_logcat.txt:908:05-20 09:19:49.044 I/WindowManager( 3598): Started waking up... (groupId=0 why=ON_BEC
+AUSE_OF_UNKNOWN)
+logs\virb_filtered_logcat.txt:909:05-20 09:19:49.047 I/WindowManager( 3598): Display 0 turning on...
+logs\virb_filtered_logcat.txt:910:05-20 09:19:49.068 I/PowerManagerService( 3598): set doze after screen off: false
+logs\virb_filtered_logcat.txt:911:05-20 09:19:49.069 I/PowerManagerService( 3598): groupId[0] : update mDozeAfterScreen
+Off = false
+logs\virb_filtered_logcat.txt:912:05-20 09:19:49.098 I/WindowManager( 3598): mKeyguardDelegate.ShowListener.onDrawn.
+logs\virb_filtered_logcat.txt:913:05-20 09:19:49.103 W/WindowManager( 3598): Setting mKeyguardDrawComplete
+logs\virb_filtered_logcat.txt:914:05-20 09:19:49.132 W/WindowManager( 3598): All windows drawn on display -1
+logs\virb_filtered_logcat.txt:915:05-20 09:19:49.275 I/WindowManager( 3598): Finished setting display state ... (groupI
+d=0)
+logs\virb_filtered_logcat.txt:916:05-20 09:19:49.276 I/WindowManager( 3598): Display 0 turned on...
+logs\virb_filtered_logcat.txt:917:05-20 09:19:49.276 W/PowerManagerService( 3598): Screen on took 238 ms
+logs\virb_filtered_logcat.txt:918:05-20 09:19:49.276 I/WindowManager( 3598): Finished waking up... (groupId=0 why=ON_BE
+CAUSE_OF_UNKNOWN)
+logs\virb_filtered_logcat.txt:919:05-20 09:19:49.276 D/PowerManagerService( 3598): groupId[0], stopping Dream current w
+akefulness is Awake
+logs\virb_filtered_logcat.txt:920:05-20 09:19:49.276 D/PowerManagerService( 3598): groupId[0], stopping Dream current w
+akefulness is Awake
+logs\virb_filtered_logcat.txt:921:05-20 09:19:49.277 D/PowerManagerService( 3598): extCmdAndArgs cmd = 1000, param = 0,
+ displayCommitState = 2, iswakeup = true, mIsFolded = false, mAlwaysOnEnabled = true, mIsPowerFp = false, mKeyguardNoti
+fication = true, screenActiveEarly = false, mIsFullAod = false, mIsNotAodActive = false, mDeviceState = 0, IS_FLIP_OR_F
+OLD_DEVICE = false, displayState = 2
+logs\virb_filtered_logcat.txt:922:05-20 09:19:49.277 I/ActivityManager( 3598): unbindService com.android.server.am.Acti
+veServices@a98962 conn=android.app.LoadedApk$ServiceDispatcher$InnerConnection@b7707df callingPid=3598 callers: com.and
+roid.server.dreams.DreamController.stopDream:321 com.android.server.dreams.DreamManagerService.lambda$stopDreamLocked$1
+4:1337 com.android.server.dreams.DreamManagerService.$r8$lambda$jRjqv6RQ5ik9FwCs6zHsiYf-i0U:0 com.android.server.dreams
+.DreamManagerService$$ExternalSyntheticLambda8.run:0 android.os.Handler.handleCallback:1029 android.os.Handler.dispatch
+Message:107 android.os.Looper.loopOnce:274 android.os.Looper.loop:369 android.os.HandlerThread.run:85 com.android.serve
+r.ServiceThread.run:49 
+logs\virb_filtered_logcat.txt:923:05-20 09:19:49.278 W/ActivityManager( 3598): pid 3598 system sent binder code 31100 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:924:05-20 09:19:49.278 W/ActivityManager( 3598): pid 3598 system sent binder code 31100 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:925:05-20 09:19:49.278 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:926:05-20 09:19:49.278 W/ActivityManager( 3598): pid 3598 system sent binder code 31100 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:927:05-20 09:19:49.278 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:928:05-20 09:19:49.278 W/ActivityManager( 3598): pid 3598 system sent binder code 31100 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:929:05-20 09:19:49.278 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:930:05-20 09:19:49.295 I/ActivityManager( 3598): unbindService com.android.server.am.Acti
+veServices@a98962 conn=android.os.BinderProxy@5cd1603 callingPid=6086
+logs\virb_filtered_logcat.txt:931:05-20 09:19:49.301 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:932:05-20 09:19:49.315 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:933:05-20 09:19:49.334 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:934:05-20 09:19:49.352 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:935:05-20 09:19:49.370 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:936:05-20 09:19:49.388 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:937:05-20 09:19:49.407 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:938:05-20 09:19:49.425 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:939:05-20 09:19:49.443 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:940:05-20 09:19:49.461 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:941:05-20 09:19:49.481 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:942:05-20 09:19:49.500 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:943:05-20 09:19:49.518 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:944:05-20 09:19:49.536 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:945:05-20 09:19:49.555 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:946:05-20 09:19:49.573 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:947:05-20 09:19:49.591 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:948:05-20 09:19:49.610 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:949:05-20 09:19:49.629 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:950:05-20 09:19:49.648 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 w
+ith flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:1280:05-20 09:20:42.114 I/WindowManager( 3598): Try to add startingWindow type = STARTING
+_WINDOW_TYPE_SNAPSHOT this = ActivityRecord{208191700 u0 com.virb.lite/.MainActivity t18684} mOccludesParent = true pre
+AllowTaskSnapshot = true afterAllowTaskSnapshot = true newTask = false taskSwitch = true processRunning = true activity
+Created = true activityAllDrawn = false isSnapshotCompatible = true snapshotRotation = 0 resolvedTheme = 2131755636 the
+me = 2131755636
+logs\virb_filtered_logcat.txt:1281:05-20 09:20:42.128 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{208191700 u0 com.virb.lite/.MainActivity t18684}
+logs\virb_filtered_logcat.txt:1282:05-20 09:20:42.134 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{208191700 u0 com.virb.lite/.MainActivity t18684}
+logs\virb_filtered_logcat.txt:1286:05-20 09:20:42.146 I/WindowManager( 3598): onFirstWindowDrawn, try to remove startin
+gWindow. ar: ActivityRecord{208191700 u0 com.virb.lite/.MainActivity t18684}  associatedTask: null  isMainWindow: true 
+ startingWindow: Window{484115b u0 SnapshotStartingWindow for taskId=18684}  startingData: SnapshotStartingData{8b2f257
+ removeAfterTransaction= 0}
+logs\virb_filtered_logcat.txt:1287:05-20 09:20:42.150 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{b3a13
+a8 u0 com.virb.lite/com.virb.lite.MainActivity} in Surface(name=com.virb.lite/com.virb.lite.MainActivity#116212)/@0x3cb
+63e6
+logs\virb_filtered_logcat.txt:1315:05-20 09:20:43.123 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{67357
+10 u0 com.virb.lite/com.virb.lite.MainActivity} in Surface(name=com.virb.lite/com.virb.lite.MainActivity#116222)/@0x302
+fc27
+logs\virb_filtered_logcat.txt:1327:05-20 09:20:59.160 I/WindowManager( 3598): wms.hideSurface mWin:Window{6735710 u0 co
+m.virb.lite/com.virb.lite.MainActivity EXITING} reason:(onExitAnimationDone) in Surface(name=com.virb.lite/com.virb.lit
+e.MainActivity#116222)/@0x302fc27
+logs\virb_filtered_logcat.txt:1332:05-20 09:21:07.115 W/NotificationService( 3598): Toast already killed. pkg=com.virb.
+lite token=android.os.BinderProxy@7653c56
+logs\virb_filtered_logcat.txt:1339:05-20 09:21:09.698 W/NotificationService( 3598): Toast already killed. pkg=com.virb.
+lite token=android.os.BinderProxy@c5d18b
+logs\virb_filtered_logcat.txt:1343:05-20 09:21:09.865 I/WindowManager( 3598): wms.hideSurface mWin:Window{b3a13a8 u0 co
+m.virb.lite/com.virb.lite.MainActivity} reason:(prepareSurfaceLocked) in Surface(name=com.virb.lite/com.virb.lite.MainA
+ctivity#116212)/@0x3cb63e6
+logs\virb_filtered_logcat.txt:1358:05-20 09:21:10.569 E/WindowManager( 3598):  source = Task{5163aed #18684 type=standa
+rd A=10374:com.virb.lite} excludeMiuiNavBar = true excludeMiuiStatusBar = true excludeIme = false excludeNavBar = true 
+miuiNavSurfaceControl = Surface(name=NavigationBar Container of Task = 18684#115583)/@0xb97d22 miuiStatusSurfaceControl
+ = Surface(name=StatusBar Container of Task = 18684#115584)/@0xd66d3b3
+logs\virb_filtered_logcat.txt:1498:05-20 09:21:12.405 W/NotificationService( 3598): Toast already killed. pkg=com.virb.
+lite token=android.os.BinderProxy@db18254
+logs\virb_filtered_logcat.txt:2077:05-20 09:24:00.032 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=216779651 [StnManagerCallback], flags=0x0
+logs\virb_filtered_logcat.txt:2078:05-20 09:24:00.054 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=69174318 [NotificationManagerService:post:com.tencent.mm], flags=0x0
+logs\virb_filtered_logcat.txt:2079:05-20 09:24:00.059 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=205147976, flags=0x1, tag="com.virb.lite:vibrate", ws=null, uid=10374, pid=21503
+logs\virb_filtered_logcat.txt:2080:05-20 09:24:00.060 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=66102029, flags=0x1, tag="*vibrator*", ws=WorkSource{10374}, uid=1000, pid=3598
+logs\virb_filtered_logcat.txt:2081:05-20 09:24:00.061 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=205147976 [com.virb.lite:vibrate], flags=0x0
+logs\virb_filtered_logcat.txt:2082:05-20 09:24:00.098 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=91047779, flags=0x1, tag="RingtonePlayer", ws=null, uid=10227, pid=6086
+logs\virb_filtered_logcat.txt:2083:05-20 09:24:00.104 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=66102029 [*vibrator*], flags=0x0
+logs\virb_filtered_logcat.txt:2084:05-20 09:24:00.111 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=82271069 [MicroMsg.MMAutoAuth], flags=0x0
+logs\virb_filtered_logcat.txt:2085:05-20 09:24:00.405 I/PowerManagerService( 3598): Waking up from Dozing (uid=10227, r
+eason=WAKE_REASON_UNKNOWN, details=com.android.systemui:NOTIFICATION)...
+logs\virb_filtered_logcat.txt:2086:05-20 09:24:00.405 I/WindowManager( 3598): Started waking up... (groupId=0 why=ON_BE
+CAUSE_OF_UNKNOWN)
+logs\virb_filtered_logcat.txt:2087:05-20 09:24:00.409 I/WindowManager( 3598): Display 0 turning on...
+logs\virb_filtered_logcat.txt:2088:05-20 09:24:00.416 I/PowerManagerService( 3598): set doze after screen off: false
+logs\virb_filtered_logcat.txt:2089:05-20 09:24:00.416 I/PowerManagerService( 3598): groupId[0] : update mDozeAfterScree
+nOff = false
+logs\virb_filtered_logcat.txt:2090:05-20 09:24:00.417 I/WindowManager( 3598): mKeyguardDelegate.ShowListener.onDrawn.
+logs\virb_filtered_logcat.txt:2091:05-20 09:24:00.418 W/WindowManager( 3598): Setting mKeyguardDrawComplete
+logs\virb_filtered_logcat.txt:2092:05-20 09:24:00.480 W/WindowManager( 3598): All windows drawn on display -1
+logs\virb_filtered_logcat.txt:2093:05-20 09:24:00.583 I/WindowManager( 3598): Finished setting display state ... (group
+Id=0)
+logs\virb_filtered_logcat.txt:2094:05-20 09:24:00.584 I/WindowManager( 3598): Display 0 turned on...
+logs\virb_filtered_logcat.txt:2095:05-20 09:24:00.585 D/PowerManagerService( 3598): extCmdAndArgs cmd = 1000, param = 0
+, displayCommitState = 2, iswakeup = true, mIsFolded = false, mAlwaysOnEnabled = true, mIsPowerFp = false, mKeyguardNot
+ification = true, screenActiveEarly = false, mIsFullAod = false, mIsNotAodActive = false, mDeviceState = 0, IS_FLIP_OR_
+FOLD_DEVICE = false, displayState = 2
+logs\virb_filtered_logcat.txt:2096:05-20 09:24:00.585 D/PowerManagerService( 3598): groupId[0], stopping Dream current 
+wakefulness is Awake
+logs\virb_filtered_logcat.txt:2097:05-20 09:24:00.585 D/PowerManagerService( 3598): groupId[0], stopping Dream current 
+wakefulness is Awake
+logs\virb_filtered_logcat.txt:2098:05-20 09:24:00.585 I/WindowManager( 3598): Finished waking up... (groupId=0 why=ON_B
+ECAUSE_OF_UNKNOWN)
+logs\virb_filtered_logcat.txt:2099:05-20 09:24:00.585 I/ActivityManager( 3598): unbindService com.android.server.am.Act
+iveServices@a98962 conn=android.app.LoadedApk$ServiceDispatcher$InnerConnection@55bef39 callingPid=3598 callers: com.an
+droid.server.dreams.DreamController.stopDream:321 com.android.server.dreams.DreamManagerService.lambda$stopDreamLocked$
+14:1337 com.android.server.dreams.DreamManagerService.$r8$lambda$jRjqv6RQ5ik9FwCs6zHsiYf-i0U:0 com.android.server.dream
+s.DreamManagerService$$ExternalSyntheticLambda8.run:0 android.os.Handler.handleCallback:1029 android.os.Handler.dispatc
+hMessage:107 android.os.Looper.loopOnce:274 android.os.Looper.loop:369 android.os.HandlerThread.run:85 com.android.serv
+er.ServiceThread.run:49 
+logs\virb_filtered_logcat.txt:2100:05-20 09:24:00.585 D/PowerManagerService( 3598): groupId[0], stopping Dream current 
+wakefulness is Awake
+logs\virb_filtered_logcat.txt:2101:05-20 09:24:00.587 W/ActivityManager( 3598): pid 3598 system sent binder code 31100 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2102:05-20 09:24:00.587 W/ActivityManager( 3598): pid 3598 system sent binder code 31100 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2103:05-20 09:24:00.587 W/ActivityManager( 3598): pid 3598 system sent binder code 31100 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2104:05-20 09:24:00.587 W/ActivityManager( 3598): pid 3598 system sent binder code 31100 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2105:05-20 09:24:00.589 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2106:05-20 09:24:00.590 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2107:05-20 09:24:00.594 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2108:05-20 09:24:00.602 I/ActivityManager( 3598): unbindService com.android.server.am.Act
+iveServices@a98962 conn=android.os.BinderProxy@5f829a1 callingPid=6086
+logs\virb_filtered_logcat.txt:2109:05-20 09:24:00.614 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2110:05-20 09:24:00.631 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2111:05-20 09:24:00.649 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2112:05-20 09:24:00.667 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2113:05-20 09:24:00.685 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2114:05-20 09:24:00.704 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2115:05-20 09:24:00.722 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2116:05-20 09:24:00.740 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2117:05-20 09:24:00.758 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2118:05-20 09:24:00.777 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2119:05-20 09:24:00.795 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2120:05-20 09:24:00.813 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2121:05-20 09:24:00.831 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2122:05-20 09:24:00.851 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2123:05-20 09:24:00.870 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2124:05-20 09:24:00.889 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2125:05-20 09:24:00.907 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2126:05-20 09:24:00.925 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2127:05-20 09:24:00.944 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2128:05-20 09:24:00.963 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2129:05-20 09:24:01.047 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2130:05-20 09:24:01.115 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2131:05-20 09:24:01.180 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2132:05-20 09:24:01.245 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2133:05-20 09:24:01.312 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2134:05-20 09:24:01.377 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2135:05-20 09:24:01.443 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2136:05-20 09:24:01.509 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2137:05-20 09:24:01.574 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2138:05-20 09:24:01.639 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2139:05-20 09:24:01.705 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2140:05-20 09:24:01.770 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2141:05-20 09:24:01.836 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2142:05-20 09:24:01.901 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2143:05-20 09:24:01.967 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2144:05-20 09:24:02.033 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2145:05-20 09:24:02.098 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2146:05-20 09:24:02.165 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2147:05-20 09:24:02.231 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2148:05-20 09:24:02.296 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2149:05-20 09:24:02.361 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2150:05-20 09:24:02.427 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2151:05-20 09:24:02.492 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2152:05-20 09:24:02.557 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2153:05-20 09:24:02.623 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2154:05-20 09:24:02.689 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2155:05-20 09:24:02.755 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2156:05-20 09:24:02.821 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2157:05-20 09:24:02.886 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2158:05-20 09:24:02.952 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2159:05-20 09:24:03.017 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2160:05-20 09:24:03.083 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2161:05-20 09:24:03.148 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2162:05-20 09:24:03.213 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2163:05-20 09:24:03.279 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2164:05-20 09:24:03.344 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2165:05-20 09:24:03.410 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2166:05-20 09:24:03.477 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2167:05-20 09:24:03.543 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2168:05-20 09:24:03.608 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2169:05-20 09:24:03.674 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2170:05-20 09:24:03.740 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2171:05-20 09:24:03.805 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2172:05-20 09:24:03.871 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2173:05-20 09:24:03.936 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2174:05-20 09:24:04.002 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2175:05-20 09:24:04.067 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2176:05-20 09:24:04.132 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2177:05-20 09:24:04.198 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2178:05-20 09:24:04.264 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2179:05-20 09:24:04.329 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2180:05-20 09:24:04.394 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2181:05-20 09:24:04.459 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2182:05-20 09:24:04.525 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2183:05-20 09:24:04.591 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2184:05-20 09:24:04.656 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2185:05-20 09:24:04.722 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2186:05-20 09:24:04.787 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2187:05-20 09:24:04.852 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2188:05-20 09:24:04.918 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2189:05-20 09:24:04.983 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2190:05-20 09:24:05.049 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2191:05-20 09:24:05.114 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2192:05-20 09:24:05.454 I/ActivityManager( 3598): unbindService com.android.server.am.Act
+iveServices@a98962 conn=android.os.BinderProxy@318ccbb callingPid=28275
+logs\virb_filtered_logcat.txt:2193:05-20 09:24:05.455 I/ActivityManager( 3598): unbindService com.android.server.am.Act
+iveServices@a98962 conn=android.os.BinderProxy@44103a2 callingPid=28275
+logs\virb_filtered_logcat.txt:2194:05-20 09:24:09.472 I/ActivityManager( 3598): Process com.tencent.mm:appbrand0 (pid 1
+9256) has died: hvy LAST
+logs\virb_filtered_logcat.txt:2195:05-20 09:24:09.473 I/ActivityManager( 3598): unbindService com.android.server.am.Act
+iveServices@a98962 conn=android.os.BinderProxy@d5ba964 callingPid=24279
+logs\virb_filtered_logcat.txt:2196:05-20 09:24:09.474 I/ActivityManager( 3598): unbindService com.android.server.am.Act
+iveServices@a98962 conn=android.os.BinderProxy@f10ac96 callingPid=24279
+logs\virb_filtered_logcat.txt:2197:05-20 09:24:10.404 I/WindowManager( 3598): Started going to sleep... (groupId=0 why=
+OFF_BECAUSE_OF_TIMEOUT)
+logs\virb_filtered_logcat.txt:2198:05-20 09:24:10.405 I/PowerManagerService( 3598): sFlinger = android.os.BinderProxy@6
+73d0d8
+logs\virb_filtered_logcat.txt:2199:05-20 09:24:10.405 I/PowerManagerService( 3598): Going to sleep due to timeout (uid 
+1000, screenOffTimeout=60000, activityTimeoutWM=10000, maxDimRatio=0.29999995, maxDimDur=18000, details=null)...
+logs\virb_filtered_logcat.txt:2200:05-20 09:24:10.409 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=55842609, flags=0x1, tag="dream:dream[0]", ws=null, uid=1000, pid=3598
+logs\virb_filtered_logcat.txt:2201:05-20 09:24:10.412 D/PowerManagerService( 3598): groupId[0], starting Dream current 
+wakefulness is Dozing
+logs\virb_filtered_logcat.txt:2202:05-20 09:24:10.412 I/PowerManagerService( 3598): powerGroup[0] Enter Dozing...
+logs\virb_filtered_logcat.txt:2203:05-20 09:24:10.414 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=41552464, flags=0x80, tag="gxzw", ws=null, uid=10227, pid=6086
+logs\virb_filtered_logcat.txt:2204:05-20 09:24:10.416 I/WindowManager( 3598): Finished going to sleep... (groupId=0 why
+=OFF_BECAUSE_OF_TIMEOUT)
+logs\virb_filtered_logcat.txt:2205:05-20 09:24:10.416 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=105845655, flags=0x80, tag="KeyguardPanelViewController", ws=null, uid=10227, pid=6086
+logs\virb_filtered_logcat.txt:2206:05-20 09:24:10.418 D/PowerManagerService( 3598): extCmdAndArgs cmd = 1000, param = 1
+, displayCommitState = 2, iswakeup = false, mIsFolded = false, mAlwaysOnEnabled = true, mIsPowerFp = false, mKeyguardNo
+tification = true, screenActiveEarly = false, mIsFullAod = false, mIsNotAodActive = false, mDeviceState = 0, IS_FLIP_OR
+_FOLD_DEVICE = false, displayState = 2
+logs\virb_filtered_logcat.txt:2207:05-20 09:24:10.426 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=205768282, flags=0x1, tag="NfcService:mRoutingWakeLock", ws=null, uid=1027, pid=10206
+logs\virb_filtered_logcat.txt:2208:05-20 09:24:10.426 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=205768282 [NfcService:mRoutingWakeLock], flags=0x0
+logs\virb_filtered_logcat.txt:2209:05-20 09:24:10.426 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=205768282, flags=0x1, tag="NfcService:mRoutingWakeLock", ws=null, uid=1027, pid=10206
+logs\virb_filtered_logcat.txt:2210:05-20 09:24:10.427 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=161656152, flags=0x1, tag="CamoptUserBehaviorManager", ws=null, uid=1000, pid=3598
+logs\virb_filtered_logcat.txt:2211:05-20 09:24:10.428 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=68357525, flags=0x1, tag="QcrilOemhookMsgTunnel", ws=null, uid=10155, pid=5634
+logs\virb_filtered_logcat.txt:2212:05-20 09:24:10.428 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=161656152 [CamoptUserBehaviorManager], flags=0x0
+logs\virb_filtered_logcat.txt:2213:05-20 09:24:10.431 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=68357525 [QcrilOemhookMsgTunnel], flags=0x0
+logs\virb_filtered_logcat.txt:2214:05-20 09:24:10.433 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=28191095, flags=0x80, tag="AODBatteryMeterView", ws=null, uid=10227, pid=6086
+logs\virb_filtered_logcat.txt:2215:05-20 09:24:10.440 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=38828547, flags=0x1, tag="dream:service:handler", ws=null, uid=10227, pid=6086
+logs\virb_filtered_logcat.txt:2216:05-20 09:24:10.441 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=205768282 [NfcService:mRoutingWakeLock], flags=0x0
+logs\virb_filtered_logcat.txt:2217:05-20 09:24:10.444 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=26427109, flags=0x80, tag="AODView", ws=null, uid=10227, pid=6086
+logs\virb_filtered_logcat.txt:2218:05-20 09:24:10.446 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=38828547 [dream:service:handler], flags=0x0
+logs\virb_filtered_logcat.txt:2219:05-20 09:24:10.446 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=55842609 [dream:dream[0]], flags=0x0
+logs\virb_filtered_logcat.txt:2220:05-20 09:24:10.451 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=186316126, flags=0x1, tag="*job*r/com.xiaomi.xmsf/androidx.work.impl.background.systemjob.SystemJobService", w
+s=WorkSource{ chains=WorkChain{(10210), (1000, JobScheduler)}}, uid=1000, pid=3598
+logs\virb_filtered_logcat.txt:2221:05-20 09:24:10.451 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=99700031, flags=0x1, tag="*job*r/com.xiaomi.xmsf/androidx.work.impl.background.systemjob.SystemJobService", ws
+=WorkSource{ chains=WorkChain{(10210), (1000, JobScheduler)}}, uid=1000, pid=3598
+logs\virb_filtered_logcat.txt:2222:05-20 09:24:10.453 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=186316126 [*job*r/com.xiaomi.xmsf/androidx.work.impl.background.systemjob.SystemJobService], flags=0x0
+logs\virb_filtered_logcat.txt:2223:05-20 09:24:10.461 I/ActivityManager( 3598): unbindService com.android.server.am.Act
+iveServices@a98962 conn=android.os.BinderProxy@d3df00d callingPid=10803
+logs\virb_filtered_logcat.txt:2224:05-20 09:24:10.465 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=99700031 [*job*r/com.xiaomi.xmsf/androidx.work.impl.background.systemjob.SystemJobService], flags=0x0
+logs\virb_filtered_logcat.txt:2225:05-20 09:24:10.465 I/ActivityManager( 3598): unbindService com.android.server.am.Act
+iveServices@a98962 conn=android.app.LoadedApk$ServiceDispatcher$InnerConnection@71d096a callingPid=3598 callers: com.an
+droid.server.job.JobServiceContext.handleFinishedLocked:1412 com.android.server.job.JobServiceContext.doCallbackLocked:
+1288 com.android.server.job.JobServiceContext.doJobFinished:848 com.android.server.job.JobServiceContext$JobCallback.jo
+bFinished:315 android.app.job.IJobCallback$Stub.onTransact:313 android.os.Binder.execTransactInternal:1433 android.os.B
+inder.execTransact:1372 <bottom of call stack> <bottom of call stack> <bottom of call stack> 
+logs\virb_filtered_logcat.txt:2226:05-20 09:24:10.474 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=65343832, flags=0x1, tag="CallbackRunner", ws=WorkSource{10134 com.google.android.gms}, uid=10134, pid=28275
+logs\virb_filtered_logcat.txt:2227:05-20 09:24:10.474 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=65343832 [CallbackRunner], flags=0x0
+logs\virb_filtered_logcat.txt:2228:05-20 09:24:10.476 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=65343832, flags=0x1, tag="CallbackRunner", ws=WorkSource{10134 com.google.android.gms}, uid=10134, pid=28275
+logs\virb_filtered_logcat.txt:2229:05-20 09:24:10.476 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=208994460, flags=0x1, tag="WifiSuspend", ws=null, uid=1000, pid=3598
+logs\virb_filtered_logcat.txt:2230:05-20 09:24:10.476 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=65343832 [CallbackRunner], flags=0x0
+logs\virb_filtered_logcat.txt:2231:05-20 09:24:10.486 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=208994460 [WifiSuspend], flags=0x0
+logs\virb_filtered_logcat.txt:2232:05-20 09:24:10.536 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=28191095 [AODBatteryMeterView], flags=0x0
+logs\virb_filtered_logcat.txt:2233:05-20 09:24:10.719 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=41552464 [gxzw], flags=0x10000
+logs\virb_filtered_logcat.txt:2234:05-20 09:24:10.739 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=105845655 [KeyguardPanelViewController], flags=0x0
+logs\virb_filtered_logcat.txt:2235:05-20 09:24:10.974 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=116666398, flags=0x1, tag="Doze", ws=null, uid=10227, pid=6086
+logs\virb_filtered_logcat.txt:2236:05-20 09:24:10.980 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=93754771, flags=0x1, tag="MiuiDozeScreenBrightnessController", ws=null, uid=10227, pid=6086
+logs\virb_filtered_logcat.txt:2237:05-20 09:24:10.980 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=90352080, flags=0x1, tag="DozeService", ws=null, uid=10227, pid=6086
+logs\virb_filtered_logcat.txt:2238:05-20 09:24:10.981 I/PowerManagerService( 3598): setRearDozeState: newScreenState =2
+, lastScreenState =1, screenBrightnessInt =-1, useNormalBrightnessForDoze =false, screenBrightnessFloat =NaN
+logs\virb_filtered_logcat.txt:2239:05-20 09:24:10.981 D/PowerManagerService( 3598): screenState =2, mAlwaysOnEnabled =t
+rue, mIsFullAod =false, mFingerPrintStatus =0, mScreenState =1, currentScreenState =2, screenBrightnessInt = -1
+logs\virb_filtered_logcat.txt:2240:05-20 09:24:10.981 I/PowerManagerService( 3598): sFlinger = android.os.BinderProxy@6
+73d0d8
+logs\virb_filtered_logcat.txt:2241:05-20 09:24:10.981 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=152755406, flags=0x1, tag="DozeHost", ws=null, uid=10227, pid=6086
+logs\virb_filtered_logcat.txt:2242:05-20 09:24:10.981 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=84604911, flags=0x1, tag="*job*r/com.xiaomi.aicr/androidx.work.impl.background.systemjob.SystemJobService", ws
+=WorkSource{ chains=WorkChain{(10133), (1000, JobScheduler)}}, uid=1000, pid=3598
+logs\virb_filtered_logcat.txt:2243:05-20 09:24:10.981 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=152755406 [DozeHost], flags=0x0
+logs\virb_filtered_logcat.txt:2244:05-20 09:24:10.981 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=124796269, flags=0x40, tag="dream:doze:0", ws=null, uid=1000, pid=3598
+logs\virb_filtered_logcat.txt:2245:05-20 09:24:10.982 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=252744444, flags=0x1, tag="*job*r/com.xiaomi.aicr/androidx.work.impl.background.systemjob.SystemJobService", w
+s=WorkSource{ chains=WorkChain{(10133), (1000, JobScheduler)}}, uid=1000, pid=3598
+logs\virb_filtered_logcat.txt:2246:05-20 09:24:10.983 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=84604911 [*job*r/com.xiaomi.aicr/androidx.work.impl.background.systemjob.SystemJobService], flags=0x0
+logs\virb_filtered_logcat.txt:2247:05-20 09:24:10.985 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=176825943, flags=0x1, tag="Scrims", ws=null, uid=10227, pid=6086
+logs\virb_filtered_logcat.txt:2248:05-20 09:24:11.087 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=176825943 [Scrims], flags=0x0
+logs\virb_filtered_logcat.txt:2249:05-20 09:24:11.351 I/ActivityManager( 3598): Start proc 20119:com.android.soundrecor
+der/u0a294 for content provider {com.android.soundrecorder/com.android.soundrecorder.database.RecorderProvider} caller=
+com.xiaomi.aicr
+logs\virb_filtered_logcat.txt:2250:05-20 09:24:11.351 I/ActivityManager( 3598): ProcessObserver broadcast disabled
+logs\virb_filtered_logcat.txt:2251:05-20 09:24:11.445 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=26427109 [AODView], flags=0x10000
+logs\virb_filtered_logcat.txt:2252:05-20 09:24:11.665 I/ActivityManager( 3598): Start proc 20187:com.xiaomi.aiservice/u
+0a302 for content provider {com.xiaomi.aiservice/com.xiaomi.aiservice.core.AICoreProvider} caller=com.xiaomi.aicr
+logs\virb_filtered_logcat.txt:2253:05-20 09:24:11.665 I/ActivityManager( 3598): ProcessObserver broadcast disabled
+logs\virb_filtered_logcat.txt:2254:05-20 09:24:11.783 I/ActivityManager( 3598): unbindService com.android.server.am.Act
+iveServices@a98962 conn=android.os.BinderProxy@2707d01 callingPid=16230
+logs\virb_filtered_logcat.txt:2255:05-20 09:24:11.784 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=52255972, flags=0x1, tag="com.xiaomi.aicr:AISearchWorkLock3", ws=null, uid=10133, pid=19075
+logs\virb_filtered_logcat.txt:2256:05-20 09:24:11.784 W/ActivityManager( 3598): Foreground service started from backgro
+und can not have location/camera/microphone access: service com.xiaomi.aicr/.searchpro.service.AiCrSearchDataBaseServic
+e
+logs\virb_filtered_logcat.txt:2257:05-20 09:24:11.785 I/ActivityManager( 3598): Background started FGS: Allowed [callin
+gPackage: com.xiaomi.aicr; callingUid: 10133; uidState: FGS ; uidBFSL: [BFSL]; intent: Intent { xflg=0x4 cmp=com.xiaomi
+.aicr/.searchpro.service.AiCrSearchDataBaseService }; code:PROC_STATE_BFGS; tempAllowListReason:<,reasonCode:SYSTEM_ALL
+OW_LISTED,duration:9223372036854775807,callingUid:-1>; allowWiu:-1; targetSdkVersion:35; callerTargetSdkVersion:35; sta
+rtForegroundCount:0; bindFromPackage:null: isBindService:false]
+logs\virb_filtered_logcat.txt:2258:05-20 09:24:11.785 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=84957186, flags=0x1, tag="NotificationManagerService:post:com.xiaomi.aicr", ws=WorkSource{10133 com.xiaomi.aic
+r}, uid=1000, pid=3598
+logs\virb_filtered_logcat.txt:2259:05-20 09:24:11.785 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=252744444 [*job*r/com.xiaomi.aicr/androidx.work.impl.background.systemjob.SystemJobService], flags=0x0
+logs\virb_filtered_logcat.txt:2260:05-20 09:24:11.785 I/ActivityManager( 3598): unbindService com.android.server.am.Act
+iveServices@a98962 conn=android.app.LoadedApk$ServiceDispatcher$InnerConnection@1bf8d85 callingPid=3598 callers: com.an
+droid.server.job.JobServiceContext.handleFinishedLocked:1412 com.android.server.job.JobServiceContext.doCallbackLocked:
+1288 com.android.server.job.JobServiceContext.doJobFinished:848 com.android.server.job.JobServiceContext$JobCallback.jo
+bFinished:315 android.app.job.IJobCallback$Stub.onTransact:313 android.os.Binder.execTransactInternal:1428 android.os.B
+inder.execTransact:1372 <bottom of call stack> <bottom of call stack> <bottom of call stack> 
+logs\virb_filtered_logcat.txt:2261:05-20 09:24:11.812 I/ActivityManager( 3598): Start proc 28879:com.miui.gallery/u0a28
+8 for content provider {com.miui.gallery/com.miui.gallery.provider.GalleryOpenHelperProvider} caller=com.xiaomi.aicr
+logs\virb_filtered_logcat.txt:2262:05-20 09:24:11.812 I/ActivityManager( 3598): ProcessObserver broadcast disabled
+logs\virb_filtered_logcat.txt:2263:05-20 09:24:11.972 I/ActivityManager( 3598): Start proc 20264:com.miui.gallery:provi
+deData/u0a288 for content provider {com.miui.gallery/com.miui.gallery.provider.AiCoreOuterDataProvider} caller=com.xiao
+mi.aicr
+logs\virb_filtered_logcat.txt:2264:05-20 09:24:11.972 I/ActivityManager( 3598): ProcessObserver broadcast disabled
+logs\virb_filtered_logcat.txt:2265:05-20 09:24:11.981 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=90352080 [DozeService], flags=0x0
+logs\virb_filtered_logcat.txt:2266:05-20 09:24:11.991 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=84957186 [NotificationManagerService:post:com.xiaomi.aicr], flags=0x0
+logs\virb_filtered_logcat.txt:2267:05-20 09:24:11.995 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=181339410, flags=0x1, tag="com.virb.lite:vibrate", ws=null, uid=10374, pid=21503
+logs\virb_filtered_logcat.txt:2268:05-20 09:24:11.998 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=66102029, flags=0x1, tag="*vibrator*", ws=WorkSource{10374}, uid=1000, pid=3598
+logs\virb_filtered_logcat.txt:2269:05-20 09:24:11.998 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=181339410 [com.virb.lite:vibrate], flags=0x0
+logs\virb_filtered_logcat.txt:2270:05-20 09:24:12.033 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=66102029 [*vibrator*], flags=0x0
+logs\virb_filtered_logcat.txt:2271:05-20 09:24:12.074 I/ActivityManager( 3598): Start proc 20444:com.xiaomi.aiservice:f
+aceCluster/u0a302 for service {com.xiaomi.aiservice/com.xiaomi.aiservice.multiprocess.FaceClusterService} caller=com.xi
+aomi.aicr
+logs\virb_filtered_logcat.txt:2272:05-20 09:24:12.074 I/ActivityManager( 3598): ProcessObserver broadcast disabled
+logs\virb_filtered_logcat.txt:2273:05-20 09:24:12.086 I/ActivityManager( 3598): Start proc 20461:com.xiaomi.aicr:search
+Service/u0a133 for content provider {com.xiaomi.aicr/com.xiaomi.aicr.aisearch.provider.NLSCapabilityProvider} caller=co
+m.miui.gallery
+logs\virb_filtered_logcat.txt:2274:05-20 09:24:12.086 I/ActivityManager( 3598): ProcessObserver broadcast disabled
+logs\virb_filtered_logcat.txt:2275:05-20 09:24:12.407 I/ActivityManager( 3598): Start proc 20558:com.xiaomi.aiservice:t
+ag/u0a302 for service {com.xiaomi.aiservice/com.xiaomi.aiservice.multiprocess.TagService} caller=com.xiaomi.aicr
+logs\virb_filtered_logcat.txt:2276:05-20 09:24:12.407 I/ActivityManager( 3598): ProcessObserver broadcast disabled
+logs\virb_filtered_logcat.txt:2277:05-20 09:24:12.492 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=68357525, flags=0x1, tag="QcrilOemhookMsgTunnel", ws=null, uid=10155, pid=5634
+logs\virb_filtered_logcat.txt:2278:05-20 09:24:12.493 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=68357525 [QcrilOemhookMsgTunnel], flags=0x0
+logs\virb_filtered_logcat.txt:2279:05-20 09:24:12.495 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=68357525, flags=0x1, tag="QcrilOemhookMsgTunnel", ws=null, uid=10155, pid=5634
+logs\virb_filtered_logcat.txt:2280:05-20 09:24:12.496 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=68357525 [QcrilOemhookMsgTunnel], flags=0x0
+logs\virb_filtered_logcat.txt:2281:05-20 09:24:12.823 I/ActivityManager( 3598): unbindService com.android.server.am.Act
+iveServices@a98962 conn=android.os.BinderProxy@e0046ef callingPid=19075
+logs\virb_filtered_logcat.txt:2282:05-20 09:24:12.824 I/ActivityManager( 3598): unbindService com.android.server.am.Act
+iveServices@a98962 conn=android.os.BinderProxy@5891965 callingPid=20558
+logs\virb_filtered_logcat.txt:2283:05-20 09:24:16.798 D/PowerManagerService( 3598): extCmdAndArgs cmd = 100, param = 1,
+ displayCommitState = 2, iswakeup = false, mIsFolded = false, mAlwaysOnEnabled = true, mIsPowerFp = false, mKeyguardNot
+ification = true, screenActiveEarly = false, mIsFullAod = false, mIsNotAodActive = false, mDeviceState = 0, IS_FLIP_OR_
+FOLD_DEVICE = false, displayState = 2
+logs\virb_filtered_logcat.txt:2284:05-20 09:24:16.799 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=182953971, flags=0x1, tag="DozeHost", ws=null, uid=10227, pid=6086
+logs\virb_filtered_logcat.txt:2285:05-20 09:24:16.801 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=182953971 [DozeHost], flags=0x0
+logs\virb_filtered_logcat.txt:2286:05-20 09:24:16.801 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=95299369, flags=0x80, tag="gxzw", ws=null, uid=10227, pid=6086
+logs\virb_filtered_logcat.txt:2287:05-20 09:24:16.889 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=89722085, flags=0x1, tag="wake-and-unlock:wakelock", ws=null, uid=10227, pid=6086
+logs\virb_filtered_logcat.txt:2288:05-20 09:24:16.889 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=89722085 [wake-and-unlock:wakelock], flags=0x0
+logs\virb_filtered_logcat.txt:2289:05-20 09:24:16.892 I/WindowManager( 3598): Disable startingWindow, because mainWin =
+ Window{2d98042 u0 com.miui.home/com.miui.home.launcher.Launcher} r = ActivityRecord{24642259 u0 com.miui.home/.launche
+r.Launcher t2} this = ActivityRecord{24642259 u0 com.miui.home/.launcher.Launcher t2}
+logs\virb_filtered_logcat.txt:2290:05-20 09:24:16.895 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{c03cb
+29 u0 com.miui.miwallpaper.wallpaperservice.ImageWallpaper} in Surface(name=com.miui.miwallpaper.wallpaperservice.Image
+Wallpaper#92)/@0x3abe504
+logs\virb_filtered_logcat.txt:2291:05-20 09:24:16.905 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=108869742, flags=0x1, tag="LockoutResetMonitor:SendLockoutReset", ws=null, uid=1000, pid=3598
+logs\virb_filtered_logcat.txt:2292:05-20 09:24:16.906 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=49828290, flags=0x1, tag="faceLockoutResetCallback", ws=null, uid=10227, pid=6086
+logs\virb_filtered_logcat.txt:2293:05-20 09:24:16.907 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=108869742 [LockoutResetMonitor:SendLockoutReset], flags=0x0
+logs\virb_filtered_logcat.txt:2294:05-20 09:24:16.913 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=49828290 [faceLockoutResetCallback], flags=0x0
+logs\virb_filtered_logcat.txt:2295:05-20 09:24:16.916 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{b48d9
+df u0 LauncherOverlayWindow:com.android.quicksearchbox} in Surface(name=LauncherOverlayWindow:com.android.quicksearchbo
+x#116359)/@0x794b1e0
+logs\virb_filtered_logcat.txt:2296:05-20 09:24:16.916 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{a80fd
+cf u0 LauncherOverlayWindow:com.miui.personalassistant} in Surface(name=LauncherOverlayWindow:com.miui.personalassistan
+t#116360)/@0x266b3f
+logs\virb_filtered_logcat.txt:2297:05-20 09:24:16.916 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{2d980
+42 u0 com.miui.home/com.miui.home.launcher.Launcher} in Surface(name=com.miui.home/com.miui.home.launcher.Launcher#1163
+61)/@0xd3de836
+logs\virb_filtered_logcat.txt:2298:05-20 09:24:16.919 D/PowerManagerService( 3598): extCmdAndArgs cmd = 1000, param = 0
+, displayCommitState = 2, iswakeup = false, mIsFolded = false, mAlwaysOnEnabled = true, mIsPowerFp = false, mKeyguardNo
+tification = true, screenActiveEarly = false, mIsFullAod = false, mIsNotAodActive = false, mDeviceState = 0, IS_FLIP_OR
+_FOLD_DEVICE = false, displayState = 2
+logs\virb_filtered_logcat.txt:2299:05-20 09:24:16.921 I/WindowManager( 3598): setWallpaperAsTarget asTarget=false
+logs\virb_filtered_logcat.txt:2300:05-20 09:24:16.925 I/WindowManager( 3598): wms.hideSurface mWin:Window{ab56371 u0 co
+m.miui.miwallpaper.wallpaperservice.MiuiKeyguardPictorialWallpaper} reason:(prepareSurfaceLocked) in Surface(name=com.m
+iui.miwallpaper.wallpaperservice.MiuiKeyguardPictorialWallpaper#89)/@0xc8ba324
+logs\virb_filtered_logcat.txt:2301:05-20 09:24:16.925 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{94e18
+74 u0 com.miui.notes} in Surface(name=#115235)/@0x136910
+logs\virb_filtered_logcat.txt:2302:05-20 09:24:16.927 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=205768282, flags=0x1, tag="NfcService:mRoutingWakeLock", ws=null, uid=1027, pid=10206
+logs\virb_filtered_logcat.txt:2303:05-20 09:24:16.928 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=205768282 [NfcService:mRoutingWakeLock], flags=0x0
+logs\virb_filtered_logcat.txt:2304:05-20 09:24:16.928 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=205768282, flags=0x1, tag="NfcService:mRoutingWakeLock", ws=null, uid=1027, pid=10206
+logs\virb_filtered_logcat.txt:2305:05-20 09:24:16.929 I/WindowManager( 3598): updateWallpaperWindows, window = Window{a
+b56371 u0 com.miui.miwallpaper.wallpaperservice.MiuiKeyguardPictorialWallpaper}  visible = false  wallpaperToken = Wall
+paperWindowToken{35f815b showWhenLocked=true}
+logs\virb_filtered_logcat.txt:2306:05-20 09:24:16.929 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=205768282 [NfcService:mRoutingWakeLock], flags=0x0
+logs\virb_filtered_logcat.txt:2307:05-20 09:24:16.931 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=205768282, flags=0x1, tag="NfcService:mRoutingWakeLock", ws=null, uid=1027, pid=10206
+logs\virb_filtered_logcat.txt:2308:05-20 09:24:16.934 I/PowerManagerService( 3598): Waking up from Dozing (uid=10227, r
+eason=WAKE_REASON_UNKNOWN, details=android.policy:FINGERPRINT:UnlockFinishT)...
+logs\virb_filtered_logcat.txt:2309:05-20 09:24:16.935 I/WindowManager( 3598): Started waking up... (groupId=0 why=ON_BE
+CAUSE_OF_UNKNOWN)
+logs\virb_filtered_logcat.txt:2310:05-20 09:24:16.941 I/PowerManagerService( 3598): set doze after screen off: true
+logs\virb_filtered_logcat.txt:2311:05-20 09:24:16.941 I/PowerManagerService( 3598): groupId[0] : update mDozeAfterScree
+nOff = true
+logs\virb_filtered_logcat.txt:2312:05-20 09:24:16.947 W/WindowManager( 3598): Cannot find window which accessibility co
+nnection is added to
+logs\virb_filtered_logcat.txt:2313:05-20 09:24:16.959 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{fa002
+0c u0 com.miui.notes} in Surface(name=#116371)/@0xdbf3ea0
+logs\virb_filtered_logcat.txt:2314:05-20 09:24:16.960 I/WindowManager( 3598): Finished setting display state ... (group
+Id=0)
+logs\virb_filtered_logcat.txt:2315:05-20 09:24:16.961 D/PowerManagerService( 3598): groupId[0], stopping Dream current 
+wakefulness is Awake
+logs\virb_filtered_logcat.txt:2316:05-20 09:24:16.961 I/WindowManager( 3598): Finished waking up... (groupId=0 why=ON_B
+ECAUSE_OF_UNKNOWN)
+logs\virb_filtered_logcat.txt:2317:05-20 09:24:16.961 D/PowerManagerService( 3598): groupId[0], stopping Dream current 
+wakefulness is Awake
+logs\virb_filtered_logcat.txt:2318:05-20 09:24:16.961 I/ActivityManager( 3598): unbindService com.android.server.am.Act
+iveServices@a98962 conn=android.app.LoadedApk$ServiceDispatcher$InnerConnection@fa1f56d callingPid=3598 callers: com.an
+droid.server.dreams.DreamController.stopDream:321 com.android.server.dreams.DreamManagerService.lambda$stopDreamLocked$
+14:1337 com.android.server.dreams.DreamManagerService.$r8$lambda$jRjqv6RQ5ik9FwCs6zHsiYf-i0U:0 com.android.server.dream
+s.DreamManagerService$$ExternalSyntheticLambda8.run:0 android.os.Handler.handleCallback:1029 android.os.Handler.dispatc
+hMessage:107 android.os.Looper.loopOnce:274 android.os.Looper.loop:369 android.os.HandlerThread.run:85 com.android.serv
+er.ServiceThread.run:49 
+logs\virb_filtered_logcat.txt:2319:05-20 09:24:16.964 D/PowerManagerService( 3598): groupId[0], stopping Dream current 
+wakefulness is Awake
+logs\virb_filtered_logcat.txt:2320:05-20 09:24:16.964 D/PowerManagerService( 3598): groupId[0], stopping Dream current 
+wakefulness is Awake
+logs\virb_filtered_logcat.txt:2321:05-20 09:24:16.973 I/ActivityManager( 3598): unbindService com.android.server.am.Act
+iveServices@a98962 conn=android.os.BinderProxy@52f302a callingPid=6086
+logs\virb_filtered_logcat.txt:2322:05-20 09:24:17.121 D/PowerManagerService( 3598): extCmdAndArgs cmd = 100, param = 0,
+ displayCommitState = 2, iswakeup = true, mIsFolded = false, mAlwaysOnEnabled = true, mIsPowerFp = false, mKeyguardNoti
+fication = true, screenActiveEarly = false, mIsFullAod = false, mIsNotAodActive = false, mDeviceState = 0, IS_FLIP_OR_F
+OLD_DEVICE = false, displayState = 2
+logs\virb_filtered_logcat.txt:2323:05-20 09:24:17.869 I/ActivityManager( 3598): Process com.xiaomi.aiservice:tag (pid 2
+0558) has died: cch+5 CEM 
+logs\virb_filtered_logcat.txt:2324:05-20 09:24:18.029 I/WindowManager( 3598): Try to add startingWindow type = STARTING
+_WINDOW_TYPE_SNAPSHOT this = ActivityRecord{156825532 u0 com.tencent.mm/.ui.LauncherUI t18675} mOccludesParent = true p
+reAllowTaskSnapshot = true afterAllowTaskSnapshot = true newTask = false taskSwitch = true processRunning = true activi
+tyCreated = true activityAllDrawn = false isSnapshotCompatible = true snapshotRotation = 0 resolvedTheme = 2131821231 t
+heme = 2131821231
+logs\virb_filtered_logcat.txt:2325:05-20 09:24:18.038 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{156825532 u0 com.tencent.mm/.ui.LauncherUI t18675}
+logs\virb_filtered_logcat.txt:2326:05-20 09:24:18.040 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{ab563
+71 u0 com.miui.miwallpaper.wallpaperservice.MiuiKeyguardPictorialWallpaper} in Surface(name=com.miui.miwallpaper.wallpa
+perservice.MiuiKeyguardPictorialWallpaper#89)/@0xc8ba324
+logs\virb_filtered_logcat.txt:2327:05-20 09:24:18.040 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{9d6e9
+61 u0 SnapshotStartingWindow for taskId=18675} in Surface(name=SnapshotStartingWindow for taskId=18675#116377)/@0x8847b
+12
+logs\virb_filtered_logcat.txt:2328:05-20 09:24:18.061 W/WindowManager( 3598): Cannot find window which accessibility co
+nnection is added to
+logs\virb_filtered_logcat.txt:2329:05-20 09:24:18.066 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{156825532 u0 com.tencent.mm/.ui.LauncherUI t18675}
+logs\virb_filtered_logcat.txt:2330:05-20 09:24:18.078 I/WindowManager( 3598): onFirstWindowDrawn, try to remove startin
+gWindow. ar: ActivityRecord{156825532 u0 com.tencent.mm/.ui.LauncherUI t18675}  associatedTask: null  isMainWindow: tru
+e  startingWindow: Window{9d6e961 u0 SnapshotStartingWindow for taskId=18675}  startingData: SnapshotStartingData{74699
+bd removeAfterTransaction= 0}
+logs\virb_filtered_logcat.txt:2331:05-20 09:24:18.080 W/ActivityManager( 3598): pid 3598 system sent binder code 31100 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2332:05-20 09:24:18.080 W/ActivityManager( 3598): pid 3598 system sent binder code 31100 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2333:05-20 09:24:18.082 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{30318
+2d u0 com.tencent.mm/com.tencent.mm.ui.LauncherUI} in Surface(name=com.tencent.mm/com.tencent.mm.ui.LauncherUI#116391)/
+@0x19ed340
+logs\virb_filtered_logcat.txt:2334:05-20 09:24:18.167 W/ActivityManager( 3598): Slow operation: 58ms so far, now at sta
+rtProcess: returned from zygote!
+logs\virb_filtered_logcat.txt:2335:05-20 09:24:18.167 W/ActivityManager( 3598): Slow operation: 58ms so far, now at sta
+rtProcess: done updating battery stats
+logs\virb_filtered_logcat.txt:2336:05-20 09:24:18.167 W/ActivityManager( 3598): Slow operation: 59ms so far, now at sta
+rtProcess: building log message
+logs\virb_filtered_logcat.txt:2337:05-20 09:24:18.167 I/ActivityManager( 3598): Start proc 20733:com.tencent.mm:xweb_sa
+ndboxed_process_1:com.tencent.xweb.pinus.sdk.process.SandboxedProcessService1/u0i711 for service {com.tencent.mm/com.te
+ncent.xweb.pinus.sdk.process.SandboxedProcessService1} caller=com.tencent.mm
+logs\virb_filtered_logcat.txt:2338:05-20 09:24:18.167 W/ActivityManager( 3598): Slow operation: 59ms so far, now at sta
+rtProcess: starting to update pids map
+logs\virb_filtered_logcat.txt:2339:05-20 09:24:18.167 I/ActivityManager( 3598): ProcessObserver broadcast disabled
+logs\virb_filtered_logcat.txt:2340:05-20 09:24:18.167 W/ActivityManager( 3598): Slow operation: 59ms so far, now at sta
+rtProcess: done updating pids map
+logs\virb_filtered_logcat.txt:2341:05-20 09:24:18.177 W/ActivityManager( 3598): Slow operation: 55ms so far, now at sta
+rtProcess: returned from zygote!
+logs\virb_filtered_logcat.txt:2342:05-20 09:24:18.178 W/ActivityManager( 3598): Slow operation: 55ms so far, now at sta
+rtProcess: done updating battery stats
+logs\virb_filtered_logcat.txt:2343:05-20 09:24:18.178 W/ActivityManager( 3598): Slow operation: 55ms so far, now at sta
+rtProcess: building log message
+logs\virb_filtered_logcat.txt:2344:05-20 09:24:18.178 I/ActivityManager( 3598): Start proc 20751:com.tencent.mm:xweb_pr
+ivileged_process_0/u0a344 for service {com.tencent.mm/com.tencent.xweb.pinus.sdk.process.PrivilegedProcessService0} cal
+ler=com.tencent.mm
+logs\virb_filtered_logcat.txt:2345:05-20 09:24:18.178 W/ActivityManager( 3598): Slow operation: 55ms so far, now at sta
+rtProcess: starting to update pids map
+logs\virb_filtered_logcat.txt:2346:05-20 09:24:18.178 I/ActivityManager( 3598): ProcessObserver broadcast disabled
+logs\virb_filtered_logcat.txt:2347:05-20 09:24:18.178 W/ActivityManager( 3598): Slow operation: 56ms so far, now at sta
+rtProcess: done updating pids map
+logs\virb_filtered_logcat.txt:2348:05-20 09:24:18.189 W/ActivityManager( 3598): Slow operation: 58ms so far, now at sta
+rtProcess: returned from zygote!
+logs\virb_filtered_logcat.txt:2349:05-20 09:24:18.189 W/ActivityManager( 3598): Slow operation: 58ms so far, now at sta
+rtProcess: done updating battery stats
+logs\virb_filtered_logcat.txt:2350:05-20 09:24:18.190 W/ActivityManager( 3598): Slow operation: 58ms so far, now at sta
+rtProcess: building log message
+logs\virb_filtered_logcat.txt:2351:05-20 09:24:18.190 I/ActivityManager( 3598): Start proc 20768:com.tencent.mm:appbran
+d0/u0a344 for service {com.tencent.mm/com.tencent.mm.ipcinvoker.wx_extension.service.Appbrand0IPCService} caller=com.te
+ncent.mm
+logs\virb_filtered_logcat.txt:2352:05-20 09:24:18.190 W/ActivityManager( 3598): Slow operation: 58ms so far, now at sta
+rtProcess: starting to update pids map
+logs\virb_filtered_logcat.txt:2353:05-20 09:24:18.190 I/ActivityManager( 3598): ProcessObserver broadcast disabled
+logs\virb_filtered_logcat.txt:2354:05-20 09:24:18.190 W/ActivityManager( 3598): Slow operation: 58ms so far, now at sta
+rtProcess: done updating pids map
+logs\virb_filtered_logcat.txt:2355:05-20 09:24:18.202 I/ActivityManager( 3598): Start proc 20799:com.xiaomi.aicr:search
+DataService_ui/u0a133 for content provider {com.xiaomi.aicr/com.xiaomi.aicr.aisearch.AISearchUIProvider} caller=com.xia
+omi.aicr
+logs\virb_filtered_logcat.txt:2356:05-20 09:24:18.202 I/ActivityManager( 3598): ProcessObserver broadcast disabled
+logs\virb_filtered_logcat.txt:2357:05-20 09:24:18.340 I/WindowManager( 3598): StartingWindow exit animation finished, w
+in = Window{9d6e961 u0 SnapshotStartingWindow for taskId=18675 EXITING} remove = true
+logs\virb_filtered_logcat.txt:2358:05-20 09:24:18.340 I/WindowManager( 3598): wms.hideSurface mWin:Window{9d6e961 u0 Sn
+apshotStartingWindow for taskId=18675 EXITING} reason:(onExitAnimationDone) in Surface(name=SnapshotStartingWindow for 
+taskId=18675#116377)/@0x8847b12
+logs\virb_filtered_logcat.txt:2359:05-20 09:24:18.426 I/ActivityManager( 3598): Start proc 20950:com.miui.mediaeditor/u
+0a298 for content provider {com.miui.mediaeditor/com.miui.mediaeditor.provider.MediaEditorProviderForGallery} caller=co
+m.miui.gallery
+logs\virb_filtered_logcat.txt:2360:05-20 09:24:18.426 I/ActivityManager( 3598): ProcessObserver broadcast disabled
+logs\virb_filtered_logcat.txt:2361:05-20 09:24:18.489 I/ActivityManager( 3598): Process PhantomProcessRecord {4bca2b0 2
+0943:20768:logcat/u0a344} died
+logs\virb_filtered_logcat.txt:2362:05-20 09:24:18.556 I/WindowManager( 3598): wms.hideSurface mWin:Window{c03cb29 u0 co
+m.miui.miwallpaper.wallpaperservice.ImageWallpaper} reason:(prepareSurfaceLocked) in Surface(name=com.miui.miwallpaper.
+wallpaperservice.ImageWallpaper#92)/@0x3abe504
+logs\virb_filtered_logcat.txt:2363:05-20 09:24:18.556 I/WindowManager( 3598): wms.hideSurface mWin:Window{ab56371 u0 co
+m.miui.miwallpaper.wallpaperservice.MiuiKeyguardPictorialWallpaper} reason:(prepareSurfaceLocked) in Surface(name=com.m
+iui.miwallpaper.wallpaperservice.MiuiKeyguardPictorialWallpaper#89)/@0xc8ba324
+logs\virb_filtered_logcat.txt:2364:05-20 09:24:18.556 I/WindowManager( 3598): wms.hideSurface mWin:Window{2d98042 u0 co
+m.miui.home/com.miui.home.launcher.Launcher} reason:(prepareSurfaceLocked) in Surface(name=com.miui.home/com.miui.home.
+launcher.Launcher#116361)/@0xd3de836
+logs\virb_filtered_logcat.txt:2365:05-20 09:24:18.556 I/WindowManager( 3598): wms.hideSurface mWin:Window{a80fdcf u0 La
+uncherOverlayWindow:com.miui.personalassistant} reason:(prepareSurfaceLocked) in Surface(name=LauncherOverlayWindow:com
+.miui.personalassistant#116360)/@0x266b3f
+logs\virb_filtered_logcat.txt:2366:05-20 09:24:18.556 I/WindowManager( 3598): wms.hideSurface mWin:Window{b48d9df u0 La
+uncherOverlayWindow:com.android.quicksearchbox} reason:(prepareSurfaceLocked) in Surface(name=LauncherOverlayWindow:com
+.android.quicksearchbox#116359)/@0x794b1e0
+logs\virb_filtered_logcat.txt:2367:05-20 09:24:18.565 W/WindowManager( 3598): Cannot find window which accessibility co
+nnection is added to
+logs\virb_filtered_logcat.txt:2368:05-20 09:24:18.566 W/WindowManager( 3598): Failed looking up window session=Session{
+6584a4d 6086:u0a10227} callers=com.android.server.wm.WindowManagerService.removeClientToken:2704 com.android.server.wm.
+Session.remove:344 android.view.IWindowSession$Stub.onTransact:781 
+logs\virb_filtered_logcat.txt:2369:05-20 09:24:19.447 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{c03cb
+29 u0 com.miui.miwallpaper.wallpaperservice.ImageWallpaper} in Surface(name=com.miui.miwallpaper.wallpaperservice.Image
+Wallpaper#92)/@0x3abe504
+logs\virb_filtered_logcat.txt:2370:05-20 09:24:19.447 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{ab563
+71 u0 com.miui.miwallpaper.wallpaperservice.MiuiKeyguardPictorialWallpaper} in Surface(name=com.miui.miwallpaper.wallpa
+perservice.MiuiKeyguardPictorialWallpaper#89)/@0xc8ba324
+logs\virb_filtered_logcat.txt:2371:05-20 09:24:19.451 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{2d980
+42 u0 com.miui.home/com.miui.home.launcher.Launcher} in Surface(name=com.miui.home/com.miui.home.launcher.Launcher#1163
+94)/@0x29627bc
+logs\virb_filtered_logcat.txt:2372:05-20 09:24:19.453 E/WindowManager( 3598):  source = Task{b58ca9a #18675 type=standa
+rd A=10344:com.tencent.mm} excludeMiuiNavBar = true excludeMiuiStatusBar = true excludeIme = false excludeNavBar = true
+ miuiNavSurfaceControl = Surface(name=NavigationBar Container of Task = 18675#115011)/@0xf68f666 miuiStatusSurfaceContr
+ol = Surface(name=StatusBar Container of Task = 18675#115012)/@0x3a82da7
+logs\virb_filtered_logcat.txt:2373:05-20 09:24:19.463 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{a80fd
+cf u0 LauncherOverlayWindow:com.miui.personalassistant} in Surface(name=LauncherOverlayWindow:com.miui.personalassistan
+t#116398)/@0x25cc2f2
+logs\virb_filtered_logcat.txt:2374:05-20 09:24:19.471 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{24642259 u0 com.miui.home/.launcher.Launcher t2}
+logs\virb_filtered_logcat.txt:2375:05-20 09:24:19.472 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{b48d9
+df u0 LauncherOverlayWindow:com.android.quicksearchbox} in Surface(name=LauncherOverlayWindow:com.android.quicksearchbo
+x#116399)/@0x290f7ec
+logs\virb_filtered_logcat.txt:2376:05-20 09:24:19.473 W/ActivityManager( 3598): pid 3598 system sent binder code 31100 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2377:05-20 09:24:19.473 W/ActivityManager( 3598): pid 3598 system sent binder code 31100 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:2378:05-20 09:24:19.476 W/WindowManager( 3598): Cannot find window which accessibility co
+nnection is added to
+logs\virb_filtered_logcat.txt:2379:05-20 09:24:19.542 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{24642259 u0 com.miui.home/.launcher.Launcher t2}
+logs\virb_filtered_logcat.txt:2384:05-20 09:24:20.688 I/WindowManager( 3598): Try to add startingWindow type = STARTING
+_WINDOW_TYPE_SPLASH_SCREEN this = ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687} mOccludesParent = tru
+e preAllowTaskSnapshot = true afterAllowTaskSnapshot = true newTask = true taskSwitch = true processRunning = true acti
+vityCreated = false activityAllDrawn = false isSnapshotCompatible = false snapshotRotation = NaN resolvedTheme = 213175
+5636 theme = 2131755636
+logs\virb_filtered_logcat.txt:2386:05-20 09:24:20.699 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}
+logs\virb_filtered_logcat.txt:2387:05-20 09:24:20.704 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}
+logs\virb_filtered_logcat.txt:2388:05-20 09:24:20.711 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{32c32
+3a u0 Splash Screen com.virb.lite} in Surface(name=Splash Screen com.virb.lite#116428)/@0xd159dea
+logs\virb_filtered_logcat.txt:2390:05-20 09:24:20.732 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}
+logs\virb_filtered_logcat.txt:2391:05-20 09:24:20.743 I/WindowManager( 3598): onFirstWindowDrawn, try to remove startin
+gWindow. ar: ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}  associatedTask: null  isMainWindow: true 
+ startingWindow: Window{32c323a u0 Splash Screen com.virb.lite}  startingData: SplashScreenStartingData{ded82ef removeA
+fterTransaction= 0}
+logs\virb_filtered_logcat.txt:2392:05-20 09:24:20.746 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{605ce
+b5 u0 com.virb.lite/com.virb.lite.MainActivity} in Surface(name=com.virb.lite/com.virb.lite.MainActivity#116435)/@0xd9a
+4569
+logs\virb_filtered_logcat.txt:2393:05-20 09:24:20.903 I/WindowManager( 3598): StartingWindow exit animation finished, w
+in = Window{32c323a u0 Splash Screen com.virb.lite EXITING} remove = true
+logs\virb_filtered_logcat.txt:2394:05-20 09:24:20.903 I/WindowManager( 3598): wms.hideSurface mWin:Window{32c323a u0 Sp
+lash Screen com.virb.lite EXITING} reason:(onExitAnimationDone) in Surface(name=Splash Screen com.virb.lite#116428)/@0x
+d159dea
+logs\virb_filtered_logcat.txt:2402:05-20 09:24:21.493 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{13934
+03 u0 com.virb.lite/com.virb.lite.MainActivity} in Surface(name=com.virb.lite/com.virb.lite.MainActivity#116446)/@0x603
+72d6
+logs\virb_filtered_logcat.txt:2412:05-20 09:24:35.227 I/WindowManager( 3598): wms.hideSurface mWin:Window{1393403 u0 co
+m.virb.lite/com.virb.lite.MainActivity EXITING} reason:(onExitAnimationDone) in Surface(name=com.virb.lite/com.virb.lit
+e.MainActivity#116446)/@0x60372d6
+logs\virb_filtered_logcat.txt:2417:05-20 09:24:35.606 E/WindowManager( 3598):  source = Task{d8094cd #18687 type=standa
+rd A=10374:com.virb.lite} excludeMiuiNavBar = true excludeMiuiStatusBar = true excludeIme = false excludeNavBar = true 
+miuiNavSurfaceControl = Surface(name=NavigationBar Container of Task = 18687#116412)/@0xa40182 miuiStatusSurfaceControl
+ = Surface(name=StatusBar Container of Task = 18687#116413)/@0xad67093
+logs\virb_filtered_logcat.txt:2422:05-20 09:24:36.351 I/WindowManager( 3598): wms.hideSurface mWin:Window{605ceb5 u0 co
+m.virb.lite/com.virb.lite.MainActivity} reason:(prepareSurfaceLocked) in Surface(name=com.virb.lite/com.virb.lite.MainA
+ctivity#116435)/@0xd9a4569
+logs\virb_filtered_logcat.txt:3136:05-20 09:26:00.267 I/ActivityManager( 3598): unbindService com.android.server.am.Act
+iveServices@a98962 conn=android.os.BinderProxy@d177410 callingPid=28275
+logs\virb_filtered_logcat.txt:3137:05-20 09:26:00.550 I/ActivityManager( 3598): unbindService com.android.server.am.Act
+iveServices@a98962 conn=android.os.BinderProxy@6c510e callingPid=16523
+logs\virb_filtered_logcat.txt:3138:05-20 09:26:01.666 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=141370358, flags=0x1, tag="NotificationManagerService:post:com.xtc.watch", ws=WorkSource{10210 com.xtc.watch},
+ uid=1000, pid=3598
+logs\virb_filtered_logcat.txt:3139:05-20 09:26:01.920 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=141370358 [NotificationManagerService:post:com.xtc.watch], flags=0x0
+logs\virb_filtered_logcat.txt:3140:05-20 09:26:01.935 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=90847365, flags=0x1, tag="com.virb.lite:vibrate", ws=null, uid=10374, pid=21503
+logs\virb_filtered_logcat.txt:3141:05-20 09:26:01.943 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=90847365 [com.virb.lite:vibrate], flags=0x0
+logs\virb_filtered_logcat.txt:3142:05-20 09:26:01.945 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=66102029, flags=0x1, tag="*vibrator*", ws=WorkSource{10374}, uid=1000, pid=3598
+logs\virb_filtered_logcat.txt:3143:05-20 09:26:01.984 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=66102029 [*vibrator*], flags=0x0
+logs\virb_filtered_logcat.txt:3144:05-20 09:26:03.559 I/ActivityManager( 3598): unbindService com.android.server.am.Act
+iveServices@a98962 conn=android.os.BinderProxy@364e872 callingPid=28369
+logs\virb_filtered_logcat.txt:3145:05-20 09:26:06.546 D/PowerManagerService( 3598): extCmdAndArgs cmd = 100, param = 1,
+ displayCommitState = 1, iswakeup = false, mIsFolded = false, mAlwaysOnEnabled = true, mIsPowerFp = false, mKeyguardNot
+ification = true, screenActiveEarly = false, mIsFullAod = false, mIsNotAodActive = false, mDeviceState = 0, IS_FLIP_OR_
+FOLD_DEVICE = false, displayState = 1
+logs\virb_filtered_logcat.txt:3146:05-20 09:26:06.557 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=52719071, flags=0x1, tag="DozeHost", ws=null, uid=10227, pid=6086
+logs\virb_filtered_logcat.txt:3147:05-20 09:26:06.558 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=158788140, flags=0x1, tag="Doze", ws=null, uid=10227, pid=6086
+logs\virb_filtered_logcat.txt:3148:05-20 09:26:06.563 I/PowerManagerService( 3598): setRearDozeState: newScreenState =2
+, lastScreenState =1, screenBrightnessInt =255, useNormalBrightnessForDoze =false, screenBrightnessFloat =0.015504822
+logs\virb_filtered_logcat.txt:3149:05-20 09:26:06.563 D/PowerManagerService( 3598): screenState =2, mAlwaysOnEnabled =t
+rue, mIsFullAod =false, mFingerPrintStatus =0, mScreenState =1, currentScreenState =1, screenBrightnessInt = 255
+logs\virb_filtered_logcat.txt:3150:05-20 09:26:06.563 I/PowerManagerService( 3598): sFlinger = android.os.BinderProxy@6
+73d0d8
+logs\virb_filtered_logcat.txt:3151:05-20 09:26:06.565 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=52719071 [DozeHost], flags=0x0
+logs\virb_filtered_logcat.txt:3152:05-20 09:26:06.565 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=52719071, flags=0x1, tag="DozeHost", ws=null, uid=10227, pid=6086
+logs\virb_filtered_logcat.txt:3153:05-20 09:26:06.565 I/WindowManager( 3598): Display 0 turning on...
+logs\virb_filtered_logcat.txt:3154:05-20 09:26:06.566 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=52719071 [DozeHost], flags=0x0
+logs\virb_filtered_logcat.txt:3155:05-20 09:26:06.566 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=106470026, flags=0x80, tag="gxzw", ws=null, uid=10227, pid=6086
+logs\virb_filtered_logcat.txt:3156:05-20 09:26:06.567 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=52719071, flags=0x1, tag="DozeHost", ws=null, uid=10227, pid=6086
+logs\virb_filtered_logcat.txt:3157:05-20 09:26:06.567 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=52719071 [DozeHost], flags=0x0
+logs\virb_filtered_logcat.txt:3158:05-20 09:26:06.569 I/WindowManager( 3598): mKeyguardDelegate.ShowListener.onDrawn.
+logs\virb_filtered_logcat.txt:3159:05-20 09:26:06.570 W/WindowManager( 3598): Setting mKeyguardDrawComplete
+logs\virb_filtered_logcat.txt:3160:05-20 09:26:06.586 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=185088471, flags=0x1, tag="*telephony-radio*", ws=null, uid=1001, pid=6004
+logs\virb_filtered_logcat.txt:3161:05-20 09:26:06.587 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=68357525, flags=0x1, tag="QcrilOemhookMsgTunnel", ws=null, uid=10155, pid=5634
+logs\virb_filtered_logcat.txt:3162:05-20 09:26:06.587 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=185088471 [*telephony-radio*], flags=0x0
+logs\virb_filtered_logcat.txt:3163:05-20 09:26:06.588 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=185088471, flags=0x1, tag="*telephony-radio*", ws=null, uid=1001, pid=6004
+logs\virb_filtered_logcat.txt:3164:05-20 09:26:06.588 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=185088471, flags=0x1, tag="*telephony-radio*", ws=WorkSource{1001 com.android.phone}, uid=1001, pid=6004
+logs\virb_filtered_logcat.txt:3165:05-20 09:26:06.588 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=124408516, flags=0x1, tag="*telephony-radio*", ws=null, uid=1001, pid=6004
+logs\virb_filtered_logcat.txt:3166:05-20 09:26:06.588 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=124408516, flags=0x1, tag="*telephony-radio*", ws=WorkSource{1001 com.android.phone}, uid=1001, pid=6004
+logs\virb_filtered_logcat.txt:3167:05-20 09:26:06.592 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=124408516, flags=0x1, tag="*telephony-radio*", ws=WorkSource{1001 com.android.phone}, uid=1001, pid=6004
+logs\virb_filtered_logcat.txt:3168:05-20 09:26:06.592 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=68357525 [QcrilOemhookMsgTunnel], flags=0x0
+logs\virb_filtered_logcat.txt:3169:05-20 09:26:06.593 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=185088471, flags=0x1, tag="*telephony-radio*", ws=WorkSource{1001 com.android.phone}, uid=1001, pid=6004
+logs\virb_filtered_logcat.txt:3170:05-20 09:26:06.593 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=124408516, flags=0x1, tag="*telephony-radio*", ws=WorkSource{1001 com.android.phone}, uid=1001, pid=6004
+logs\virb_filtered_logcat.txt:3171:05-20 09:26:06.601 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=85271981, flags=0x1, tag="RILJ_ACK_WL", ws=null, uid=1001, pid=6004
+logs\virb_filtered_logcat.txt:3172:05-20 09:26:06.602 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=124408516, flags=0x1, tag="*telephony-radio*", ws=WorkSource{1001 com.android.phone}, uid=1001, pid=6004
+logs\virb_filtered_logcat.txt:3173:05-20 09:26:06.603 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=85271981, flags=0x1, tag="RILJ_ACK_WL", ws=null, uid=1001, pid=6004
+logs\virb_filtered_logcat.txt:3174:05-20 09:26:06.604 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=124408516, flags=0x1, tag="*telephony-radio*", ws=WorkSource{1001 com.android.phone}, uid=1001, pid=6004
+logs\virb_filtered_logcat.txt:3175:05-20 09:26:06.604 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=206172386, flags=0x1, tag="IWLAN_PROXY_WL", ws=null, uid=10120, pid=5965
+logs\virb_filtered_logcat.txt:3176:05-20 09:26:06.605 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=124408516, flags=0x1, tag="*telephony-radio*", ws=WorkSource{1001 com.android.phone}, uid=1001, pid=6004
+logs\virb_filtered_logcat.txt:3177:05-20 09:26:06.605 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=61643891, flags=0x1, tag="RILJ_ACK_WL", ws=null, uid=1001, pid=6004
+logs\virb_filtered_logcat.txt:3178:05-20 09:26:06.605 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=124408516, flags=0x1, tag="*telephony-radio*", ws=WorkSource{1001 com.android.phone}, uid=1001, pid=6004
+logs\virb_filtered_logcat.txt:3179:05-20 09:26:06.606 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=206172386 [IWLAN_PROXY_WL], flags=0x0
+logs\virb_filtered_logcat.txt:3180:05-20 09:26:06.607 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=61643891, flags=0x1, tag="RILJ_ACK_WL", ws=null, uid=1001, pid=6004
+logs\virb_filtered_logcat.txt:3181:05-20 09:26:06.608 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=124408516 [*telephony-radio*], flags=0x0
+logs\virb_filtered_logcat.txt:3182:05-20 09:26:06.608 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=185088471, flags=0x1, tag="*telephony-radio*", ws=WorkSource{1001 com.android.phone}, uid=1001, pid=6004
+logs\virb_filtered_logcat.txt:3183:05-20 09:26:06.608 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=42692521, flags=0x1, tag="IWLAN_PROXY_WL", ws=null, uid=10120, pid=5965
+logs\virb_filtered_logcat.txt:3184:05-20 09:26:06.609 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=185088471, flags=0x1, tag="*telephony-radio*", ws=WorkSource{1001 com.android.phone}, uid=1001, pid=6004
+logs\virb_filtered_logcat.txt:3185:05-20 09:26:06.609 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=185088471, flags=0x1, tag="*telephony-radio*", ws=WorkSource{1001 com.android.phone}, uid=1001, pid=6004
+logs\virb_filtered_logcat.txt:3186:05-20 09:26:06.609 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=185088471, flags=0x1, tag="*telephony-radio*", ws=WorkSource{1001 com.android.phone}, uid=1001, pid=6004
+logs\virb_filtered_logcat.txt:3187:05-20 09:26:06.613 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=42692521 [IWLAN_PROXY_WL], flags=0x0
+logs\virb_filtered_logcat.txt:3188:05-20 09:26:06.616 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=61643891, flags=0x1, tag="RILJ_ACK_WL", ws=null, uid=1001, pid=6004
+logs\virb_filtered_logcat.txt:3189:05-20 09:26:06.618 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=185088471 [*telephony-radio*], flags=0x0
+logs\virb_filtered_logcat.txt:3190:05-20 09:26:06.618 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=185088471, flags=0x1, tag="*telephony-radio*", ws=null, uid=1001, pid=6004
+logs\virb_filtered_logcat.txt:3191:05-20 09:26:06.618 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=185088471, flags=0x1, tag="*telephony-radio*", ws=WorkSource{1001 com.android.phone}, uid=1001, pid=6004
+logs\virb_filtered_logcat.txt:3192:05-20 09:26:06.618 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=185088471, flags=0x1, tag="*telephony-radio*", ws=WorkSource{1001 com.android.phone}, uid=1001, pid=6004
+logs\virb_filtered_logcat.txt:3193:05-20 09:26:06.619 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=42692521, flags=0x1, tag="IWLAN_PROXY_WL", ws=null, uid=10120, pid=5965
+logs\virb_filtered_logcat.txt:3194:05-20 09:26:06.619 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=185088471, flags=0x1, tag="*telephony-radio*", ws=WorkSource{1001 com.android.phone}, uid=1001, pid=6004
+logs\virb_filtered_logcat.txt:3195:05-20 09:26:06.621 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=42692521 [IWLAN_PROXY_WL], flags=0x0
+logs\virb_filtered_logcat.txt:3196:05-20 09:26:06.622 W/WindowManager( 3598): All windows drawn on display -1
+logs\virb_filtered_logcat.txt:3197:05-20 09:26:06.625 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=185088471 [*telephony-radio*], flags=0x0
+logs\virb_filtered_logcat.txt:3198:05-20 09:26:06.643 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=167927141, flags=0x1, tag="wake-and-unlock:wakelock", ws=null, uid=10227, pid=6086
+logs\virb_filtered_logcat.txt:3199:05-20 09:26:06.644 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=167927141 [wake-and-unlock:wakelock], flags=0x0
+logs\virb_filtered_logcat.txt:3200:05-20 09:26:06.645 I/ActivityManager( 3598): updateOomAdj start time is before than 
+pendingPid added, don't delete it
+logs\virb_filtered_logcat.txt:3201:05-20 09:26:06.646 I/WindowManager( 3598): Disable startingWindow, because mainWin =
+ Window{2d98042 u0 com.miui.home/com.miui.home.launcher.Launcher} r = ActivityRecord{24642259 u0 com.miui.home/.launche
+r.Launcher t2} this = ActivityRecord{24642259 u0 com.miui.home/.launcher.Launcher t2}
+logs\virb_filtered_logcat.txt:3202:05-20 09:26:06.652 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{c03cb
+29 u0 com.miui.miwallpaper.wallpaperservice.ImageWallpaper} in Surface(name=com.miui.miwallpaper.wallpaperservice.Image
+Wallpaper#92)/@0x3abe504
+logs\virb_filtered_logcat.txt:3203:05-20 09:26:06.657 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=108869742, flags=0x1, tag="LockoutResetMonitor:SendLockoutReset", ws=null, uid=1000, pid=3598
+logs\virb_filtered_logcat.txt:3204:05-20 09:26:06.658 D/PowerManagerService( 3598): [xiaomi_power]acquireWakeLockIntern
+al: lock=157464246, flags=0x1, tag="faceLockoutResetCallback", ws=null, uid=10227, pid=6086
+logs\virb_filtered_logcat.txt:3205:05-20 09:26:06.658 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=108869742 [LockoutResetMonitor:SendLockoutReset], flags=0x0
+logs\virb_filtered_logcat.txt:3206:05-20 09:26:06.671 D/PowerManagerService( 3598): [xiaomi_power]releaseWakeLockIntern
+al: lock=157464246 [faceLockoutResetCallback], flags=0x0
+logs\virb_filtered_logcat.txt:3207:05-20 09:26:06.713 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{b48d9
+df u0 LauncherOverlayWindow:com.android.quicksearchbox} in Surface(name=LauncherOverlayWindow:com.android.quicksearchbo
+x#116482)/@0xadb8842
+logs\virb_filtered_logcat.txt:3208:05-20 09:26:06.713 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{a80fd
+cf u0 LauncherOverlayWindow:com.miui.personalassistant} in Surface(name=LauncherOverlayWindow:com.miui.personalassistan
+t#116483)/@0x485f689
+logs\virb_filtered_logcat.txt:3209:05-20 09:26:06.713 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{2d980
+42 u0 com.miui.home/com.miui.home.launcher.Launcher} in Surface(name=com.miui.home/com.miui.home.launcher.Launcher#1164
+81)/@0x9776fb7
+logs\virb_filtered_logcat.txt:3210:05-20 09:26:06.715 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3211:05-20 09:26:06.716 D/PowerManagerService( 3598): extCmdAndArgs cmd = 1000, param = 0
+, displayCommitState = 2, iswakeup = false, mIsFolded = false, mAlwaysOnEnabled = true, mIsPowerFp = false, mKeyguardNo
+tification = true, screenActiveEarly = true, mIsFullAod = false, mIsNotAodActive = false, mDeviceState = 0, IS_FLIP_OR_
+FOLD_DEVICE = false, displayState = 2
+logs\virb_filtered_logcat.txt:3212:05-20 09:26:06.716 W/ActivityManager( 3598): pid 3598 system sent binder code 31100 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3213:05-20 09:26:06.716 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3214:05-20 09:26:06.716 W/ActivityManager( 3598): pid 3598 system sent binder code 31100 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3215:05-20 09:26:06.716 W/ActivityManager( 3598): pid 3598 system sent binder code 31100 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3216:05-20 09:26:06.716 W/ActivityManager( 3598): pid 3598 system sent binder code 31100 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3217:05-20 09:26:06.716 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3218:05-20 09:26:06.717 I/WindowManager( 3598): wms.hideSurface mWin:Window{ab56371 u0 co
+m.miui.miwallpaper.wallpaperservice.MiuiKeyguardPictorialWallpaper} reason:(prepareSurfaceLocked) in Surface(name=com.m
+iui.miwallpaper.wallpaperservice.MiuiKeyguardPictorialWallpaper#89)/@0xc8ba324
+logs\virb_filtered_logcat.txt:3219:05-20 09:26:06.724 I/WindowManager( 3598): Display 0 turned on...
+logs\virb_filtered_logcat.txt:3220:05-20 09:26:06.729 I/PowerManagerService( 3598): Waking up from Dozing (uid=10227, r
+eason=WAKE_REASON_UNKNOWN, details=android.policy:FINGERPRINT:UnlockFinishT)...
+logs\virb_filtered_logcat.txt:3221:05-20 09:26:06.729 I/WindowManager( 3598): Started waking up... (groupId=0 why=ON_BE
+CAUSE_OF_UNKNOWN)
+logs\virb_filtered_logcat.txt:3222:05-20 09:26:06.730 D/PowerManagerService( 3598): groupId[0], stopping Dream current 
+wakefulness is Awake
+logs\virb_filtered_logcat.txt:3223:05-20 09:26:06.730 D/PowerManagerService( 3598): groupId[0], stopping Dream current 
+wakefulness is Awake
+logs\virb_filtered_logcat.txt:3224:05-20 09:26:06.731 D/PowerManagerService( 3598): groupId[0], stopping Dream current 
+wakefulness is Awake
+logs\virb_filtered_logcat.txt:3225:05-20 09:26:06.731 I/WindowManager( 3598): setWallpaperAsTarget asTarget=false
+logs\virb_filtered_logcat.txt:3226:05-20 09:26:06.731 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3227:05-20 09:26:06.733 I/ActivityManager( 3598): unbindService com.android.server.am.Act
+iveServices@a98962 conn=android.app.LoadedApk$ServiceDispatcher$InnerConnection@ef72ede callingPid=3598 callers: com.an
+droid.server.dreams.DreamController.stopDream:321 com.android.server.dreams.DreamManagerService.lambda$stopDreamLocked$
+14:1337 com.android.server.dreams.DreamManagerService.$r8$lambda$jRjqv6RQ5ik9FwCs6zHsiYf-i0U:0 com.android.server.dream
+s.DreamManagerService$$ExternalSyntheticLambda8.run:0 android.os.Handler.handleCallback:1029 android.os.Handler.dispatc
+hMessage:107 android.os.Looper.loopOnce:274 android.os.Looper.loop:369 android.os.HandlerThread.run:85 com.android.serv
+er.ServiceThread.run:49 
+logs\virb_filtered_logcat.txt:3228:05-20 09:26:06.734 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{94e18
+74 u0 com.miui.notes} in Surface(name=#115235)/@0x136910
+logs\virb_filtered_logcat.txt:3229:05-20 09:26:06.736 I/WindowManager( 3598): updateWallpaperWindows, window = Window{a
+b56371 u0 com.miui.miwallpaper.wallpaperservice.MiuiKeyguardPictorialWallpaper}  visible = false  wallpaperToken = Wall
+paperWindowToken{35f815b showWhenLocked=true}
+logs\virb_filtered_logcat.txt:3230:05-20 09:26:06.736 I/WindowManager( 3598): Finished setting display state ... (group
+Id=0)
+logs\virb_filtered_logcat.txt:3231:05-20 09:26:06.737 I/WindowManager( 3598): Finished waking up... (groupId=0 why=ON_B
+ECAUSE_OF_UNKNOWN)
+logs\virb_filtered_logcat.txt:3232:05-20 09:26:06.750 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3233:05-20 09:26:06.754 W/WindowManager( 3598): Cannot find window which accessibility co
+nnection is added to
+logs\virb_filtered_logcat.txt:3234:05-20 09:26:06.755 I/ActivityManager( 3598): unbindService com.android.server.am.Act
+iveServices@a98962 conn=android.os.BinderProxy@91f2d11 callingPid=6086
+logs\virb_filtered_logcat.txt:3235:05-20 09:26:06.768 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3236:05-20 09:26:06.776 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{fa002
+0c u0 com.miui.notes} in Surface(name=#116495)/@0xb2fb45a
+logs\virb_filtered_logcat.txt:3237:05-20 09:26:06.786 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3238:05-20 09:26:06.805 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3239:05-20 09:26:06.830 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3240:05-20 09:26:06.834 I/ActivityManager( 3598): unbindService com.android.server.am.Act
+iveServices@a98962 conn=android.os.BinderProxy@43b812a callingPid=24279
+logs\virb_filtered_logcat.txt:3241:05-20 09:26:06.841 I/ActivityManager( 3598): unbindService com.android.server.am.Act
+iveServices@a98962 conn=android.os.BinderProxy@d89a634 callingPid=24279
+logs\virb_filtered_logcat.txt:3242:05-20 09:26:06.841 I/ActivityManager( 3598): Killing 20733:com.tencent.mm:xweb_sandb
+oxed_process_1:com.tencent.xweb.pinus.sdk.process.SandboxedProcessService1/u0a344i711 (adj 0): isolated not needed
+logs\virb_filtered_logcat.txt:3243:05-20 09:26:06.845 I/ActivityManager( 3598): unbindService com.android.server.am.Act
+iveServices@a98962 conn=android.os.BinderProxy@6fd0464 callingPid=24279
+logs\virb_filtered_logcat.txt:3244:05-20 09:26:06.848 I/ActivityManager( 3598): unbindService com.android.server.am.Act
+iveServices@a98962 conn=android.os.BinderProxy@c8b54b8 callingPid=24279
+logs\virb_filtered_logcat.txt:3245:05-20 09:26:06.848 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3246:05-20 09:26:06.870 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3247:05-20 09:26:06.889 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3248:05-20 09:26:06.911 I/ActivityManager( 3598): Process com.tencent.mm:xweb_privileged_
+process_0 (pid 20751) has died: fg  SVC 
+logs\virb_filtered_logcat.txt:3249:05-20 09:26:06.913 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3250:05-20 09:26:06.926 I/ActivityManager( 3598): Process com.tencent.mm:appbrand0 (pid 2
+0768) has died: hvy   +1 CACC
+logs\virb_filtered_logcat.txt:3251:05-20 09:26:06.928 I/ActivityManager( 3598): unbindService com.android.server.am.Act
+iveServices@a98962 conn=android.os.BinderProxy@14c2c9 callingPid=24279
+logs\virb_filtered_logcat.txt:3252:05-20 09:26:06.928 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3253:05-20 09:26:06.930 I/ActivityManager( 3598): unbindService com.android.server.am.Act
+iveServices@a98962 conn=android.os.BinderProxy@3f1227b callingPid=24279
+logs\virb_filtered_logcat.txt:3254:05-20 09:26:06.948 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3255:05-20 09:26:06.953 W/ActivityManager( 3598): pid 24193 com.tencent.mm:push sent bind
+er code 4 with flags 0 to frozen apps and got error -32
+logs\virb_filtered_logcat.txt:3256:05-20 09:26:06.965 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3257:05-20 09:26:06.983 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3258:05-20 09:26:07.000 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3259:05-20 09:26:07.017 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3260:05-20 09:26:07.035 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3261:05-20 09:26:07.053 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3262:05-20 09:26:07.070 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3263:05-20 09:26:07.087 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3264:05-20 09:26:07.157 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{79abf
+91 u0 gxzw_quick_open} in Surface(name=gxzw_quick_open#116498)/@0x89c0482
+logs\virb_filtered_logcat.txt:3265:05-20 09:26:07.280 D/PowerManagerService( 3598): extCmdAndArgs cmd = 100, param = 0,
+ displayCommitState = 2, iswakeup = true, mIsFolded = false, mAlwaysOnEnabled = true, mIsPowerFp = false, mKeyguardNoti
+fication = true, screenActiveEarly = false, mIsFullAod = false, mIsNotAodActive = false, mDeviceState = 0, IS_FLIP_OR_F
+OLD_DEVICE = false, displayState = 2
+logs\virb_filtered_logcat.txt:3266:05-20 09:26:07.370 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3267:05-20 09:26:07.435 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3268:05-20 09:26:07.499 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3269:05-20 09:26:07.564 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3270:05-20 09:26:07.629 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3271:05-20 09:26:07.695 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3272:05-20 09:26:07.760 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3273:05-20 09:26:07.825 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3274:05-20 09:26:07.891 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3275:05-20 09:26:07.955 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3276:05-20 09:26:08.021 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3277:05-20 09:26:08.086 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3278:05-20 09:26:08.106 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{d4f0d
+ca u0 NotificationShade} in Surface(name=NotificationShade#116505)/@0x7f977f4
+logs\virb_filtered_logcat.txt:3279:05-20 09:26:08.151 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3280:05-20 09:26:08.216 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3281:05-20 09:26:08.280 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3282:05-20 09:26:08.345 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3283:05-20 09:26:08.410 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3284:05-20 09:26:08.475 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3285:05-20 09:26:08.540 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3286:05-20 09:26:08.605 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3287:05-20 09:26:08.669 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3288:05-20 09:26:08.735 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3289:05-20 09:26:08.800 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3290:05-20 09:26:08.866 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3291:05-20 09:26:08.932 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3292:05-20 09:26:08.998 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3293:05-20 09:26:09.066 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3294:05-20 09:26:09.133 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3295:05-20 09:26:09.199 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3296:05-20 09:26:09.264 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3297:05-20 09:26:09.330 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3298:05-20 09:26:09.394 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3299:05-20 09:26:09.459 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3300:05-20 09:26:09.524 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3301:05-20 09:26:09.590 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3302:05-20 09:26:09.654 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3303:05-20 09:26:09.720 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3304:05-20 09:26:09.786 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3305:05-20 09:26:09.855 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3306:05-20 09:26:09.871 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{fa002
+0c u0 com.miui.notes} in Surface(name=#116513)/@0x5d9b974
+logs\virb_filtered_logcat.txt:3307:05-20 09:26:09.919 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3308:05-20 09:26:09.984 W/ActivityManager( 3598): pid 3598 system sent binder code 31101 
+with flags 0 to frozen apps and got error -74
+logs\virb_filtered_logcat.txt:3352:05-20 09:26:12.671 I/WindowManager( 3598): Try to add startingWindow type = STARTING
+_WINDOW_TYPE_SNAPSHOT this = ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687} mOccludesParent = true pre
+AllowTaskSnapshot = true afterAllowTaskSnapshot = true newTask = false taskSwitch = true processRunning = true activity
+Created = true activityAllDrawn = false isSnapshotCompatible = true snapshotRotation = 0 resolvedTheme = 2131755636 the
+me = 2131755636
+logs\virb_filtered_logcat.txt:3353:05-20 09:26:12.684 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}
+logs\virb_filtered_logcat.txt:3356:05-20 09:26:12.692 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}
+logs\virb_filtered_logcat.txt:3359:05-20 09:26:12.706 I/WindowManager( 3598): onFirstWindowDrawn, try to remove startin
+gWindow. ar: ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}  associatedTask: null  isMainWindow: true 
+ startingWindow: Window{2ea4cb6 u0 SnapshotStartingWindow for taskId=18687}  startingData: SnapshotStartingData{2c45da9
+ removeAfterTransaction= 0}
+logs\virb_filtered_logcat.txt:3361:05-20 09:26:12.710 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{605ce
+b5 u0 com.virb.lite/com.virb.lite.MainActivity} in Surface(name=com.virb.lite/com.virb.lite.MainActivity#116540)/@0x71c
+4b5
+logs\virb_filtered_logcat.txt:3382:05-20 09:26:13.357 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{859a4
+bd u0 com.virb.lite/com.virb.lite.MainActivity} in Surface(name=com.virb.lite/com.virb.lite.MainActivity#116547)/@0x3d7
+6c98
+logs\virb_filtered_logcat.txt:3495:05-20 09:27:14.527 E/WindowManager( 3598):  source = Task{d8094cd #18687 type=standa
+rd A=10374:com.virb.lite} excludeMiuiNavBar = true excludeMiuiStatusBar = true excludeIme = false excludeNavBar = true 
+miuiNavSurfaceControl = Surface(name=NavigationBar Container of Task = 18687#116412)/@0xa40182 miuiStatusSurfaceControl
+ = Surface(name=StatusBar Container of Task = 18687#116413)/@0xad67093
+logs\virb_filtered_logcat.txt:3500:05-20 09:27:14.543 I/WindowManager( 3598): wms.hideSurface mWin:Window{605ceb5 u0 co
+m.virb.lite/com.virb.lite.MainActivity} reason:(prepareSurfaceLocked) in Surface(name=com.virb.lite/com.virb.lite.MainA
+ctivity#116540)/@0x71c4b5
+logs\virb_filtered_logcat.txt:3501:05-20 09:27:14.543 I/WindowManager( 3598): wms.hideSurface mWin:Window{859a4bd u0 co
+m.virb.lite/com.virb.lite.MainActivity} reason:(prepareSurfaceLocked) in Surface(name=com.virb.lite/com.virb.lite.MainA
+ctivity#116547)/@0x3d76c98
+logs\virb_filtered_logcat.txt:3725:05-20 09:27:26.002 I/WindowManager( 3598): Try to add startingWindow type = STARTING
+_WINDOW_TYPE_SNAPSHOT this = ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687} mOccludesParent = true pre
+AllowTaskSnapshot = true afterAllowTaskSnapshot = true newTask = false taskSwitch = true processRunning = true activity
+Created = true activityAllDrawn = false isSnapshotCompatible = true snapshotRotation = 0 resolvedTheme = 2131755636 the
+me = 2131755636
+logs\virb_filtered_logcat.txt:3734:05-20 09:27:26.018 I/WindowManager( 3598): onFirstWindowDrawn, try to remove startin
+gWindow. ar: ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}  associatedTask: null  isMainWindow: false
+  startingWindow: Window{ffb594c u0 SnapshotStartingWindow for taskId=18687}  startingData: SnapshotStartingData{75de12
+5 removeAfterTransaction= 0}
+logs\virb_filtered_logcat.txt:3735:05-20 09:27:26.021 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{859a4
+bd u0 com.virb.lite/com.virb.lite.MainActivity} in Surface(name=com.virb.lite/com.virb.lite.MainActivity#116573)/@0x85b
+9e49
+logs\virb_filtered_logcat.txt:3738:05-20 09:27:26.027 I/WindowManager( 3598): onFirstWindowDrawn, try to remove startin
+gWindow. ar: ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}  associatedTask: null  isMainWindow: true 
+ startingWindow: Window{ffb594c u0 SnapshotStartingWindow for taskId=18687}  startingData: SnapshotStartingData{75de125
+ removeAfterTransaction= 0}
+logs\virb_filtered_logcat.txt:3739:05-20 09:27:26.029 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{605ce
+b5 u0 com.virb.lite/com.virb.lite.MainActivity} in Surface(name=com.virb.lite/com.virb.lite.MainActivity#116576)/@0x1ad
+ad7c
+logs\virb_filtered_logcat.txt:3749:05-20 09:27:26.039 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}
+logs\virb_filtered_logcat.txt:3753:05-20 09:27:26.052 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}
+logs\virb_filtered_logcat.txt:3755:05-20 09:27:26.065 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}
+logs\virb_filtered_logcat.txt:3757:05-20 09:27:26.069 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}
+logs\virb_filtered_logcat.txt:3759:05-20 09:27:26.077 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}
+logs\virb_filtered_logcat.txt:3768:05-20 09:27:26.160 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}
+logs\virb_filtered_logcat.txt:3770:05-20 09:27:26.167 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}
+logs\virb_filtered_logcat.txt:3853:05-20 09:28:27.393 E/WindowManager( 3598):  source = Task{d8094cd #18687 type=standa
+rd A=10374:com.virb.lite} excludeMiuiNavBar = true excludeMiuiStatusBar = true excludeIme = false excludeNavBar = true 
+miuiNavSurfaceControl = Surface(name=NavigationBar Container of Task = 18687#116412)/@0xa40182 miuiStatusSurfaceControl
+ = Surface(name=StatusBar Container of Task = 18687#116413)/@0xad67093
+logs\virb_filtered_logcat.txt:3858:05-20 09:28:27.415 I/WindowManager( 3598): wms.hideSurface mWin:Window{605ceb5 u0 co
+m.virb.lite/com.virb.lite.MainActivity} reason:(prepareSurfaceLocked) in Surface(name=com.virb.lite/com.virb.lite.MainA
+ctivity#116576)/@0x1adad7c
+logs\virb_filtered_logcat.txt:3859:05-20 09:28:27.415 I/WindowManager( 3598): wms.hideSurface mWin:Window{859a4bd u0 co
+m.virb.lite/com.virb.lite.MainActivity} reason:(prepareSurfaceLocked) in Surface(name=com.virb.lite/com.virb.lite.MainA
+ctivity#116573)/@0x85b9e49
+logs\virb_filtered_logcat.txt:4074:05-20 09:28:47.251 I/WindowManager( 3598): Try to add startingWindow type = STARTING
+_WINDOW_TYPE_SNAPSHOT this = ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687} mOccludesParent = true pre
+AllowTaskSnapshot = true afterAllowTaskSnapshot = true newTask = false taskSwitch = true processRunning = true activity
+Created = true activityAllDrawn = false isSnapshotCompatible = true snapshotRotation = 0 resolvedTheme = 2131755636 the
+me = 2131755636
+logs\virb_filtered_logcat.txt:4080:05-20 09:28:47.277 I/WindowManager( 3598): onFirstWindowDrawn, try to remove startin
+gWindow. ar: ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}  associatedTask: null  isMainWindow: false
+  startingWindow: Window{c0112f4 u0 SnapshotStartingWindow for taskId=18687}  startingData: SnapshotStartingData{50815a
+9 removeAfterTransaction= 0}
+logs\virb_filtered_logcat.txt:4081:05-20 09:28:47.283 I/WindowManager( 3598): onFirstWindowDrawn, try to remove startin
+gWindow. ar: ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}  associatedTask: null  isMainWindow: false
+  startingWindow: Window{c0112f4 u0 SnapshotStartingWindow for taskId=18687}  startingData: SnapshotStartingData{50815a
+9 removeAfterTransaction= 0}
+logs\virb_filtered_logcat.txt:4082:05-20 09:28:47.290 I/WindowManager( 3598): onFirstWindowDrawn, try to remove startin
+gWindow. ar: ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}  associatedTask: null  isMainWindow: false
+  startingWindow: Window{c0112f4 u0 SnapshotStartingWindow for taskId=18687}  startingData: SnapshotStartingData{50815a
+9 removeAfterTransaction= 0}
+logs\virb_filtered_logcat.txt:4083:05-20 09:28:47.291 I/WindowManager( 3598): onFirstWindowDrawn, try to remove startin
+gWindow. ar: ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}  associatedTask: null  isMainWindow: false
+  startingWindow: Window{c0112f4 u0 SnapshotStartingWindow for taskId=18687}  startingData: SnapshotStartingData{50815a
+9 removeAfterTransaction= 0}
+logs\virb_filtered_logcat.txt:4084:05-20 09:28:47.291 I/WindowManager( 3598): onFirstWindowDrawn, try to remove startin
+gWindow. ar: ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}  associatedTask: null  isMainWindow: false
+  startingWindow: Window{c0112f4 u0 SnapshotStartingWindow for taskId=18687}  startingData: SnapshotStartingData{50815a
+9 removeAfterTransaction= 0}
+logs\virb_filtered_logcat.txt:4085:05-20 09:28:47.293 I/WindowManager( 3598): onFirstWindowDrawn, try to remove startin
+gWindow. ar: ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}  associatedTask: null  isMainWindow: false
+  startingWindow: Window{c0112f4 u0 SnapshotStartingWindow for taskId=18687}  startingData: SnapshotStartingData{50815a
+9 removeAfterTransaction= 0}
+logs\virb_filtered_logcat.txt:4086:05-20 09:28:47.298 I/WindowManager( 3598): onFirstWindowDrawn, try to remove startin
+gWindow. ar: ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}  associatedTask: null  isMainWindow: false
+  startingWindow: Window{c0112f4 u0 SnapshotStartingWindow for taskId=18687}  startingData: SnapshotStartingData{50815a
+9 removeAfterTransaction= 0}
+logs\virb_filtered_logcat.txt:4087:05-20 09:28:47.298 I/WindowManager( 3598): onFirstWindowDrawn, try to remove startin
+gWindow. ar: ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}  associatedTask: null  isMainWindow: true 
+ startingWindow: Window{c0112f4 u0 SnapshotStartingWindow for taskId=18687}  startingData: SnapshotStartingData{50815a9
+ removeAfterTransaction= 0}
+logs\virb_filtered_logcat.txt:4092:05-20 09:28:47.298 I/WindowManager( 3598):    ChangeInfo{8f8483a container=ActivityR
+ecord{122096631 u0 com.virb.lite/.MainActivity t18687} flags=0x0}
+logs\virb_filtered_logcat.txt:4094:05-20 09:28:47.298 I/WindowManager( 3598):    ChangeInfo{5d89a48 container=Task{d809
+4cd #18687 type=standard A=10374:com.virb.lite} flags=0x0}
+logs\virb_filtered_logcat.txt:4097:05-20 09:28:47.299 I/WindowManager( 3598): onFirstWindowDrawn, try to remove startin
+gWindow. ar: ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}  associatedTask: null  isMainWindow: false
+  startingWindow: Window{c0112f4 u0 SnapshotStartingWindow for taskId=18687}  startingData: SnapshotStartingData{50815a
+9 removeAfterTransaction= 1}
+logs\virb_filtered_logcat.txt:4098:05-20 09:28:47.299 I/WindowManager( 3598): onFirstWindowDrawn, try to remove startin
+gWindow. ar: ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}  associatedTask: null  isMainWindow: true 
+ startingWindow: Window{c0112f4 u0 SnapshotStartingWindow for taskId=18687}  startingData: SnapshotStartingData{50815a9
+ removeAfterTransaction= 1}
+logs\virb_filtered_logcat.txt:4103:05-20 09:28:47.299 I/WindowManager( 3598):    ChangeInfo{8f8483a container=ActivityR
+ecord{122096631 u0 com.virb.lite/.MainActivity t18687} flags=0x0}
+logs\virb_filtered_logcat.txt:4105:05-20 09:28:47.299 I/WindowManager( 3598):    ChangeInfo{5d89a48 container=Task{d809
+4cd #18687 type=standard A=10374:com.virb.lite} flags=0x0}
+logs\virb_filtered_logcat.txt:4108:05-20 09:28:47.300 I/WindowManager( 3598): onFirstWindowDrawn, try to remove startin
+gWindow. ar: ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}  associatedTask: null  isMainWindow: false
+  startingWindow: Window{c0112f4 u0 SnapshotStartingWindow for taskId=18687}  startingData: SnapshotStartingData{50815a
+9 removeAfterTransaction= 1}
+logs\virb_filtered_logcat.txt:4109:05-20 09:28:47.300 I/WindowManager( 3598): onFirstWindowDrawn, try to remove startin
+gWindow. ar: ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}  associatedTask: null  isMainWindow: true 
+ startingWindow: Window{c0112f4 u0 SnapshotStartingWindow for taskId=18687}  startingData: SnapshotStartingData{50815a9
+ removeAfterTransaction= 1}
+logs\virb_filtered_logcat.txt:4114:05-20 09:28:47.300 I/WindowManager( 3598):    ChangeInfo{8f8483a container=ActivityR
+ecord{122096631 u0 com.virb.lite/.MainActivity t18687} flags=0x0}
+logs\virb_filtered_logcat.txt:4116:05-20 09:28:47.300 I/WindowManager( 3598):    ChangeInfo{5d89a48 container=Task{d809
+4cd #18687 type=standard A=10374:com.virb.lite} flags=0x0}
+logs\virb_filtered_logcat.txt:4119:05-20 09:28:47.321 I/WindowManager( 3598): onFirstWindowDrawn, try to remove startin
+gWindow. ar: ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}  associatedTask: null  isMainWindow: false
+  startingWindow: Window{c0112f4 u0 SnapshotStartingWindow for taskId=18687}  startingData: SnapshotStartingData{50815a
+9 removeAfterTransaction= 1}
+logs\virb_filtered_logcat.txt:4120:05-20 09:28:47.321 I/WindowManager( 3598): onFirstWindowDrawn, try to remove startin
+gWindow. ar: ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}  associatedTask: null  isMainWindow: true 
+ startingWindow: Window{c0112f4 u0 SnapshotStartingWindow for taskId=18687}  startingData: SnapshotStartingData{50815a9
+ removeAfterTransaction= 1}
+logs\virb_filtered_logcat.txt:4125:05-20 09:28:47.321 I/WindowManager( 3598):    ChangeInfo{8f8483a container=ActivityR
+ecord{122096631 u0 com.virb.lite/.MainActivity t18687} flags=0x0}
+logs\virb_filtered_logcat.txt:4127:05-20 09:28:47.321 I/WindowManager( 3598):    ChangeInfo{5d89a48 container=Task{d809
+4cd #18687 type=standard A=10374:com.virb.lite} flags=0x0}
+logs\virb_filtered_logcat.txt:4131:05-20 09:28:47.322 I/WindowManager( 3598): onFirstWindowDrawn, try to remove startin
+gWindow. ar: ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}  associatedTask: null  isMainWindow: false
+  startingWindow: Window{c0112f4 u0 SnapshotStartingWindow for taskId=18687}  startingData: SnapshotStartingData{50815a
+9 removeAfterTransaction= 1}
+logs\virb_filtered_logcat.txt:4132:05-20 09:28:47.322 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{859a4
+bd u0 com.virb.lite/com.virb.lite.MainActivity} in Surface(name=com.virb.lite/com.virb.lite.MainActivity#116603)/@0x113
+33ea
+logs\virb_filtered_logcat.txt:4133:05-20 09:28:47.322 I/WindowManager( 3598): onFirstWindowDrawn, try to remove startin
+gWindow. ar: ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}  associatedTask: null  isMainWindow: true 
+ startingWindow: Window{c0112f4 u0 SnapshotStartingWindow for taskId=18687}  startingData: SnapshotStartingData{50815a9
+ removeAfterTransaction= 1}
+logs\virb_filtered_logcat.txt:4139:05-20 09:28:47.322 I/WindowManager( 3598):    ChangeInfo{8f8483a container=ActivityR
+ecord{122096631 u0 com.virb.lite/.MainActivity t18687} flags=0x0}
+logs\virb_filtered_logcat.txt:4141:05-20 09:28:47.322 I/WindowManager( 3598):    ChangeInfo{5d89a48 container=Task{d809
+4cd #18687 type=standard A=10374:com.virb.lite} flags=0x0}
+logs\virb_filtered_logcat.txt:4144:05-20 09:28:47.322 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{605ce
+b5 u0 com.virb.lite/com.virb.lite.MainActivity} in Surface(name=com.virb.lite/com.virb.lite.MainActivity#116604)/@0xb54
+448d
+logs\virb_filtered_logcat.txt:4165:05-20 09:28:47.358 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}
+logs\virb_filtered_logcat.txt:4169:05-20 09:28:47.371 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}
+logs\virb_filtered_logcat.txt:4172:05-20 09:28:47.394 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}
+logs\virb_filtered_logcat.txt:4174:05-20 09:28:47.399 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}
+logs\virb_filtered_logcat.txt:4176:05-20 09:28:47.406 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}
+logs\virb_filtered_logcat.txt:4178:05-20 09:28:47.414 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}
+logs\virb_filtered_logcat.txt:4185:05-20 09:28:47.489 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}
+logs\virb_filtered_logcat.txt:4288:05-20 09:30:09.760 E/WindowManager( 3598):  source = Task{d8094cd #18687 type=standa
+rd A=10374:com.virb.lite} excludeMiuiNavBar = true excludeMiuiStatusBar = true excludeIme = false excludeNavBar = true 
+miuiNavSurfaceControl = Surface(name=NavigationBar Container of Task = 18687#116412)/@0xa40182 miuiStatusSurfaceControl
+ = Surface(name=StatusBar Container of Task = 18687#116413)/@0xad67093
+logs\virb_filtered_logcat.txt:4292:05-20 09:30:09.775 I/WindowManager( 3598): wms.hideSurface mWin:Window{605ceb5 u0 co
+m.virb.lite/com.virb.lite.MainActivity} reason:(prepareSurfaceLocked) in Surface(name=com.virb.lite/com.virb.lite.MainA
+ctivity#116604)/@0xb54448d
+logs\virb_filtered_logcat.txt:4293:05-20 09:30:09.775 I/WindowManager( 3598): wms.hideSurface mWin:Window{859a4bd u0 co
+m.virb.lite/com.virb.lite.MainActivity} reason:(prepareSurfaceLocked) in Surface(name=com.virb.lite/com.virb.lite.MainA
+ctivity#116603)/@0x11333ea
+logs\virb_filtered_logcat.txt:4550:05-20 09:30:30.746 I/WindowManager( 3598): Try to add startingWindow type = STARTING
+_WINDOW_TYPE_SNAPSHOT this = ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687} mOccludesParent = true pre
+AllowTaskSnapshot = true afterAllowTaskSnapshot = true newTask = false taskSwitch = true processRunning = true activity
+Created = true activityAllDrawn = false isSnapshotCompatible = true snapshotRotation = 0 resolvedTheme = 2131755636 the
+me = 2131755636
+logs\virb_filtered_logcat.txt:4559:05-20 09:30:30.767 I/WindowManager( 3598): onFirstWindowDrawn, try to remove startin
+gWindow. ar: ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}  associatedTask: null  isMainWindow: false
+  startingWindow: Window{29bb29a u0 SnapshotStartingWindow for taskId=18687}  startingData: SnapshotStartingData{a2d11d
+b removeAfterTransaction= 0}
+logs\virb_filtered_logcat.txt:4560:05-20 09:30:30.768 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{859a4
+bd u0 com.virb.lite/com.virb.lite.MainActivity} in Surface(name=com.virb.lite/com.virb.lite.MainActivity#116647)/@0xc22
+4cf9
+logs\virb_filtered_logcat.txt:4567:05-20 09:30:30.775 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}
+logs\virb_filtered_logcat.txt:4571:05-20 09:30:30.779 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}
+logs\virb_filtered_logcat.txt:4575:05-20 09:30:30.792 I/WindowManager( 3598): onFirstWindowDrawn, try to remove startin
+gWindow. ar: ActivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}  associatedTask: null  isMainWindow: true 
+ startingWindow: Window{29bb29a u0 SnapshotStartingWindow for taskId=18687}  startingData: SnapshotStartingData{a2d11db
+ removeAfterTransaction= 0}
+logs\virb_filtered_logcat.txt:4576:05-20 09:30:30.794 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{605ce
+b5 u0 com.virb.lite/com.virb.lite.MainActivity} in Surface(name=com.virb.lite/com.virb.lite.MainActivity#116649)/@0x88b
+a231
+logs\virb_filtered_logcat.txt:4578:05-20 09:30:30.796 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}
+logs\virb_filtered_logcat.txt:4579:05-20 09:30:30.801 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}
+logs\virb_filtered_logcat.txt:4581:05-20 09:30:30.816 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}
+logs\virb_filtered_logcat.txt:4584:05-20 09:30:30.891 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}
+logs\virb_filtered_logcat.txt:4585:05-20 09:30:30.906 I/WindowManager( 3598): Allow fixed rotation for not collecting:A
+ctivityRecord{122096631 u0 com.virb.lite/.MainActivity t18687}
+logs\virb_filtered_logcat.txt:4613:05-20 09:30:32.367 I/WindowManager( 3598): wms.hideSurface mWin:Window{859a4bd u0 co
+m.virb.lite/com.virb.lite.MainActivity EXITING} reason:(onExitAnimationDone) in Surface(name=com.virb.lite/com.virb.lit
+e.MainActivity#116647)/@0xc224cf9
+logs\virb_filtered_logcat.txt:4625:05-20 09:30:33.081 I/WindowManager( 3598): wms.showSurfaceRobustly mWin:Window{e92df
+a9 u0 com.virb.lite/com.virb.lite.MainActivity} in Surface(name=com.virb.lite/com.virb.lite.MainActivity#116666)/@0x182
+24f4
+
+

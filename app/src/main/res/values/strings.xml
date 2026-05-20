@@ -49,6 +49,8 @@
     <string name="quiet_hours_empty">暂无时段，点击「+ 添加」配置</string>
     <string name="quiet_hours_pick_start">选择开始时间</string>
     <string name="quiet_hours_pick_end">选择结束时间</string>
+    <string name="vibration_amplitude_hint">振动强度</string>
+    <string name="view_log_short">查看</string>
     <string name="view_log">查看振动日志</string>
     <string name="log_dialog_title">最近振动记录</string>
     <string name="copy_log">复制</string>

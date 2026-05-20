@@ -13,19 +13,24 @@ object VibrationHelper {
     private const val TAG = "VirbVibe"
 
     fun vibrate(context: Context, durationMs: Long): Boolean {
-        return vibrate(context, durationMs, acquireWakeLock = true)
+        return vibrate(context, durationMs, amplitude = 255, acquireWakeLock = true)
     }
 
     fun vibrate(context: Context, durationMs: Long, acquireWakeLock: Boolean): Boolean {
+        return vibrate(context, durationMs, amplitude = 255, acquireWakeLock = acquireWakeLock)
+    }
+
+    fun vibrate(context: Context, durationMs: Long, amplitude: Int, acquireWakeLock: Boolean = true): Boolean {
         val safeDuration = durationMs.coerceIn(1L, 1000L)
-        debugLog("vibrate() called: durationMs=$safeDuration, SDK=${Build.VERSION.SDK_INT}, acquireWakeLock=$acquireWakeLock")
+        val safeAmplitude = amplitude.coerceIn(1, 255)
+        debugLog("vibrate() called: durationMs=$safeDuration amplitude=$safeAmplitude, SDK=${Build.VERSION.SDK_INT}, acquireWakeLock=$acquireWakeLock")
 
         val audioAttrs = AudioAttributes.Builder()
             .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
             .setUsage(AudioAttributes.USAGE_ALARM)
             .build()
 
-        val effect = VibrationEffect.createOneShot(safeDuration, 255)
+        val effect = VibrationEffect.createOneShot(safeDuration, safeAmplitude)
         val appCtx = context.applicationContext
         var wl: PowerManager.WakeLock? = null
 

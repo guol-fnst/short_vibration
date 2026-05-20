@@ -71,6 +71,8 @@ class MainActivity : AppCompatActivity() {
         binding.switchFileLogging.isChecked = prefs.fileLoggingEnabled()
         binding.etDuration.setText(prefs.vibrationMs().toString())
         binding.etGlobalGap.setText(msToSeconds(prefs.globalGapMs()).toString())
+        binding.sliderAmplitude.value = prefs.vibrationAmplitude().toFloat()
+        updateAmplitudeLabel(prefs.vibrationAmplitude())
         refreshQuietPeriodsUi()
         refreshPermissionState()
     }
@@ -91,6 +93,10 @@ class MainActivity : AppCompatActivity() {
         binding.switchFileLogging.setOnCheckedChangeListener { _, isChecked ->
             prefs.setFileLoggingEnabled(isChecked)
             VibrationLogger.setFileLoggingEnabled(isChecked)
+        }
+
+        binding.sliderAmplitude.addOnChangeListener { _, value, _ ->
+            updateAmplitudeLabel(value.toInt())
         }
 
         binding.btnDurationMinus.setOnClickListener {
@@ -144,6 +150,7 @@ class MainActivity : AppCompatActivity() {
 
             prefs.setVibrationMs(duration)
             prefs.setGlobalGapMs(secondsToMs(gapSeconds))
+            prefs.setVibrationAmplitude(binding.sliderAmplitude.value.toInt())
 
             binding.etDuration.setText(prefs.vibrationMs().toString())
             binding.etGlobalGap.setText(msToSeconds(prefs.globalGapMs()).toString())
@@ -168,6 +175,8 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnTestVibration.setOnClickListener {
             val ms = (binding.etDuration.text.toString().toIntOrNull() ?: prefs.vibrationMs()).toLong()
+            val amplitudePercent = binding.sliderAmplitude.value.toInt()
+            val amplitude = ((amplitudePercent * 255 + 50) / 100).coerceIn(1, 255)
 
             binding.btnTestVibration.performHapticFeedback(
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -180,7 +189,7 @@ class MainActivity : AppCompatActivity() {
                         HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
             )
 
-            val ok = VibrationHelper.vibrate(this, ms)
+            val ok = VibrationHelper.vibrate(this, ms, amplitude)
 
             val am = getSystemService(AudioManager::class.java)
             val ringerMode = am?.ringerMode ?: -1
@@ -346,6 +355,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun toast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun updateAmplitudeLabel(percent: Int) {
+        binding.tvAmplitudeValue.text = "$percent%"
     }
 
     private fun stepNumber(

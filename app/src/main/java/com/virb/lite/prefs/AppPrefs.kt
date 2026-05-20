@@ -60,6 +60,12 @@ class AppPrefs(context: Context) {
         prefs.edit().putInt(KEY_GLOBAL_GAP_MS, clamped).apply()
     }
 
+    fun vibrationAmplitude(): Int = prefs.getInt(KEY_VIBRATION_AMPLITUDE, DEFAULT_VIBRATION_AMPLITUDE).coerceIn(1, 100)
+
+    fun setVibrationAmplitude(percent: Int) {
+        prefs.edit().putInt(KEY_VIBRATION_AMPLITUDE, percent.coerceIn(1, 100)).apply()
+    }
+
     fun markBootNow(epochMs: Long) {
         prefs.edit().putLong(KEY_LAST_BOOT_AT_MS, epochMs).apply()
     }
@@ -112,6 +118,7 @@ class AppPrefs(context: Context) {
         private const val KEY_FILE_LOGGING = "file_logging"
         private const val KEY_VIBRATION_MS = "vibration_ms"
         private const val KEY_GLOBAL_GAP_MS = "global_gap_ms"
+        private const val KEY_VIBRATION_AMPLITUDE = "vibration_amplitude"
         private const val KEY_LAST_BOOT_AT_MS = "last_boot_at_ms"
         private const val KEY_LAST_USER_PRESENT_AT_MS = "last_user_present_at_ms"
         private const val KEY_LAST_VIBRATION_AT_MS = "last_vibration_at_ms"
@@ -120,6 +127,8 @@ class AppPrefs(context: Context) {
         const val DEFAULT_VIBRATION_MS = 10
         const val MIN_VIBRATION_MS = 1
         const val MAX_VIBRATION_MS = 1000
+
+        const val DEFAULT_VIBRATION_AMPLITUDE = 100  // percent (1-100)
 
         const val DEFAULT_GLOBAL_GAP_MS = 3000
         const val MIN_GLOBAL_GAP_MS = 500
