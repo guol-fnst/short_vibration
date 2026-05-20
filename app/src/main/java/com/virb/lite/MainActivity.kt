@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var prefs: AppPrefs
     private var didForceRebind: Boolean = false
     private val handler = Handler(Looper.getMainLooper())
+    private var currentToast: Toast? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -368,7 +369,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun toast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        currentToast?.cancel()
+        currentToast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
+        currentToast?.show()
     }
 
     private fun updateAmplitudeLabel(percent: Int) {
@@ -412,6 +415,20 @@ class MainActivity : AppCompatActivity() {
             }
             binding.chipGroupQuietPeriods.addView(chip)
         }
+
+        // 自适应高度：无时段时紧凑，有时段时铺满剩余空间（内部可滚动）
+        val hasPeriods = periods.isNotEmpty()
+        val cardLp = binding.cardQuietHours.layoutParams as android.widget.LinearLayout.LayoutParams
+        cardLp.height = if (hasPeriods) 0 else android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+        cardLp.weight = if (hasPeriods) 1f else 0f
+        binding.cardQuietHours.layoutParams = cardLp
+        binding.layoutQuietHoursContent.layoutParams.height =
+            if (hasPeriods) android.view.ViewGroup.LayoutParams.MATCH_PARENT
+            else android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+        val scrollLp = binding.scrollQuietPeriods.layoutParams as android.widget.LinearLayout.LayoutParams
+        scrollLp.height = if (hasPeriods) 0 else android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+        scrollLp.weight = if (hasPeriods) 1f else 0f
+        binding.scrollQuietPeriods.layoutParams = scrollLp
     }
 
     private fun showAddQuietPeriodDialog() {
