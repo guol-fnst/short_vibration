@@ -10,6 +10,7 @@
     <string name="enable_switch">启用通知振动</string>
     <string name="lockscreen_only_switch">仅锁屏时振动</string>
     <string name="ignore_system_switch">忽略系统应用通知</string>
+    <string name="file_logging_switch">写入文件日志</string>
     <string name="vibration_ms_hint">振动时长 (ms)</string>
     <string name="vibration_ms_helper">范围 1-1000，默认 10</string>
     <string name="global_gap_ms_hint">防重复间隔 (ms)</string>

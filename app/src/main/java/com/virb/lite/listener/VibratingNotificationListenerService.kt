@@ -130,8 +130,18 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             return
         }
 
+        // Always skip foreground-service notifications that carry no user-visible content
+        // (e.g. Xiaomi AICR, various OEM background workers). This is independent of the
+        // "ignore system packages" toggle because such notifications are never user-facing.
+        if (isBlankForegroundServiceNotification(sbn.notification)) {
+            debugLog("skip: blank foreground-service notification pkg=$pkg")
+            VibrationLogger.logSkip("blank_fgs", pkg)
+            return
+        }
+
         if (prefs.ignoreSystemPackages() && shouldIgnoreSystemNotification(sbn)) {
             debugLog("skip: system notification pkg=$pkg category=${sbn.notification.category}")
+            VibrationLogger.logSkip("system_noise", pkg)
             return
         }
 
@@ -308,6 +318,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
     private fun shouldIgnoreSystemNotification(sbn: StatusBarNotification): Boolean {
         val packageName = sbn.packageName
         if (isAllowedMessagingPackage(packageName)) return false
+        if (packageName in IGNORED_SYSTEM_NOISE_PACKAGES) return true
 
         when (sbn.notification.category) {
             Notification.CATEGORY_CALL,
@@ -326,6 +337,17 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         } catch (_: Exception) {
             false
         }
+    }
+
+    private fun isBlankForegroundServiceNotification(notification: Notification): Boolean {
+        if (notification.flags and Notification.FLAG_FOREGROUND_SERVICE == 0) return false
+
+        val extras = notification.extras
+        val title = extras?.getCharSequence(Notification.EXTRA_TITLE)?.toString().orEmpty()
+        val text = extras?.getCharSequence(Notification.EXTRA_TEXT)?.toString().orEmpty()
+        val subText = extras?.getCharSequence(Notification.EXTRA_SUB_TEXT)?.toString().orEmpty()
+
+        return title.isBlank() && text.isBlank() && subText.isBlank()
     }
 
     private fun isAllowedMessagingPackage(packageName: String): Boolean {
@@ -390,6 +412,9 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             "com.ss.android.lark",
             "com.larksuite.suite",
             "com.bytedance.ee.lark"
+        )
+        private val IGNORED_SYSTEM_NOISE_PACKAGES = setOf(
+            "com.xiaomi.aicr"
         )
 
         @Volatile

@@ -68,6 +68,7 @@ class MainActivity : AppCompatActivity() {
         binding.switchEnabled.isChecked = prefs.isEnabled()
         binding.switchLockedOnly.isChecked = prefs.vibrateOnlyWhenLocked()
         binding.switchIgnoreSystem.isChecked = prefs.ignoreSystemPackages()
+        binding.switchFileLogging.isChecked = prefs.fileLoggingEnabled()
         binding.etDuration.setText(prefs.vibrationMs().toString())
         binding.etGlobalGap.setText(msToSeconds(prefs.globalGapMs()).toString())
         refreshQuietPeriodsUi()
@@ -85,6 +86,11 @@ class MainActivity : AppCompatActivity() {
 
         binding.switchIgnoreSystem.setOnCheckedChangeListener { _, isChecked ->
             prefs.setIgnoreSystemPackages(isChecked)
+        }
+
+        binding.switchFileLogging.setOnCheckedChangeListener { _, isChecked ->
+            prefs.setFileLoggingEnabled(isChecked)
+            VibrationLogger.setFileLoggingEnabled(isChecked)
         }
 
         binding.btnDurationMinus.setOnClickListener {

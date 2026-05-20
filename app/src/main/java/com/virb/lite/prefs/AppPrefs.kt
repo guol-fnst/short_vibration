@@ -26,6 +26,12 @@ class AppPrefs(context: Context) {
         prefs.edit().putBoolean(KEY_IGNORE_SYSTEM, ignore).apply()
     }
 
+    fun fileLoggingEnabled(): Boolean = prefs.getBoolean(KEY_FILE_LOGGING, true)
+
+    fun setFileLoggingEnabled(enabled: Boolean) {
+        prefs.edit().putBoolean(KEY_FILE_LOGGING, enabled).apply()
+    }
+
     fun vibrationMs(): Int {
         val raw = prefs.getInt(KEY_VIBRATION_MS, DEFAULT_VIBRATION_MS)
         val clamped = raw.coerceIn(MIN_VIBRATION_MS, MAX_VIBRATION_MS)
@@ -103,6 +109,7 @@ class AppPrefs(context: Context) {
         private const val KEY_ENABLED = "enabled"
         private const val KEY_LOCKED_ONLY = "locked_only"
         private const val KEY_IGNORE_SYSTEM = "ignore_system"
+        private const val KEY_FILE_LOGGING = "file_logging"
         private const val KEY_VIBRATION_MS = "vibration_ms"
         private const val KEY_GLOBAL_GAP_MS = "global_gap_ms"
         private const val KEY_LAST_BOOT_AT_MS = "last_boot_at_ms"
