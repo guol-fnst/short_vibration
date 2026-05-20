@@ -485,5 +485,15 @@
             android:text="@string/save"
             android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
             app:cornerRadius="14dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnViewLog"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="6dp"
+            android:minHeight="48dp"
+            android:text="@string/view_log"
+            app:cornerRadius="14dp" />
     </LinearLayout>
 </ScrollView>

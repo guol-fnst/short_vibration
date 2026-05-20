@@ -19,6 +19,7 @@ import android.service.notification.StatusBarNotification
 import android.util.Log
 import com.virb.lite.MainActivity
 import com.virb.lite.R
+import com.virb.lite.log.VibrationLogger
 import com.virb.lite.prefs.AppPrefs
 import com.virb.lite.vibe.VibrationHelper
 import java.util.LinkedHashSet
@@ -44,6 +45,8 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         super.onCreate()
         prefs = AppPrefs(this)
         lastVibrationAtMs = prefs.lastVibrationAtMs()
+        VibrationLogger.init(this)
+        VibrationLogger.logEvent("service_start")
         debugLog("Service onCreate")
         createNotificationChannel()
         registerReceiver(screenOffReceiver, IntentFilter(Intent.ACTION_SCREEN_OFF))
@@ -67,6 +70,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         super.onListenerConnected()
         isConnected = true
         debugLog("onListenerConnected — listener is active")
+        VibrationLogger.logEvent("listener_connected")
         listenerConnectedAtMs = System.currentTimeMillis()
         rememberCurrentlyActiveNotifications()
         resetRebindBackoff()
@@ -77,6 +81,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         super.onListenerDisconnected()
         isConnected = false
         Log.w(TAG, "onListenerDisconnected — listener was killed by system")
+        VibrationLogger.logEvent("listener_disconnected")
         stopForeground(STOP_FOREGROUND_REMOVE)
         requestListenerRebind()
     }
@@ -99,11 +104,13 @@ class VibratingNotificationListenerService : NotificationListenerService() {
 
         if (prefs.isInQuietHours()) {
             debugLog("skip: quiet hours active")
+            VibrationLogger.logSkip("quiet_hours", pkg)
             return
         }
 
         if (prefs.vibrateOnlyWhenLocked() && shouldSkipUnlockReplay(now)) {
             debugLog("skip: unlock cooldown")
+            VibrationLogger.logSkip("unlock_cooldown", pkg)
             return
         }
 
@@ -119,6 +126,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
 
         if (isCallActive()) {
             debugLog("skip: call is active")
+            VibrationLogger.logSkip("call_active", pkg)
             return
         }
 
@@ -129,20 +137,23 @@ class VibratingNotificationListenerService : NotificationListenerService() {
 
         if (prefs.vibrateOnlyWhenLocked() && !deviceLocked) {
             debugLog("skip: device unlocked")
+            VibrationLogger.logSkip("screen_on", pkg)
             return
         }
 
         val gapMs = prefs.globalGapMs().toLong()
         val lastVibrationAt = lastVibrationAtMs
         if (lastVibrationAt > 0L && now - lastVibrationAt < gapMs) {
-            debugLog("skip: within global gap, delta=${now - lastVibrationAt} gap=$gapMs")
+            val delta = now - lastVibrationAt
+            debugLog("skip: within global gap, delta=$delta gap=$gapMs")
+            VibrationLogger.logSkip("gap_${delta}ms", pkg)
             recentlyVibratedKeys[sbn.key] = sbn.postTime
             scheduleTrailingVibration(lastVibrationAt + gapMs - now)
             return
         }
 
         cancelPendingTrailingVibration()
-        val result = vibrateNow(now, deviceLocked, "pkg=$pkg")
+        val result = vibrateNow(now, deviceLocked, sbn, "notification")
         if (result) {
             recentlyVibratedKeys[sbn.key] = sbn.postTime
         }
@@ -172,7 +183,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
 
         hasPendingTrailingVibration = false
         val deviceLocked = isDeviceLocked()
-        val result = vibrateNow(now, deviceLocked, "trailing")
+        val result = vibrateNow(now, deviceLocked, null, "trailing")
         debugLog("trailing vibrate result=$result")
     }
 
@@ -212,13 +223,26 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         return true
     }
 
-    private fun vibrateNow(now: Long, deviceLocked: Boolean, reason: String): Boolean {
+    private fun vibrateNow(
+        now: Long,
+        deviceLocked: Boolean,
+        sbn: StatusBarNotification?,
+        reason: String,
+    ): Boolean {
         val ms = prefs.vibrationMs().toLong()
         debugLog("vibrating for $reason ms=$ms")
         val result = VibrationHelper.vibrate(this, ms, acquireWakeLock = deviceLocked)
         if (result) {
             lastVibrationAtMs = now
             prefs.markVibrationNow(now)
+            val notif = sbn?.notification
+            val title = notif?.extras
+                ?.getCharSequence(Notification.EXTRA_TITLE)
+                ?.toString()?.take(30)?.replace('\n', ' ') ?: ""
+            val category  = notif?.category ?: ""
+            val channelId = notif?.channelId ?: ""
+            val pkg       = sbn?.packageName ?: reason
+            VibrationLogger.logVibrate(pkg, title, category, channelId, deviceLocked, reason)
         }
         return result
     }

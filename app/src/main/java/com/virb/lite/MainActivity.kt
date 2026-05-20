@@ -1,6 +1,9 @@
 package com.virb.lite
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.AudioManager
@@ -13,7 +16,10 @@ import android.provider.Settings
 import android.service.notification.NotificationListenerService
 import android.util.Log
 import android.view.HapticFeedbackConstants
+import android.widget.ScrollView
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -23,6 +29,7 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.virb.lite.databinding.ActivityMainBinding
 import com.virb.lite.listener.VibratingNotificationListenerService
+import com.virb.lite.log.VibrationLogger
 import com.virb.lite.prefs.AppPrefs
 import com.virb.lite.prefs.QuietPeriod
 import com.virb.lite.vibe.VibrationHelper
@@ -182,6 +189,33 @@ class MainActivity : AppCompatActivity() {
                 toast(getString(R.string.test_done, ms))
             }
         }
+
+        binding.btnViewLog.setOnClickListener { showVibrationLogDialog() }
+    }
+
+    private fun showVibrationLogDialog() {
+        val logText = VibrationLogger.readTail(100).ifBlank { getString(R.string.log_empty) }
+
+        val tv = TextView(this).apply {
+            text = logText
+            textSize = 10f
+            typeface = android.graphics.Typeface.MONOSPACE
+            val pad = (8 * resources.displayMetrics.density).toInt()
+            setPadding(pad, pad, pad, pad)
+            setTextIsSelectable(true)
+        }
+        val scroll = ScrollView(this).apply { addView(tv) }
+
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.log_dialog_title))
+            .setView(scroll)
+            .setNeutralButton(R.string.copy_log) { _, _ ->
+                val cm = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                cm.setPrimaryClip(ClipData.newPlainText("virb_log", logText))
+                toast(getString(R.string.log_copied))
+            }
+            .setPositiveButton(android.R.string.ok, null)
+            .show()
     }
 
     private fun applySystemBarInsets() {
