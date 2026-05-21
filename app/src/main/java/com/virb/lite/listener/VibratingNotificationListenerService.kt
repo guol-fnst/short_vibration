@@ -431,8 +431,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             "com.bytedance.ee.lark"
         )
         private val IGNORED_SYSTEM_NOISE_PACKAGES = setOf(
-            "com.xiaomi.aicr",
-            "com.milink.service"   // belt-and-suspenders; also caught by BACKGROUND_SERVICE_CHANNELS
+            "com.xiaomi.aicr"
         )
 
         // Channel IDs used by MIUI/HyperOS exclusively for internal background services.
