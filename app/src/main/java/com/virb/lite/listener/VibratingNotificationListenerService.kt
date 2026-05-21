@@ -137,6 +137,12 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             return
         }
 
+        if (isMediaTransportNotification(sbn.notification)) {
+            debugLog("skip: media transport notification pkg=$pkg")
+            VibrationLogger.logSkip("media_transport", pkg)
+            return
+        }
+
         // Always skip foreground-service notifications that carry no user-visible content
         // (e.g. Xiaomi AICR, various OEM background workers). This is independent of the
         // "ignore system packages" toggle because such notifications are never user-facing.
@@ -381,6 +387,10 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         return title.isBlank() && text.isBlank() && subText.isBlank()
     }
 
+    private fun isMediaTransportNotification(notification: Notification): Boolean {
+        return notification.category == Notification.CATEGORY_TRANSPORT
+    }
+
     private fun isBackgroundServiceChannel(notification: Notification): Boolean {
         val ch = notification.channelId?.lowercase(java.util.Locale.ROOT) ?: return false
         return ch in BACKGROUND_SERVICE_CHANNELS
@@ -459,10 +469,14 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         // Any notification on these channels is never user-facing and must be silenced
         // regardless of the package name or the "ignore system packages" toggle.
         private val BACKGROUND_SERVICE_CHANNELS = setOf(
+            "channel_foreground_service",
+            "com.miui.gallery.hide",
             "hide_foreground",
+            "fgs_hide",
             "fg_service",
             "foreground_service",
-            "foreground"
+            "foreground",
+            "notification_channel_foreground_service"
         )
 
         @Volatile
