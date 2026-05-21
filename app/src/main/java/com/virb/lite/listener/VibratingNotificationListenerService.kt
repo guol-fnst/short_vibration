@@ -416,7 +416,8 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             "com.bytedance.ee.lark"
         )
         private val IGNORED_SYSTEM_NOISE_PACKAGES = setOf(
-            "com.xiaomi.aicr"
+            "com.xiaomi.aicr",
+            "com.milink.service"
         )
 
         @Volatile
