@@ -3,7 +3,7 @@
     <string name="app_name">Virb Lite</string>
     <string name="title">Virb Lite</string>
     <string name="subtitle">轻量通知振动助手</string>
-    <string name="listener_service_label">Virb Notification Listener</string>
+    <string name="listener_service_label">Virb 通知监听</string>
     <string name="open_notification_access">打开通知读取权限</string>
     <string name="timing_settings">振动参数</string>
     <string name="enable_switch">启用通知振动</string>
@@ -26,14 +26,14 @@
     <string name="global_gap_sec_hint">防重复间隔 (秒)</string>
     <string name="decrease_value">减少数值</string>
     <string name="increase_value">增加数值</string>
-    <string name="service_dead_title">⚠ 服务已停止运行</string>
-    <string name="service_dead_desc">振动功能暂时失效。请在应用详情中开启「自启动」权限，并在省电策略中选择「无限制」，以防止 MIUI 后台限制本服务。</string>
+    <string name="service_dead_title">服务已停止运行</string>
+    <string name="service_dead_desc">振动功能暂时失效。请在应用详情中开启“自启动”权限，并在省电策略中选择“无限制”，防止 MIUI 后台限制本服务。</string>
     <string name="btn_autostart">开启自启动</string>
     <string name="btn_battery_opt">关闭省电限制</string>
     <string name="quiet_hours_title">免打扰时段</string>
     <string name="quiet_hours_subtitle">指定时间段内不触发振动</string>
     <string name="quiet_hours_add">+ 添加</string>
-    <string name="quiet_hours_empty">暂无时段，点击「+ 添加」配置</string>
+    <string name="quiet_hours_empty">暂无时段，点击“添加”配置</string>
     <string name="quiet_hours_pick_start">选择开始时间</string>
     <string name="quiet_hours_pick_end">选择结束时间</string>
     <string name="vibration_amplitude_hint">振动强度</string>

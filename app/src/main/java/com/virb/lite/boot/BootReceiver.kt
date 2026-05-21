@@ -14,8 +14,7 @@ class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
         val action = intent?.action ?: return
         when (action) {
-            Intent.ACTION_BOOT_COMPLETED,
-            Intent.ACTION_LOCKED_BOOT_COMPLETED -> {
+            Intent.ACTION_BOOT_COMPLETED -> {
                 rebindListener(context, force = true)
             }
             Intent.ACTION_USER_PRESENT -> {

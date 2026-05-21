@@ -22,16 +22,22 @@ import com.virb.lite.R
 import com.virb.lite.log.VibrationLogger
 import com.virb.lite.prefs.AppPrefs
 import com.virb.lite.vibe.VibrationHelper
+import java.util.LinkedHashMap
 import java.util.LinkedHashSet
 
 class VibratingNotificationListenerService : NotificationListenerService() {
     private lateinit var prefs: AppPrefs
     private val reconnectReplayCandidateKeys = LinkedHashSet<String>()
-    private val recentlyVibratedKeys = HashMap<String, Long>()  // key -> postTime
+    private val recentlyVibratedKeys = object : LinkedHashMap<String, Long>(128, 0.75f, true) {
+        override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, Long>?): Boolean {
+            return size > MAX_RECENTLY_VIBRATED_KEYS
+        }
+    }
     private val trailingVibrationHandler = Handler(Looper.getMainLooper())
     private var lastVibrationAtMs: Long = 0L
     private var listenerConnectedAtMs: Long = 0L
     private var hasPendingTrailingVibration = false
+    private var pendingTrailingCreatedAtMs = 0L
     private val trailingVibrationRunnable = Runnable { runTrailingVibrationIfNeeded() }
     private val screenOffReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -53,6 +59,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
     }
 
     override fun onDestroy() {
+        isConnected = false
         trailingVibrationHandler.removeCallbacks(trailingVibrationRunnable)
         try {
             unregisterReceiver(screenOffReceiver)
@@ -181,6 +188,9 @@ class VibratingNotificationListenerService : NotificationListenerService() {
     }
 
     private fun scheduleTrailingVibration(delayMs: Long) {
+        if (!hasPendingTrailingVibration) {
+            pendingTrailingCreatedAtMs = System.currentTimeMillis()
+        }
         hasPendingTrailingVibration = true
         trailingVibrationHandler.removeCallbacks(trailingVibrationRunnable)
         trailingVibrationHandler.postDelayed(
@@ -192,6 +202,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
 
     private fun cancelPendingTrailingVibration() {
         hasPendingTrailingVibration = false
+        pendingTrailingCreatedAtMs = 0L
         trailingVibrationHandler.removeCallbacks(trailingVibrationRunnable)
     }
 
@@ -202,27 +213,35 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         if (!canRunTrailingVibration(now)) return
 
         hasPendingTrailingVibration = false
+        pendingTrailingCreatedAtMs = 0L
         val deviceLocked = isDeviceLocked()
         val result = vibrateNow(now, deviceLocked, null, "trailing")
         debugLog("trailing vibrate result=$result")
     }
 
     private fun canRunTrailingVibration(now: Long): Boolean {
+        val createdAt = pendingTrailingCreatedAtMs
+        if (createdAt <= 0L || now - createdAt > MAX_TRAILING_VIBRATION_AGE_MS) {
+            debugLog("skip trailing: expired")
+            cancelPendingTrailingVibration()
+            return false
+        }
+
         if (!prefs.isEnabled()) {
             debugLog("skip trailing: switch disabled")
-            hasPendingTrailingVibration = false
+            cancelPendingTrailingVibration()
             return false
         }
 
         if (prefs.isInQuietHours()) {
             debugLog("skip trailing: quiet hours active")
-            hasPendingTrailingVibration = false
+            cancelPendingTrailingVibration()
             return false
         }
 
         if (isCallActive()) {
             debugLog("skip trailing: call is active")
-            hasPendingTrailingVibration = false
+            cancelPendingTrailingVibration()
             return false
         }
 
@@ -425,6 +444,8 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         private const val INITIAL_REBIND_INTERVAL_MS = 15_000L
         private const val MAX_REBIND_INTERVAL_MS = 5 * 60_000L
         private const val TRAILING_UNLOCKED_RETRY_MS = 1_000L
+        private const val MAX_TRAILING_VIBRATION_AGE_MS = 30_000L
+        private const val MAX_RECENTLY_VIBRATED_KEYS = 256
         private val ALLOWED_MESSAGING_PACKAGES = setOf(
             "com.ss.android.lark",
             "com.larksuite.suite",

@@ -60,7 +60,8 @@ class AppPrefs(context: Context) {
         prefs.edit().putInt(KEY_GLOBAL_GAP_MS, clamped).apply()
     }
 
-    fun vibrationAmplitude(): Int = prefs.getInt(KEY_VIBRATION_AMPLITUDE, DEFAULT_VIBRATION_AMPLITUDE).coerceIn(1, 100)
+    fun vibrationAmplitude(): Int =
+        prefs.getInt(KEY_VIBRATION_AMPLITUDE, DEFAULT_VIBRATION_AMPLITUDE).coerceIn(1, 100)
 
     fun setVibrationAmplitude(percent: Int) {
         prefs.edit().putInt(KEY_VIBRATION_AMPLITUDE, percent.coerceIn(1, 100)).apply()
@@ -87,7 +88,9 @@ class AppPrefs(context: Context) {
                 val s = parts[0].toIntOrNull() ?: return@mapNotNull null
                 val e = parts[1].toIntOrNull() ?: return@mapNotNull null
                 QuietPeriod(s, e)
-            } else null
+            } else {
+                null
+            }
         }
     }
 
@@ -121,7 +124,7 @@ class AppPrefs(context: Context) {
         const val MIN_VIBRATION_MS = 1
         const val MAX_VIBRATION_MS = 1000
 
-        const val DEFAULT_VIBRATION_AMPLITUDE = 100  // percent (1-100)
+        const val DEFAULT_VIBRATION_AMPLITUDE = 100
 
         const val DEFAULT_GLOBAL_GAP_MS = 3000
         const val MIN_GLOBAL_GAP_MS = 500
@@ -130,8 +133,8 @@ class AppPrefs(context: Context) {
 }
 
 /**
- * [startMin] 和 [endMin] 均为从午夜算起的分钟数（0–1439）。
- * 支持跨午夜，例如 startMin=1320（22:00）, endMin=420（07:00）。
+ * [startMin] and [endMin] are minutes since midnight (0-1439).
+ * Cross-midnight periods are supported, for example 22:00 to 07:00.
  */
 data class QuietPeriod(val startMin: Int, val endMin: Int) {
     fun contains(minuteOfDay: Int): Boolean =

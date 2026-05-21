@@ -5,7 +5,6 @@ import android.content.ClipboardManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.media.AudioManager
 import android.net.Uri
 import android.os.Build
@@ -273,13 +272,10 @@ class MainActivity : AppCompatActivity() {
         binding.cardServiceDead.visibility =
             if (serviceDead) android.view.View.VISIBLE else android.view.View.GONE
 
-        if (enabled) {
+        if (serviceDead && !didForceRebind) {
             val component = ComponentName(this, VibratingNotificationListenerService::class.java)
-            if (!didForceRebind) {
-                forceRebind(component)
-                NotificationListenerService.requestRebind(component)
-                didForceRebind = true
-            }
+            NotificationListenerService.requestRebind(component)
+            didForceRebind = true
         }
 
         val am = getSystemService(AudioManager::class.java)
@@ -350,24 +346,6 @@ class MainActivity : AppCompatActivity() {
             ?.split(':')
             ?.mapNotNull { ComponentName.unflattenFromString(it) }
             ?.any { it == component } == true
-    }
-
-    private fun forceRebind(component: ComponentName) {
-        try {
-            packageManager.setComponentEnabledSetting(
-                component,
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP
-            )
-            packageManager.setComponentEnabledSetting(
-                component,
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                PackageManager.DONT_KILL_APP
-            )
-            Log.d("VirbMain", "forceRebind: toggled listener component")
-        } catch (e: Exception) {
-            Log.w("VirbMain", "forceRebind failed: ${e.message}")
-        }
     }
 
     private fun toast(message: String) {

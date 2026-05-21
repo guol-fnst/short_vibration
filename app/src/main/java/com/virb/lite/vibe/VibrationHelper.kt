@@ -25,32 +25,39 @@ object VibrationHelper {
         val effect = VibrationEffect.createOneShot(safeDuration, safeAmplitude)
         val appCtx = context.applicationContext
         var wl: PowerManager.WakeLock? = null
+        var keepWakeLockUntilTimeout = false
 
         return try {
             wl = acquireVibrationWakeLock(appCtx, safeDuration, acquireWakeLock)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val result = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 val manager = appCtx.getSystemService(VibratorManager::class.java)
                 if (manager == null) {
                     Log.w(TAG, "VibratorManager null, falling back")
-                    return legacyVibrate(appCtx, effect, audioAttrs)
+                    legacyVibrate(appCtx, effect, audioAttrs)
+                } else {
+                    val vibrator = manager.defaultVibrator
+                    debugLog("hasVibrator=${vibrator.hasVibrator()}, hasFreeformEffect=${vibrator.areEffectsSupported(VibrationEffect.EFFECT_CLICK).any { it == 0 }}")
+                    if (!vibrator.hasVibrator()) {
+                        Log.w(TAG, "hasVibrator=false on API31+, trying legacy")
+                        legacyVibrate(appCtx, effect, audioAttrs)
+                    } else {
+                        vibrator.vibrate(effect, audioAttrs)
+                        debugLog("vibrate dispatched via VibratorManager+AudioAttrs")
+                        true
+                    }
                 }
-                val vibrator = manager.defaultVibrator
-                debugLog("hasVibrator=${vibrator.hasVibrator()}, hasFreeformEffect=${vibrator.areEffectsSupported(VibrationEffect.EFFECT_CLICK).any { it == 0 }}")
-                if (!vibrator.hasVibrator()) {
-                    Log.w(TAG, "hasVibrator=false on API31+, trying legacy")
-                    return legacyVibrate(appCtx, effect, audioAttrs)
-                }
-                vibrator.vibrate(effect, audioAttrs)
-                debugLog("vibrate dispatched via VibratorManager+AudioAttrs")
-                true
             } else {
                 legacyVibrate(appCtx, effect, audioAttrs)
             }
+            keepWakeLockUntilTimeout = result
+            result
         } catch (e: Exception) {
             Log.e(TAG, "vibrate() exception: ${e.javaClass.simpleName}: ${e.message}")
             false
         } finally {
-            releaseWakeLock(wl)
+            if (!keepWakeLockUntilTimeout) {
+                releaseWakeLock(wl)
+            }
         }
     }
 
@@ -66,7 +73,10 @@ object VibrationHelper {
         return pm.newWakeLock(
             PowerManager.PARTIAL_WAKE_LOCK,
             "com.virb.lite:vibrate"
-        ).also { it.acquire(durationMs + 500) }
+        ).also {
+            it.setReferenceCounted(false)
+            it.acquire(durationMs + 500)
+        }
     }
 
     private fun releaseWakeLock(wl: PowerManager.WakeLock?) {
