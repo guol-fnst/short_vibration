@@ -139,6 +139,16 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             return
         }
 
+        // Skip notifications posted on channels that MIUI/HyperOS reserves exclusively
+        // for internal background services (e.g. hide_foreground, fg_service).
+        // This is package-agnostic: it catches any OEM service using these channel IDs
+        // without requiring a per-package entry in IGNORED_SYSTEM_NOISE_PACKAGES.
+        if (isBackgroundServiceChannel(sbn.notification)) {
+            debugLog("skip: background-service channel pkg=$pkg ch=${sbn.notification.channelId}")
+            VibrationLogger.logSkip("bkg_channel", pkg)
+            return
+        }
+
         if (prefs.ignoreSystemPackages() && shouldIgnoreSystemNotification(sbn)) {
             debugLog("skip: system notification pkg=$pkg category=${sbn.notification.category}")
             VibrationLogger.logSkip("system_noise", pkg)
@@ -352,6 +362,11 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         return title.isBlank() && text.isBlank() && subText.isBlank()
     }
 
+    private fun isBackgroundServiceChannel(notification: Notification): Boolean {
+        val ch = notification.channelId?.lowercase(java.util.Locale.ROOT) ?: return false
+        return ch in BACKGROUND_SERVICE_CHANNELS
+    }
+
     private fun isAllowedMessagingPackage(packageName: String): Boolean {
         return packageName in ALLOWED_MESSAGING_PACKAGES
     }
@@ -417,7 +432,17 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         )
         private val IGNORED_SYSTEM_NOISE_PACKAGES = setOf(
             "com.xiaomi.aicr",
-            "com.milink.service"
+            "com.milink.service"   // belt-and-suspenders; also caught by BACKGROUND_SERVICE_CHANNELS
+        )
+
+        // Channel IDs used by MIUI/HyperOS exclusively for internal background services.
+        // Any notification on these channels is never user-facing and must be silenced
+        // regardless of the package name or the "ignore system packages" toggle.
+        private val BACKGROUND_SERVICE_CHANNELS = setOf(
+            "hide_foreground",
+            "fg_service",
+            "foreground_service",
+            "foreground"
         )
 
         @Volatile
