@@ -35,6 +35,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
     }
     private val trailingVibrationHandler = Handler(Looper.getMainLooper())
     private var lastVibrationAtMs: Long = 0L
+    private var lastTrailingFiredAtMs: Long = 0L
     private var listenerConnectedAtMs: Long = 0L
     private var hasPendingTrailingVibration = false
     private var pendingTrailingCreatedAtMs = 0L
@@ -181,7 +182,11 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             debugLog("skip: within global gap, delta=$delta gap=$gapMs")
             VibrationLogger.logSkip("gap_${delta}ms", pkg)
             recentlyVibratedKeys[sbn.key] = sbn.postTime
-            scheduleTrailingVibration(lastVibrationAt + gapMs - now)
+            // Prevent trailing cascade: if the last vibration was itself a trailing,
+            // don't schedule another one. The trailing already represented this burst.
+            if (lastTrailingFiredAtMs != lastVibrationAt) {
+                scheduleTrailingVibration(lastVibrationAt + gapMs - now)
+            }
             return
         }
 
@@ -281,6 +286,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         val result = VibrationHelper.vibrate(this, ms, amplitude, acquireWakeLock = deviceLocked)
         if (result) {
             lastVibrationAtMs = now
+            if (reason == "trailing") lastTrailingFiredAtMs = now
             prefs.markVibrationNow(now)
             val notif = sbn?.notification
             val title = notif?.extras
