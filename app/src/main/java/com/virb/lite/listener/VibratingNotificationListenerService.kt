@@ -1,5 +1,6 @@
 package com.virb.lite.listener
 
+import android.app.KeyguardManager
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -35,15 +36,15 @@ class VibratingNotificationListenerService : NotificationListenerService() {
     }
     private val trailingVibrationHandler = Handler(Looper.getMainLooper())
     private var lastVibrationAtMs: Long = 0L
-    private var lastTrailingFiredAtMs: Long = 0L
     private var listenerConnectedAtMs: Long = 0L
+    private var burstStartedAtMs: Long = 0L
+    private var burstEndsAtMs: Long = 0L
     private var hasPendingTrailingVibration = false
-    private var pendingTrailingCreatedAtMs = 0L
     private val trailingVibrationRunnable = Runnable { runTrailingVibrationIfNeeded() }
-    private val screenOffReceiver = object : BroadcastReceiver() {
+    private val userPresentReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent?.action == Intent.ACTION_SCREEN_OFF && hasPendingTrailingVibration) {
-                runTrailingVibrationIfNeeded()
+            if (intent?.action == Intent.ACTION_USER_PRESENT) {
+                cancelPendingBurstWindow()
             }
         }
     }
@@ -56,14 +57,14 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         VibrationLogger.logEvent("service_start")
         debugLog("Service onCreate")
         createNotificationChannel()
-        registerReceiver(screenOffReceiver, IntentFilter(Intent.ACTION_SCREEN_OFF))
+        registerReceiver(userPresentReceiver, IntentFilter(Intent.ACTION_USER_PRESENT))
     }
 
     override fun onDestroy() {
         isConnected = false
-        trailingVibrationHandler.removeCallbacks(trailingVibrationRunnable)
+        cancelPendingBurstWindow()
         try {
-            unregisterReceiver(screenOffReceiver)
+            unregisterReceiver(userPresentReceiver)
         } catch (_: Exception) {
             // Receiver may already be unregistered during service teardown.
         }
@@ -171,37 +172,34 @@ class VibratingNotificationListenerService : NotificationListenerService() {
 
         if (prefs.vibrateOnlyWhenLocked() && !deviceLocked) {
             debugLog("skip: device unlocked")
-            VibrationLogger.logSkip("screen_on", pkg)
+            VibrationLogger.logSkip("unlocked", pkg)
             return
         }
 
         val gapMs = prefs.globalGapMs().toLong()
-        val lastVibrationAt = lastVibrationAtMs
-        if (lastVibrationAt > 0L && now - lastVibrationAt < gapMs) {
-            val delta = now - lastVibrationAt
-            debugLog("skip: within global gap, delta=$delta gap=$gapMs")
+        clearExpiredBurstWindow(now)
+        if (burstEndsAtMs > now) {
+            val delta = now - burstStartedAtMs
+            debugLog("skip: within burst window, delta=$delta gap=$gapMs")
             VibrationLogger.logSkip("gap_${delta}ms", pkg)
             recentlyVibratedKeys[sbn.key] = sbn.postTime
-            // Prevent trailing cascade: if the last vibration was itself a trailing,
-            // don't schedule another one. The trailing already represented this burst.
-            if (lastTrailingFiredAtMs != lastVibrationAt) {
-                scheduleTrailingVibration(lastVibrationAt + gapMs - now)
-            }
+            scheduleTrailingVibration(burstEndsAtMs - now)
             return
         }
 
-        cancelPendingTrailingVibration()
         val result = vibrateNow(now, deviceLocked, sbn, "notification")
         if (result) {
             recentlyVibratedKeys[sbn.key] = sbn.postTime
+            burstStartedAtMs = now
+            burstEndsAtMs = now + gapMs
+            hasPendingTrailingVibration = false
+            trailingVibrationHandler.removeCallbacks(trailingVibrationRunnable)
         }
         debugLog("vibrate result=$result")
     }
 
     private fun scheduleTrailingVibration(delayMs: Long) {
-        if (!hasPendingTrailingVibration) {
-            pendingTrailingCreatedAtMs = System.currentTimeMillis()
-        }
+        if (burstEndsAtMs <= System.currentTimeMillis()) return
         hasPendingTrailingVibration = true
         trailingVibrationHandler.removeCallbacks(trailingVibrationRunnable)
         trailingVibrationHandler.postDelayed(
@@ -211,66 +209,47 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         debugLog("scheduled trailing vibration delayMs=$delayMs")
     }
 
-    private fun cancelPendingTrailingVibration() {
+    private fun cancelPendingBurstWindow() {
         hasPendingTrailingVibration = false
-        pendingTrailingCreatedAtMs = 0L
+        burstStartedAtMs = 0L
+        burstEndsAtMs = 0L
         trailingVibrationHandler.removeCallbacks(trailingVibrationRunnable)
+    }
+
+    private fun clearExpiredBurstWindow(now: Long) {
+        if (burstEndsAtMs > 0L && now >= burstEndsAtMs && !hasPendingTrailingVibration) {
+            burstStartedAtMs = 0L
+            burstEndsAtMs = 0L
+        }
     }
 
     private fun runTrailingVibrationIfNeeded() {
         if (!hasPendingTrailingVibration) return
 
         val now = System.currentTimeMillis()
-        if (!canRunTrailingVibration(now)) return
+        if (!prefs.isEnabled() || prefs.isInQuietHours() || isCallActive()) {
+            cancelPendingBurstWindow()
+            return
+        }
+
+        if (prefs.vibrateOnlyWhenLocked() && !isDeviceLocked()) {
+            debugLog("cancel trailing: device unlocked")
+            cancelPendingBurstWindow()
+            return
+        }
+
+        val remainingDelayMs = burstEndsAtMs - now
+        if (remainingDelayMs > 0L) {
+            scheduleTrailingVibration(remainingDelayMs)
+            return
+        }
 
         hasPendingTrailingVibration = false
-        pendingTrailingCreatedAtMs = 0L
+        burstStartedAtMs = 0L
+        burstEndsAtMs = 0L
         val deviceLocked = isDeviceLocked()
         val result = vibrateNow(now, deviceLocked, null, "trailing")
         debugLog("trailing vibrate result=$result")
-    }
-
-    private fun canRunTrailingVibration(now: Long): Boolean {
-        val createdAt = pendingTrailingCreatedAtMs
-        if (createdAt <= 0L || now - createdAt > MAX_TRAILING_VIBRATION_AGE_MS) {
-            debugLog("skip trailing: expired")
-            cancelPendingTrailingVibration()
-            return false
-        }
-
-        if (!prefs.isEnabled()) {
-            debugLog("skip trailing: switch disabled")
-            cancelPendingTrailingVibration()
-            return false
-        }
-
-        if (prefs.isInQuietHours()) {
-            debugLog("skip trailing: quiet hours active")
-            cancelPendingTrailingVibration()
-            return false
-        }
-
-        if (isCallActive()) {
-            debugLog("skip trailing: call is active")
-            cancelPendingTrailingVibration()
-            return false
-        }
-
-        val deviceLocked = isDeviceLocked()
-        if (prefs.vibrateOnlyWhenLocked() && !deviceLocked) {
-            debugLog("defer trailing: device unlocked")
-            scheduleTrailingVibration(TRAILING_UNLOCKED_RETRY_MS)
-            return false
-        }
-
-        val gapMs = prefs.globalGapMs().toLong()
-        val lastVibrationAt = lastVibrationAtMs
-        if (lastVibrationAt > 0L && now - lastVibrationAt < gapMs) {
-            scheduleTrailingVibration(lastVibrationAt + gapMs - now)
-            return false
-        }
-
-        return true
     }
 
     private fun vibrateNow(
@@ -286,7 +265,6 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         val result = VibrationHelper.vibrate(this, ms, amplitude, acquireWakeLock = deviceLocked)
         if (result) {
             lastVibrationAtMs = now
-            if (reason == "trailing") lastTrailingFiredAtMs = now
             prefs.markVibrationNow(now)
             val notif = sbn?.notification
             val title = notif?.extras
@@ -325,12 +303,11 @@ class VibratingNotificationListenerService : NotificationListenerService() {
     }
 
     private fun isDeviceLocked(): Boolean {
-        // 屏幕不亮 = 用户不在使用手机 = 视为锁屏，可以震动
-        // PowerManager.isInteractive 比 KeyguardManager.isKeyguardLocked
-        // 更可靠：不受 MIUI 锁屏延迟设置影响
+        // Notifications may wake the lock screen; it is still locked until USER_PRESENT.
+        val keyguard = getSystemService(KeyguardManager::class.java)
+        if (keyguard != null) return keyguard.isKeyguardLocked
         val pm = getSystemService(PowerManager::class.java)
-        if (pm != null) return !pm.isInteractive
-        return false
+        return pm?.isInteractive == false
     }
 
     private fun shouldSkipUnlockReplay(now: Long): Boolean {
@@ -459,8 +436,6 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         private const val RECONNECT_REPLAY_GRACE_MS = 1_000L
         private const val INITIAL_REBIND_INTERVAL_MS = 15_000L
         private const val MAX_REBIND_INTERVAL_MS = 5 * 60_000L
-        private const val TRAILING_UNLOCKED_RETRY_MS = 1_000L
-        private const val MAX_TRAILING_VIBRATION_AGE_MS = 30_000L
         private const val MAX_RECENTLY_VIBRATED_KEYS = 256
         private val ALLOWED_MESSAGING_PACKAGES = setOf(
             "com.ss.android.lark",
