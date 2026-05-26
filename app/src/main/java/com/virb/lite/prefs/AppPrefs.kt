@@ -128,7 +128,7 @@ class AppPrefs(context: Context) {
 
         const val DEFAULT_GLOBAL_GAP_MS = 3000
         const val MIN_GLOBAL_GAP_MS = 500
-        const val MAX_GLOBAL_GAP_MS = 10000
+        const val MAX_GLOBAL_GAP_MS = 99000
     }
 }
 
