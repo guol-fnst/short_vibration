@@ -177,6 +177,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         }
 
         val gapMs = prefs.globalGapMs().toLong()
+        restoreActiveBurstWindowFromLastVibration(now, gapMs)
         clearExpiredBurstWindow(now)
         if (burstEndsAtMs > now) {
             val delta = now - burstStartedAtMs
@@ -220,6 +221,20 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         if (burstEndsAtMs > 0L && now >= burstEndsAtMs && !hasPendingTrailingVibration) {
             burstStartedAtMs = 0L
             burstEndsAtMs = 0L
+        }
+    }
+
+    private fun restoreActiveBurstWindowFromLastVibration(now: Long, gapMs: Long) {
+        if (burstEndsAtMs > now) return
+
+        val lastVibrationAt = lastVibrationAtMs
+        if (lastVibrationAt <= 0L) return
+        if (prefs.lastUserPresentAtMs() > lastVibrationAt) return
+
+        val restoredBurstEndsAt = lastVibrationAt + gapMs
+        if (restoredBurstEndsAt > now) {
+            burstStartedAtMs = lastVibrationAt
+            burstEndsAtMs = restoredBurstEndsAt
         }
     }
 
