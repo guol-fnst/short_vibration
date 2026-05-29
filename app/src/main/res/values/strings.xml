@@ -24,6 +24,7 @@
     <string name="notif_fg_title">Virb Lite 正在运行</string>
     <string name="notif_fg_text">通知监听已启用，等待消息</string>
     <string name="global_gap_sec_hint">防重复间隔 (秒)</string>
+    <string name="global_gap_trailing_desc">连续通知补震会按防重复间隔递增，封顶约 60 秒（不短于当前间隔）</string>
     <string name="decrease_value">减少数值</string>
     <string name="increase_value">增加数值</string>
     <string name="service_dead_title">服务已停止运行</string>

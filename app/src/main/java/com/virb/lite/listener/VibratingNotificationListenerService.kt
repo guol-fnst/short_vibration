@@ -39,6 +39,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
     private var listenerConnectedAtMs: Long = 0L
     private var burstStartedAtMs: Long = 0L
     private var burstEndsAtMs: Long = 0L
+    private var trailingVibrationCount: Int = 0
     private var hasPendingTrailingVibration = false
     private val trailingVibrationRunnable = Runnable { runTrailingVibrationIfNeeded() }
     private val userPresentReceiver = object : BroadcastReceiver() {
@@ -145,6 +146,12 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             return
         }
 
+        if (isClockAlarmNotification(sbn)) {
+            debugLog("skip: clock alarm notification pkg=$pkg ch=${sbn.notification.channelId}")
+            VibrationLogger.logSkip("clock_alarm", pkg)
+            return
+        }
+
         // Always skip foreground-service notifications that carry no user-visible content
         // (e.g. Xiaomi AICR, various OEM background workers). This is independent of the
         // "ignore system packages" toggle because such notifications are never user-facing.
@@ -193,6 +200,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             recentlyVibratedKeys[sbn.key] = sbn.postTime
             burstStartedAtMs = now
             burstEndsAtMs = now + gapMs
+            trailingVibrationCount = 0
             hasPendingTrailingVibration = false
             trailingVibrationHandler.removeCallbacks(trailingVibrationRunnable)
         }
@@ -210,10 +218,17 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         debugLog("scheduled trailing vibration delayMs=$delayMs")
     }
 
+    private fun nextTrailingDelayMs(gapMs: Long): Long {
+        val multiplier = (trailingVibrationCount + 1).coerceAtMost(TRAILING_BACKOFF_MAX_MULTIPLIER)
+        val maxDelayMs = TRAILING_BACKOFF_MAX_DELAY_MS.coerceAtLeast(gapMs)
+        return (gapMs * multiplier.toLong()).coerceAtMost(maxDelayMs)
+    }
+
     private fun cancelPendingBurstWindow() {
         hasPendingTrailingVibration = false
         burstStartedAtMs = 0L
         burstEndsAtMs = 0L
+        trailingVibrationCount = 0
         trailingVibrationHandler.removeCallbacks(trailingVibrationRunnable)
     }
 
@@ -221,6 +236,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         if (burstEndsAtMs > 0L && now >= burstEndsAtMs && !hasPendingTrailingVibration) {
             burstStartedAtMs = 0L
             burstEndsAtMs = 0L
+            trailingVibrationCount = 0
         }
     }
 
@@ -260,10 +276,18 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         }
 
         hasPendingTrailingVibration = false
-        burstStartedAtMs = 0L
-        burstEndsAtMs = 0L
         val deviceLocked = isDeviceLocked()
         val result = vibrateNow(now, deviceLocked, null, "trailing")
+        if (result) {
+            val gapMs = prefs.globalGapMs().toLong()
+            trailingVibrationCount += 1
+            burstStartedAtMs = now
+            burstEndsAtMs = now + nextTrailingDelayMs(gapMs)
+        } else {
+            burstStartedAtMs = 0L
+            burstEndsAtMs = 0L
+            trailingVibrationCount = 0
+        }
         debugLog("trailing vibrate result=$result")
     }
 
@@ -389,6 +413,16 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         return notification.category == Notification.CATEGORY_TRANSPORT
     }
 
+    private fun isClockAlarmNotification(sbn: StatusBarNotification): Boolean {
+        if (sbn.packageName !in CLOCK_PACKAGES) return false
+
+        val notification = sbn.notification
+        val channelId = notification.channelId?.lowercase(java.util.Locale.ROOT).orEmpty()
+        return notification.category == Notification.CATEGORY_ALARM ||
+                channelId.contains("alarm") ||
+                channelId.contains("timer")
+    }
+
     private fun isBackgroundServiceChannel(notification: Notification): Boolean {
         val ch = notification.channelId?.lowercase(java.util.Locale.ROOT) ?: return false
         return ch in BACKGROUND_SERVICE_CHANNELS
@@ -452,6 +486,8 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         private const val INITIAL_REBIND_INTERVAL_MS = 15_000L
         private const val MAX_REBIND_INTERVAL_MS = 5 * 60_000L
         private const val MAX_RECENTLY_VIBRATED_KEYS = 256
+        private const val TRAILING_BACKOFF_MAX_DELAY_MS = 60_000L
+        private const val TRAILING_BACKOFF_MAX_MULTIPLIER = 4
         private val ALLOWED_MESSAGING_PACKAGES = setOf(
             "com.ss.android.lark",
             "com.larksuite.suite",
@@ -459,6 +495,10 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         )
         private val IGNORED_SYSTEM_NOISE_PACKAGES = setOf(
             "com.xiaomi.aicr"
+        )
+        private val CLOCK_PACKAGES = setOf(
+            "com.android.deskclock",
+            "com.google.android.deskclock"
         )
 
         // Channel IDs used by MIUI/HyperOS exclusively for internal background services.

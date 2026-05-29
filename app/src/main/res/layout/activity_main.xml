@@ -465,6 +465,15 @@
                         android:src="@drawable/ic_plus" />
                 </LinearLayout>
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-2dp"
+                    android:alpha="0.62"
+                    android:text="@string/global_gap_trailing_desc"
+                    android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                    android:textColor="?attr/colorOnSurface" />
+
                 <!-- 振动强度滑块 -->
                 <LinearLayout
                     android:layout_width="match_parent"
