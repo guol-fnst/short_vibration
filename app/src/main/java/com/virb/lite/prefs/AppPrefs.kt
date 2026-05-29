@@ -60,11 +60,17 @@ class AppPrefs(context: Context) {
         prefs.edit().putInt(KEY_GLOBAL_GAP_MS, clamped).apply()
     }
 
-    fun vibrationAmplitude(): Int =
-        prefs.getInt(KEY_VIBRATION_AMPLITUDE, DEFAULT_VIBRATION_AMPLITUDE).coerceIn(1, 100)
+    fun vibrationAmplitude(): Int {
+        val raw = prefs.getInt(KEY_VIBRATION_AMPLITUDE, DEFAULT_VIBRATION_AMPLITUDE)
+        val stepped = normalizeVibrationAmplitude(raw)
+        if (raw != stepped) {
+            prefs.edit().putInt(KEY_VIBRATION_AMPLITUDE, stepped).apply()
+        }
+        return stepped
+    }
 
     fun setVibrationAmplitude(percent: Int) {
-        prefs.edit().putInt(KEY_VIBRATION_AMPLITUDE, percent.coerceIn(1, 100)).apply()
+        prefs.edit().putInt(KEY_VIBRATION_AMPLITUDE, normalizeVibrationAmplitude(percent)).apply()
     }
 
     fun markUserPresentNow(epochMs: Long) {
@@ -125,10 +131,20 @@ class AppPrefs(context: Context) {
         const val MAX_VIBRATION_MS = 1000
 
         const val DEFAULT_VIBRATION_AMPLITUDE = 100
+        const val MIN_VIBRATION_AMPLITUDE = 10
+        const val MAX_VIBRATION_AMPLITUDE = 100
+        const val VIBRATION_AMPLITUDE_STEP = 10
 
         const val DEFAULT_GLOBAL_GAP_MS = 3000
         const val MIN_GLOBAL_GAP_MS = 500
         const val MAX_GLOBAL_GAP_MS = 99000
+
+        private fun normalizeVibrationAmplitude(percent: Int): Int {
+            val clamped = percent.coerceIn(MIN_VIBRATION_AMPLITUDE, MAX_VIBRATION_AMPLITUDE)
+            val rounded = ((clamped + VIBRATION_AMPLITUDE_STEP / 2) / VIBRATION_AMPLITUDE_STEP) *
+                    VIBRATION_AMPLITUDE_STEP
+            return rounded.coerceIn(MIN_VIBRATION_AMPLITUDE, MAX_VIBRATION_AMPLITUDE)
+        }
     }
 }
 

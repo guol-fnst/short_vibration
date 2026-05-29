@@ -11,6 +11,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.SystemClock
 import android.provider.Settings
 import android.service.notification.NotificationListenerService
 import android.util.Log
@@ -38,8 +39,9 @@ import java.util.Locale
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var prefs: AppPrefs
-    private var didForceRebind: Boolean = false
+    private var lastForceRebindElapsedMs: Long = 0L
     private val handler = Handler(Looper.getMainLooper())
+    private val permissionRefreshRunnable = Runnable { refreshPermissionState() }
     private var currentToast: Toast? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,9 +58,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        lastForceRebindElapsedMs = 0L
         refreshPermissionState()
-        // 给 onListenerConnected 留出时间，1.5 秒后再刻新一次状态
-        handler.postDelayed({ refreshPermissionState() }, 1500)
     }
 
     override fun onPause() {
@@ -76,7 +77,6 @@ class MainActivity : AppCompatActivity() {
         binding.sliderAmplitude.value = prefs.vibrationAmplitude().toFloat()
         updateAmplitudeLabel(prefs.vibrationAmplitude())
         refreshQuietPeriodsUi()
-        refreshPermissionState()
     }
 
     private fun bindListeners() {
@@ -272,10 +272,11 @@ class MainActivity : AppCompatActivity() {
         binding.cardServiceDead.visibility =
             if (serviceDead) android.view.View.VISIBLE else android.view.View.GONE
 
-        if (serviceDead && !didForceRebind) {
-            val component = ComponentName(this, VibratingNotificationListenerService::class.java)
-            NotificationListenerService.requestRebind(component)
-            didForceRebind = true
+        if (serviceDead) {
+            requestListenerRebindIfNeeded()
+            schedulePermissionRefresh()
+        } else {
+            handler.removeCallbacks(permissionRefreshRunnable)
         }
 
         val am = getSystemService(AudioManager::class.java)
@@ -297,6 +298,28 @@ class MainActivity : AppCompatActivity() {
             if (binding.btnOpenAccess.visibility == android.view.View.VISIBLE
                 || binding.btnFixHaptic.visibility == android.view.View.VISIBLE
             ) android.view.View.VISIBLE else android.view.View.GONE
+    }
+
+    private fun requestListenerRebindIfNeeded() {
+        val nowElapsed = SystemClock.elapsedRealtime()
+        if (lastForceRebindElapsedMs > 0L &&
+            nowElapsed - lastForceRebindElapsedMs < FORCE_REBIND_INTERVAL_MS
+        ) {
+            return
+        }
+
+        try {
+            val component = ComponentName(this, VibratingNotificationListenerService::class.java)
+            NotificationListenerService.requestRebind(component)
+            lastForceRebindElapsedMs = nowElapsed
+        } catch (e: Exception) {
+            Log.w("VirbMain", "requestRebind failed: ${e.message}")
+        }
+    }
+
+    private fun schedulePermissionRefresh() {
+        handler.removeCallbacks(permissionRefreshRunnable)
+        handler.postDelayed(permissionRefreshRunnable, SERVICE_STATE_REFRESH_MS)
     }
 
     private fun openAutoStartSettings() {
@@ -450,5 +473,10 @@ class MainActivity : AppCompatActivity() {
     private fun formatQuietPeriod(period: QuietPeriod): String {
         fun fmt(min: Int) = String.format(Locale.US, "%02d:%02d", min / 60, min % 60)
         return "${fmt(period.startMin)} ~ ${fmt(period.endMin)}"
+    }
+
+    companion object {
+        private const val SERVICE_STATE_REFRESH_MS = 1500L
+        private const val FORCE_REBIND_INTERVAL_MS = 15_000L
     }
 }
