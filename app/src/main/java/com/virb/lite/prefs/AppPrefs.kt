@@ -3,6 +3,7 @@ package com.virb.lite.prefs
 import android.content.Context
 import android.content.SharedPreferences
 import java.util.Calendar
+import java.util.LinkedHashSet
 
 class AppPrefs(context: Context) {
     private val prefs: SharedPreferences =
@@ -20,16 +21,25 @@ class AppPrefs(context: Context) {
         prefs.edit().putBoolean(KEY_LOCKED_ONLY, lockedOnly).apply()
     }
 
-    fun ignoreSystemPackages(): Boolean = prefs.getBoolean(KEY_IGNORE_SYSTEM, true)
-
-    fun setIgnoreSystemPackages(ignore: Boolean) {
-        prefs.edit().putBoolean(KEY_IGNORE_SYSTEM, ignore).apply()
-    }
-
     fun fileLoggingEnabled(): Boolean = prefs.getBoolean(KEY_FILE_LOGGING, true)
 
     fun setFileLoggingEnabled(enabled: Boolean) {
         prefs.edit().putBoolean(KEY_FILE_LOGGING, enabled).apply()
+    }
+
+    fun allowedPackages(): Set<String> {
+        return prefs.getStringSet(KEY_ALLOWED_PACKAGES, emptySet())
+            ?.let { LinkedHashSet(it) }
+            ?: emptySet()
+    }
+
+    fun setAllowedPackages(packageNames: Set<String>) {
+        prefs.edit().putStringSet(KEY_ALLOWED_PACKAGES, LinkedHashSet(packageNames)).apply()
+    }
+
+    fun isPackageAllowed(packageName: String): Boolean {
+        val allowed = allowedPackages()
+        return allowed.isNotEmpty() && packageName in allowed
     }
 
     fun vibrationMs(): Int {
@@ -117,8 +127,8 @@ class AppPrefs(context: Context) {
         private const val PREF_FILE = "virb_prefs"
         private const val KEY_ENABLED = "enabled"
         private const val KEY_LOCKED_ONLY = "locked_only"
-        private const val KEY_IGNORE_SYSTEM = "ignore_system"
         private const val KEY_FILE_LOGGING = "file_logging"
+        private const val KEY_ALLOWED_PACKAGES = "allowed_packages"
         private const val KEY_VIBRATION_MS = "vibration_ms"
         private const val KEY_GLOBAL_GAP_MS = "global_gap_ms"
         private const val KEY_VIBRATION_AMPLITUDE = "vibration_amplitude"

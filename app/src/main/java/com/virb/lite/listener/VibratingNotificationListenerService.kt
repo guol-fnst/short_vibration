@@ -112,6 +112,12 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             return
         }
 
+        if (!prefs.isPackageAllowed(pkg)) {
+            debugLog("skip: package not in whitelist pkg=$pkg")
+            VibrationLogger.logSkip("not_in_whitelist", pkg)
+            return
+        }
+
         if (prefs.isInQuietHours()) {
             debugLog("skip: quiet hours active")
             VibrationLogger.logSkip("quiet_hours", pkg)
@@ -152,9 +158,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             return
         }
 
-        // Always skip foreground-service notifications that carry no user-visible content
-        // (e.g. Xiaomi AICR, various OEM background workers). This is independent of the
-        // "ignore system packages" toggle because such notifications are never user-facing.
+        // Always skip foreground-service notifications that carry no user-visible content.
         if (isBlankForegroundServiceNotification(sbn.notification)) {
             debugLog("skip: blank foreground-service notification pkg=$pkg")
             VibrationLogger.logSkip("blank_fgs", pkg)
@@ -163,17 +167,10 @@ class VibratingNotificationListenerService : NotificationListenerService() {
 
         // Skip notifications posted on channels that MIUI/HyperOS reserves exclusively
         // for internal background services (e.g. hide_foreground, fg_service).
-        // This is package-agnostic: it catches any OEM service using these channel IDs
-        // without requiring a per-package entry in IGNORED_SYSTEM_NOISE_PACKAGES.
+        // This is package-agnostic and remains active even when a user-facing app is whitelisted.
         if (isBackgroundServiceChannel(sbn.notification)) {
             debugLog("skip: background-service channel pkg=$pkg ch=${sbn.notification.channelId}")
             VibrationLogger.logSkip("bkg_channel", pkg)
-            return
-        }
-
-        if (prefs.ignoreSystemPackages() && shouldIgnoreSystemNotification(sbn)) {
-            debugLog("skip: system notification pkg=$pkg category=${sbn.notification.category}")
-            VibrationLogger.logSkip("system_noise", pkg)
             return
         }
 
@@ -374,30 +371,6 @@ class VibratingNotificationListenerService : NotificationListenerService() {
                 audioManager.mode == AudioManager.MODE_IN_COMMUNICATION
     }
 
-    private fun shouldIgnoreSystemNotification(sbn: StatusBarNotification): Boolean {
-        val packageName = sbn.packageName
-        if (isAllowedMessagingPackage(packageName)) return false
-        if (packageName in IGNORED_SYSTEM_NOISE_PACKAGES) return true
-
-        when (sbn.notification.category) {
-            Notification.CATEGORY_CALL,
-            Notification.CATEGORY_SERVICE,
-            Notification.CATEGORY_STATUS,
-            Notification.CATEGORY_SYSTEM -> return true
-        }
-
-        return try {
-            val appInfo = packageManager.getApplicationInfo(packageName, 0)
-            // Only ignore true OS core processes (uid < 10000).
-            // Do NOT filter by FLAG_SYSTEM / FLAG_UPDATED_SYSTEM_APP — pre-installed
-            // apps such as Feishu on OEM/enterprise devices carry that flag but are
-            // regular user-facing messaging apps that should trigger vibration.
-            appInfo.uid < 10_000
-        } catch (_: Exception) {
-            false
-        }
-    }
-
     private fun isBlankForegroundServiceNotification(notification: Notification): Boolean {
         if (notification.flags and Notification.FLAG_FOREGROUND_SERVICE == 0) return false
 
@@ -426,10 +399,6 @@ class VibratingNotificationListenerService : NotificationListenerService() {
     private fun isBackgroundServiceChannel(notification: Notification): Boolean {
         val ch = notification.channelId?.lowercase(java.util.Locale.ROOT) ?: return false
         return ch in BACKGROUND_SERVICE_CHANNELS
-    }
-
-    private fun isAllowedMessagingPackage(packageName: String): Boolean {
-        return packageName in ALLOWED_MESSAGING_PACKAGES
     }
 
     private fun startForegroundRuntime() {
@@ -488,22 +457,13 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         private const val MAX_RECENTLY_VIBRATED_KEYS = 256
         private const val TRAILING_BACKOFF_MAX_DELAY_MS = 60_000L
         private const val TRAILING_BACKOFF_MAX_MULTIPLIER = 4
-        private val ALLOWED_MESSAGING_PACKAGES = setOf(
-            "com.ss.android.lark",
-            "com.larksuite.suite",
-            "com.bytedance.ee.lark"
-        )
-        private val IGNORED_SYSTEM_NOISE_PACKAGES = setOf(
-            "com.xiaomi.aicr"
-        )
         private val CLOCK_PACKAGES = setOf(
             "com.android.deskclock",
             "com.google.android.deskclock"
         )
 
         // Channel IDs used by MIUI/HyperOS exclusively for internal background services.
-        // Any notification on these channels is never user-facing and must be silenced
-        // regardless of the package name or the "ignore system packages" toggle.
+        // Any notification on these channels is never user-facing and must be silenced.
         private val BACKGROUND_SERVICE_CHANNELS = setOf(
             "channel_foreground_service",
             "com.miui.gallery.hide",

@@ -11,8 +11,8 @@ android {
         applicationId = "com.virb.lite"
         minSdk = 26
         targetSdk = 35
-        versionCode = 12
-        versionName = "1.0.12"
+        versionCode = 18
+        versionName = "1.0.18"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

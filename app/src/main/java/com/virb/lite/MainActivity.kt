@@ -5,6 +5,10 @@ import android.content.ClipboardManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.text.Editable
+import android.text.InputType
+import android.text.TextWatcher
 import android.media.AudioManager
 import android.net.Uri
 import android.os.Build
@@ -16,6 +20,14 @@ import android.provider.Settings
 import android.service.notification.NotificationListenerService
 import android.util.Log
 import android.view.HapticFeedbackConstants
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.BaseAdapter
+import android.widget.CheckedTextView
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.ListView
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
@@ -34,11 +46,13 @@ import com.virb.lite.prefs.AppPrefs
 import com.virb.lite.prefs.QuietPeriod
 import com.virb.lite.vibe.VibrationHelper
 import java.util.Calendar
+import java.util.LinkedHashSet
 import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var prefs: AppPrefs
+    private var installedAppsCache: List<WhitelistApp>? = null
     private var lastForceRebindElapsedMs: Long = 0L
     private val handler = Handler(Looper.getMainLooper())
     private val permissionRefreshRunnable = Runnable { refreshPermissionState() }
@@ -58,8 +72,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        installedAppsCache = null
         lastForceRebindElapsedMs = 0L
         refreshPermissionState()
+        refreshWhitelistUi()
     }
 
     override fun onPause() {
@@ -70,12 +86,12 @@ class MainActivity : AppCompatActivity() {
     private fun bindInitialUi() {
         binding.switchEnabled.isChecked = prefs.isEnabled()
         binding.switchLockedOnly.isChecked = prefs.vibrateOnlyWhenLocked()
-        binding.switchIgnoreSystem.isChecked = prefs.ignoreSystemPackages()
         binding.switchFileLogging.isChecked = prefs.fileLoggingEnabled()
         binding.etDuration.setText(prefs.vibrationMs().toString())
         binding.etGlobalGap.setText(msToSeconds(prefs.globalGapMs()).toString())
         binding.sliderAmplitude.value = prefs.vibrationAmplitude().toFloat()
         updateAmplitudeLabel(prefs.vibrationAmplitude())
+        refreshWhitelistUi()
         refreshQuietPeriodsUi()
     }
 
@@ -88,13 +104,13 @@ class MainActivity : AppCompatActivity() {
             prefs.setVibrateOnlyWhenLocked(isChecked)
         }
 
-        binding.switchIgnoreSystem.setOnCheckedChangeListener { _, isChecked ->
-            prefs.setIgnoreSystemPackages(isChecked)
-        }
-
         binding.switchFileLogging.setOnCheckedChangeListener { _, isChecked ->
             prefs.setFileLoggingEnabled(isChecked)
             VibrationLogger.setFileLoggingEnabled(isChecked)
+        }
+
+        binding.btnManageWhitelist.setOnClickListener {
+            showWhitelistDialog()
         }
 
         binding.sliderAmplitude.addOnChangeListener { _, value, _ ->
@@ -381,6 +397,229 @@ class MainActivity : AppCompatActivity() {
         binding.tvAmplitudeValue.text = getString(R.string.amplitude_percent, percent)
     }
 
+    private fun refreshWhitelistUi() {
+        val selectedPackages = prefs.allowedPackages()
+        binding.tvWhitelistSummary.text = if (selectedPackages.isEmpty()) {
+            getString(R.string.whitelist_summary_empty)
+        } else {
+            getString(R.string.whitelist_summary, selectedPackages.size)
+        }
+    }
+
+    private fun showWhitelistDialog() {
+        val apps = loadInstalledApps()
+        if (apps.isEmpty()) {
+            toast(getString(R.string.whitelist_no_apps))
+            return
+        }
+
+        val originalSelectedPackages = prefs.allowedPackages()
+        val selectedPackages = prefs.allowedPackages().toMutableSet()
+        val dialogContent = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            val pad = (20 * resources.displayMetrics.density).toInt()
+            setPadding(pad, pad / 2, pad, 0)
+        }
+
+        val searchInput = EditText(this).apply {
+            hint = getString(R.string.whitelist_search_hint)
+            inputType = InputType.TYPE_CLASS_TEXT
+            setSingleLine(true)
+        }
+        dialogContent.addView(
+            searchInput,
+            LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        )
+
+        val listView = ListView(this).apply {
+            choiceMode = ListView.CHOICE_MODE_NONE
+            isVerticalScrollBarEnabled = true
+            dividerHeight = 0
+        }
+        val rowItems = ArrayList<WhitelistDialogRow>()
+        val inflater = LayoutInflater.from(this)
+        val adapter = object : BaseAdapter() {
+            override fun getCount(): Int = rowItems.size
+
+            override fun getItem(position: Int): Any = rowItems[position]
+
+            override fun getItemId(position: Int): Long = position.toLong()
+
+            override fun getViewTypeCount(): Int = 2
+
+            override fun getItemViewType(position: Int): Int =
+                when (rowItems[position]) {
+                    is WhitelistDialogRow.Header -> 0
+                    is WhitelistDialogRow.AppItem -> 1
+                }
+
+            override fun isEnabled(position: Int): Boolean =
+                rowItems[position] is WhitelistDialogRow.AppItem
+
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                return when (val row = rowItems[position]) {
+                    is WhitelistDialogRow.Header -> {
+                        val view = (convertView as? TextView)
+                            ?: inflater.inflate(android.R.layout.simple_list_item_1, parent, false) as TextView
+                        view.text = row.title
+                        view.setTextAppearance(android.R.style.TextAppearance_Medium)
+                        view.setTypeface(view.typeface, android.graphics.Typeface.BOLD)
+                        view.alpha = 0.7f
+                        view.setPadding(view.paddingLeft, view.paddingTop + 12, view.paddingRight, view.paddingBottom)
+                        view
+                    }
+
+                    is WhitelistDialogRow.AppItem -> {
+                        val view = (convertView as? CheckedTextView)
+                            ?: inflater.inflate(
+                                android.R.layout.simple_list_item_multiple_choice,
+                                parent,
+                                false
+                            ) as CheckedTextView
+                        view.text = row.app.displayText
+                        view.isChecked = row.app.packageName in selectedPackages
+                        view
+                    }
+                }
+            }
+        }
+        listView.adapter = adapter
+        dialogContent.addView(
+            listView,
+            LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                (360 * resources.displayMetrics.density).toInt()
+            )
+        )
+
+        fun sortedApps(source: List<WhitelistApp>): Pair<List<WhitelistApp>, List<WhitelistApp>> {
+            val selected = source
+                .filter { it.packageName in selectedPackages }
+                .sortedWith(compareBy({ it.label.lowercase(Locale.getDefault()) }, { it.packageName }))
+            val unselected = source
+                .filter { it.packageName !in selectedPackages }
+                .sortedWith(compareBy({ it.label.lowercase(Locale.getDefault()) }, { it.packageName }))
+            return selected to unselected
+        }
+
+        fun applyFilter(query: String) {
+            val normalized = query.trim().lowercase(Locale.getDefault())
+            val filtered = if (normalized.isEmpty()) {
+                apps
+            } else {
+                apps.filter { app ->
+                    app.label.lowercase(Locale.getDefault()).contains(normalized) ||
+                    app.packageName.lowercase(Locale.getDefault()).contains(normalized)
+                }
+            }
+            val (selectedApps, unselectedApps) = sortedApps(filtered)
+            rowItems.clear()
+            if (selectedApps.isNotEmpty()) {
+                rowItems.add(WhitelistDialogRow.Header(getString(R.string.whitelist_selected_section)))
+                rowItems.addAll(selectedApps.map { WhitelistDialogRow.AppItem(it) })
+            }
+            if (unselectedApps.isNotEmpty()) {
+                rowItems.add(WhitelistDialogRow.Header(getString(R.string.whitelist_other_section)))
+                rowItems.addAll(unselectedApps.map { WhitelistDialogRow.AppItem(it) })
+            }
+            adapter.notifyDataSetChanged()
+        }
+
+        listView.setOnItemClickListener { _, _, position, _ ->
+            val row = rowItems[position]
+            if (row is WhitelistDialogRow.AppItem) {
+                val pkg = row.app.packageName
+                if (pkg in selectedPackages) {
+                    selectedPackages.remove(pkg)
+                } else {
+                    selectedPackages.add(pkg)
+                }
+                prefs.setAllowedPackages(selectedPackages)
+                refreshWhitelistUi()
+                applyFilter(searchInput.text.toString())
+            }
+        }
+
+        searchInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+            override fun afterTextChanged(s: Editable?) {
+                applyFilter(s?.toString().orEmpty())
+            }
+        })
+
+        applyFilter("")
+
+        AlertDialog.Builder(this)
+            .setTitle(R.string.whitelist_dialog_title)
+            .setView(dialogContent)
+            .setNeutralButton(R.string.whitelist_clear) { _, _ ->
+                prefs.setAllowedPackages(emptySet())
+                refreshWhitelistUi()
+            }
+            .setNegativeButton(android.R.string.cancel) { _, _ ->
+                prefs.setAllowedPackages(originalSelectedPackages)
+                refreshWhitelistUi()
+            }
+            .setPositiveButton(R.string.whitelist_done) { _, _ ->
+                refreshWhitelistUi()
+            }
+            .show()
+    }
+
+    private fun loadInstalledApps(): List<WhitelistApp> {
+        installedAppsCache?.let { return it }
+
+        val installedApps = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            packageManager.getInstalledApplications(PackageManager.ApplicationInfoFlags.of(0))
+        } else {
+            @Suppress("DEPRECATION")
+            packageManager.getInstalledApplications(0)
+        }
+
+        val seenPackages = LinkedHashSet<String>()
+        val apps = installedApps.mapNotNull { appInfo ->
+            val pkg = appInfo.packageName
+            if (pkg == packageName || !seenPackages.add(pkg)) {
+                return@mapNotNull null
+            }
+            val label = packageManager.getApplicationLabel(appInfo).toString().trim()
+            if (label.isEmpty()) return@mapNotNull null
+            WhitelistApp(pkg, label)
+        }.toMutableList()
+
+        prefs.allowedPackages().forEach { pkg ->
+            if (pkg != packageName && seenPackages.add(pkg)) {
+                apps.add(resolveWhitelistApp(pkg))
+            }
+        }
+
+        apps.sortWith(compareBy({ it.label.lowercase(Locale.getDefault()) }, { it.packageName }))
+        installedAppsCache = apps
+        return apps
+    }
+
+    private fun resolveWhitelistApp(packageName: String): WhitelistApp {
+        val label = try {
+            val appInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                packageManager.getApplicationInfo(
+                    packageName,
+                    PackageManager.ApplicationInfoFlags.of(0)
+                )
+            } else {
+                @Suppress("DEPRECATION")
+                packageManager.getApplicationInfo(packageName, 0)
+            }
+            packageManager.getApplicationLabel(appInfo).toString().trim()
+        } catch (_: Exception) {
+            ""
+        }
+        return WhitelistApp(packageName, label.ifEmpty { packageName })
+    }
+
     private fun stepNumber(
         currentText: String?,
         delta: Int,
@@ -479,4 +718,17 @@ class MainActivity : AppCompatActivity() {
         private const val SERVICE_STATE_REFRESH_MS = 1500L
         private const val FORCE_REBIND_INTERVAL_MS = 15_000L
     }
+}
+
+private data class WhitelistApp(
+    val packageName: String,
+    val label: String,
+) {
+    val displayText: String
+        get() = "$label\n$packageName"
+}
+
+private sealed interface WhitelistDialogRow {
+    data class Header(val title: String) : WhitelistDialogRow
+    data class AppItem(val app: WhitelistApp) : WhitelistDialogRow
 }
