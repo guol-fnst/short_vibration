@@ -23,16 +23,16 @@ Virb Lite is a lightweight Android notification vibration app focused on low pow
 ## Tech Stack
 
 - Kotlin
-- Android SDK 35
+- Android SDK 36
 - Min SDK 26
-- Gradle (AGP 8.5.2)
+- Gradle (AGP 8.9.1)
 
 ## Build
 
 On this workspace, use JDK 17:
 
 ```bat
-cmd /c "set JAVA_HOME=C:\Program Files\Java\jdk-17&& set PATH=%JAVA_HOME%\bin;%PATH%&& d:\virb\gradle-8.7\bin\gradle.bat -p d:\virb assembleDebug --console=plain"
+cmd /c "set JAVA_HOME=C:\Program Files\Java\jdk-17&& set PATH=%JAVA_HOME%\bin;%PATH%&& d:\virb\gradle-8.11.1\bin\gradle.bat -p d:\virb assembleDebug --console=plain"
 ```
 
 APK output:

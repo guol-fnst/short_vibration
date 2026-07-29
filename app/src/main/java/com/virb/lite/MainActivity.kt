@@ -657,20 +657,6 @@ class MainActivity : AppCompatActivity() {
             }
             binding.chipGroupQuietPeriods.addView(chip)
         }
-
-        // 自适应高度：无时段时紧凑，有时段时铺满剩余空间（内部可滚动）
-        val hasPeriods = periods.isNotEmpty()
-        val cardLp = binding.cardQuietHours.layoutParams as android.widget.LinearLayout.LayoutParams
-        cardLp.height = if (hasPeriods) 0 else android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-        cardLp.weight = if (hasPeriods) 1f else 0f
-        binding.cardQuietHours.layoutParams = cardLp
-        binding.layoutQuietHoursContent.layoutParams.height =
-            if (hasPeriods) android.view.ViewGroup.LayoutParams.MATCH_PARENT
-            else android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-        val scrollLp = binding.scrollQuietPeriods.layoutParams as android.widget.LinearLayout.LayoutParams
-        scrollLp.height = if (hasPeriods) 0 else android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-        scrollLp.weight = if (hasPeriods) 1f else 0f
-        binding.scrollQuietPeriods.layoutParams = scrollLp
     }
 
     private fun showAddQuietPeriodDialog() {

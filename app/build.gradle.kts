@@ -5,14 +5,14 @@ plugins {
 
 android {
     namespace = "com.virb.lite"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.virb.lite"
         minSdk = 26
-        targetSdk = 35
-        versionCode = 18
-        versionName = "1.0.18"
+        targetSdk = 36
+        versionCode = 23
+        versionName = "1.0.23"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
