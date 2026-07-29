@@ -95,6 +95,44 @@ class AppPrefs(context: Context) {
         prefs.edit().putLong(KEY_LAST_VIBRATION_AT_MS, epochMs).apply()
     }
 
+    fun repeatReminderEnabled(): Boolean =
+        prefs.getBoolean(KEY_REPEAT_REMINDER_ENABLED, false)
+
+    fun setRepeatReminderEnabled(enabled: Boolean) {
+        prefs.edit().putBoolean(KEY_REPEAT_REMINDER_ENABLED, enabled).apply()
+    }
+
+    fun repeatReminderIntervalMin(): Int {
+        val raw = prefs.getInt(KEY_REPEAT_REMINDER_INTERVAL_MIN, DEFAULT_REPEAT_INTERVAL_MIN)
+        val clamped = raw.coerceIn(MIN_REPEAT_INTERVAL_MIN, MAX_REPEAT_INTERVAL_MIN)
+        if (raw != clamped) {
+            prefs.edit().putInt(KEY_REPEAT_REMINDER_INTERVAL_MIN, clamped).apply()
+        }
+        return clamped
+    }
+
+    fun setRepeatReminderIntervalMin(minutes: Int) {
+        prefs.edit()
+            .putInt(
+                KEY_REPEAT_REMINDER_INTERVAL_MIN,
+                minutes.coerceIn(MIN_REPEAT_INTERVAL_MIN, MAX_REPEAT_INTERVAL_MIN)
+            )
+            .apply()
+    }
+
+    fun repeatReminderMaxCount(): Int =
+        prefs.getInt(KEY_REPEAT_REMINDER_MAX_COUNT, DEFAULT_REPEAT_MAX_COUNT)
+            .coerceIn(MIN_REPEAT_MAX_COUNT, MAX_REPEAT_MAX_COUNT)
+
+    fun setRepeatReminderMaxCount(count: Int) {
+        prefs.edit()
+            .putInt(
+                KEY_REPEAT_REMINDER_MAX_COUNT,
+                count.coerceIn(MIN_REPEAT_MAX_COUNT, MAX_REPEAT_MAX_COUNT)
+            )
+            .apply()
+    }
+
     fun quietPeriods(): List<QuietPeriod> {
         val raw = prefs.getString(KEY_QUIET_PERIODS, "") ?: ""
         if (raw.isEmpty()) return emptyList()
@@ -135,6 +173,9 @@ class AppPrefs(context: Context) {
         private const val KEY_LAST_USER_PRESENT_AT_MS = "last_user_present_at_ms"
         private const val KEY_LAST_VIBRATION_AT_MS = "last_vibration_at_ms"
         private const val KEY_QUIET_PERIODS = "quiet_periods"
+        private const val KEY_REPEAT_REMINDER_ENABLED = "repeat_reminder_enabled"
+        private const val KEY_REPEAT_REMINDER_INTERVAL_MIN = "repeat_reminder_interval_min"
+        private const val KEY_REPEAT_REMINDER_MAX_COUNT = "repeat_reminder_max_count"
 
         const val DEFAULT_VIBRATION_MS = 10
         const val MIN_VIBRATION_MS = 1
@@ -148,6 +189,13 @@ class AppPrefs(context: Context) {
         const val DEFAULT_GLOBAL_GAP_MS = 3000
         const val MIN_GLOBAL_GAP_MS = 500
         const val MAX_GLOBAL_GAP_MS = 99000
+
+        const val DEFAULT_REPEAT_INTERVAL_MIN = 5
+        const val MIN_REPEAT_INTERVAL_MIN = 1
+        const val MAX_REPEAT_INTERVAL_MIN = 60
+        const val DEFAULT_REPEAT_MAX_COUNT = 3
+        const val MIN_REPEAT_MAX_COUNT = 1
+        const val MAX_REPEAT_MAX_COUNT = 10
 
         private fun normalizeVibrationAmplitude(percent: Int): Int {
             val clamped = percent.coerceIn(MIN_VIBRATION_AMPLITUDE, MAX_VIBRATION_AMPLITUDE)

@@ -91,6 +91,10 @@ class MainActivity : AppCompatActivity() {
         binding.etGlobalGap.setText(msToSeconds(prefs.globalGapMs()).toString())
         binding.sliderAmplitude.value = prefs.vibrationAmplitude().toFloat()
         updateAmplitudeLabel(prefs.vibrationAmplitude())
+        binding.switchRepeatReminder.isChecked = prefs.repeatReminderEnabled()
+        binding.etRepeatInterval.setText(prefs.repeatReminderIntervalMin().toString())
+        binding.etRepeatCount.setText(prefs.repeatReminderMaxCount().toString())
+        updateRepeatReminderOptions(prefs.repeatReminderEnabled())
         refreshWhitelistUi()
         refreshQuietPeriodsUi()
     }
@@ -107,6 +111,11 @@ class MainActivity : AppCompatActivity() {
         binding.switchFileLogging.setOnCheckedChangeListener { _, isChecked ->
             prefs.setFileLoggingEnabled(isChecked)
             VibrationLogger.setFileLoggingEnabled(isChecked)
+        }
+
+        binding.switchRepeatReminder.setOnCheckedChangeListener { _, isChecked ->
+            prefs.setRepeatReminderEnabled(isChecked)
+            updateRepeatReminderOptions(isChecked)
         }
 
         binding.btnManageWhitelist.setOnClickListener {
@@ -157,11 +166,55 @@ class MainActivity : AppCompatActivity() {
             ) { binding.etGlobalGap.setText(it.toString()) }
         }
 
+        binding.btnRepeatIntervalMinus.setOnClickListener {
+            stepNumber(
+                currentText = binding.etRepeatInterval.text?.toString(),
+                delta = -1,
+                min = AppPrefs.MIN_REPEAT_INTERVAL_MIN,
+                max = AppPrefs.MAX_REPEAT_INTERVAL_MIN,
+                defaultValue = AppPrefs.DEFAULT_REPEAT_INTERVAL_MIN
+            ) { binding.etRepeatInterval.setText(it.toString()) }
+        }
+
+        binding.btnRepeatIntervalPlus.setOnClickListener {
+            stepNumber(
+                currentText = binding.etRepeatInterval.text?.toString(),
+                delta = 1,
+                min = AppPrefs.MIN_REPEAT_INTERVAL_MIN,
+                max = AppPrefs.MAX_REPEAT_INTERVAL_MIN,
+                defaultValue = AppPrefs.DEFAULT_REPEAT_INTERVAL_MIN
+            ) { binding.etRepeatInterval.setText(it.toString()) }
+        }
+
+        binding.btnRepeatCountMinus.setOnClickListener {
+            stepNumber(
+                currentText = binding.etRepeatCount.text?.toString(),
+                delta = -1,
+                min = AppPrefs.MIN_REPEAT_MAX_COUNT,
+                max = AppPrefs.MAX_REPEAT_MAX_COUNT,
+                defaultValue = AppPrefs.DEFAULT_REPEAT_MAX_COUNT
+            ) { binding.etRepeatCount.setText(it.toString()) }
+        }
+
+        binding.btnRepeatCountPlus.setOnClickListener {
+            stepNumber(
+                currentText = binding.etRepeatCount.text?.toString(),
+                delta = 1,
+                min = AppPrefs.MIN_REPEAT_MAX_COUNT,
+                max = AppPrefs.MAX_REPEAT_MAX_COUNT,
+                defaultValue = AppPrefs.DEFAULT_REPEAT_MAX_COUNT
+            ) { binding.etRepeatCount.setText(it.toString()) }
+        }
+
         binding.btnSave.setOnClickListener {
             val duration = binding.etDuration.text.toString().toIntOrNull()
             val gapSeconds = binding.etGlobalGap.text.toString().toIntOrNull()
+            val repeatInterval = binding.etRepeatInterval.text.toString().toIntOrNull()
+            val repeatCount = binding.etRepeatCount.text.toString().toIntOrNull()
 
-            if (duration == null || gapSeconds == null) {
+            if (duration == null || gapSeconds == null ||
+                repeatInterval == null || repeatCount == null
+            ) {
                 toast(getString(R.string.invalid_input))
                 return@setOnClickListener
             }
@@ -169,9 +222,13 @@ class MainActivity : AppCompatActivity() {
             prefs.setVibrationMs(duration)
             prefs.setGlobalGapMs(secondsToMs(gapSeconds))
             prefs.setVibrationAmplitude(binding.sliderAmplitude.value.toInt())
+            prefs.setRepeatReminderIntervalMin(repeatInterval)
+            prefs.setRepeatReminderMaxCount(repeatCount)
 
             binding.etDuration.setText(prefs.vibrationMs().toString())
             binding.etGlobalGap.setText(msToSeconds(prefs.globalGapMs()).toString())
+            binding.etRepeatInterval.setText(prefs.repeatReminderIntervalMin().toString())
+            binding.etRepeatCount.setText(prefs.repeatReminderMaxCount().toString())
             toast(getString(R.string.saved))
         }
 
@@ -395,6 +452,20 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateAmplitudeLabel(percent: Int) {
         binding.tvAmplitudeValue.text = getString(R.string.amplitude_percent, percent)
+    }
+
+    private fun updateRepeatReminderOptions(enabled: Boolean) {
+        binding.layoutRepeatReminderOptions.alpha = if (enabled) 1f else 0.45f
+        setViewTreeEnabled(binding.layoutRepeatReminderOptions, enabled)
+    }
+
+    private fun setViewTreeEnabled(view: View, enabled: Boolean) {
+        view.isEnabled = enabled
+        if (view is ViewGroup) {
+            for (index in 0 until view.childCount) {
+                setViewTreeEnabled(view.getChildAt(index), enabled)
+            }
+        }
     }
 
     private fun refreshWhitelistUi() {

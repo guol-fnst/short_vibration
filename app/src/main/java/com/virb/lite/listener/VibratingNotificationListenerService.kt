@@ -1,6 +1,7 @@
 package com.virb.lite.listener
 
 import android.app.KeyguardManager
+import android.app.AlarmManager
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -35,6 +36,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         }
     }
     private val trailingVibrationHandler = Handler(Looper.getMainLooper())
+    private val unreadReminderTracker = UnreadReminderTracker()
     private var lastVibrationAtMs: Long = 0L
     private var listenerConnectedAtMs: Long = 0L
     private var burstStartedAtMs: Long = 0L
@@ -45,7 +47,9 @@ class VibratingNotificationListenerService : NotificationListenerService() {
     private val userPresentReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action == Intent.ACTION_USER_PRESENT) {
+                prefs.markUserPresentNow(System.currentTimeMillis())
                 cancelPendingBurstWindow()
+                cancelRepeatReminders()
             }
         }
     }
@@ -53,6 +57,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
     override fun onCreate() {
         super.onCreate()
         prefs = AppPrefs(this)
+        activeInstance = this
         lastVibrationAtMs = prefs.lastVibrationAtMs()
         VibrationLogger.init(this)
         VibrationLogger.logEvent("service_start")
@@ -63,7 +68,9 @@ class VibratingNotificationListenerService : NotificationListenerService() {
 
     override fun onDestroy() {
         isConnected = false
+        if (activeInstance === this) activeInstance = null
         cancelPendingBurstWindow()
+        cancelRepeatReminders()
         try {
             unregisterReceiver(userPresentReceiver)
         } catch (_: Exception) {
@@ -74,6 +81,10 @@ class VibratingNotificationListenerService : NotificationListenerService() {
 
     override fun onNotificationRemoved(sbn: StatusBarNotification) {
         recentlyVibratedKeys.remove(sbn.key)
+        unreadReminderTracker.remove(sbn.key)
+        if (unreadReminderTracker.isEmpty) {
+            cancelRepeatReminders()
+        }
     }
 
     override fun onListenerConnected() {
@@ -90,6 +101,8 @@ class VibratingNotificationListenerService : NotificationListenerService() {
     override fun onListenerDisconnected() {
         super.onListenerDisconnected()
         isConnected = false
+        cancelPendingBurstWindow()
+        cancelRepeatReminders()
         Log.w(TAG, "onListenerDisconnected — listener was killed by system")
         VibrationLogger.logEvent("listener_disconnected")
         stopForeground(STOP_FOREGROUND_REMOVE)
@@ -106,7 +119,6 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             debugLog("skip: own foreground/service notification")
             return
         }
-
         if (!prefs.isEnabled()) {
             debugLog("skip: switch disabled")
             return
@@ -124,7 +136,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             return
         }
 
-        if (prefs.vibrateOnlyWhenLocked() && shouldSkipUnlockReplay(now)) {
+        if (prefs.vibrateOnlyWhenLocked() && shouldSkipUnlockReplay(sbn, now)) {
             debugLog("skip: unlock cooldown")
             VibrationLogger.logSkip("unlock_cooldown", pkg)
             return
@@ -137,12 +149,6 @@ class VibratingNotificationListenerService : NotificationListenerService() {
 
         if (recentlyVibratedKeys[sbn.key] == sbn.postTime) {
             debugLog("skip: duplicate repost key=${sbn.key} postTime=${sbn.postTime}")
-            return
-        }
-
-        if (isCallActive()) {
-            debugLog("skip: call is active")
-            VibrationLogger.logSkip("call_active", pkg)
             return
         }
 
@@ -180,6 +186,14 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             return
         }
 
+        trackRepeatReminder(sbn, deviceLocked)
+
+        if (isCallActive()) {
+            debugLog("skip immediate vibration: call is active")
+            VibrationLogger.logSkip("call_active", pkg)
+            return
+        }
+
         val gapMs = prefs.globalGapMs().toLong()
         restoreActiveBurstWindowFromLastVibration(now, gapMs)
         clearExpiredBurstWindow(now)
@@ -203,6 +217,141 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         }
         debugLog("vibrate result=$result")
     }
+
+    private fun trackRepeatReminder(
+        sbn: StatusBarNotification,
+        deviceLocked: Boolean,
+    ) {
+        if (!prefs.repeatReminderEnabled() || !deviceLocked) return
+        if (sbn.notification.flags and Notification.FLAG_ONGOING_EVENT != 0) return
+
+        unreadReminderTracker.track(sbn.key, sbn.packageName)
+        scheduleRepeatReminder()
+    }
+
+    private fun scheduleRepeatReminder() {
+        if (unreadReminderTracker.isEmpty || !prefs.repeatReminderEnabled()) return
+
+        val delayMs = prefs.repeatReminderIntervalMin() * 60_000L
+        scheduleRepeatReminderAfter(delayMs)
+    }
+
+    private fun scheduleRepeatReminderAfter(delayMs: Long) {
+        val triggerAtMs = SystemClock.elapsedRealtime() + delayMs.coerceAtLeast(0L)
+        getSystemService(AlarmManager::class.java)?.setAndAllowWhileIdle(
+            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            triggerAtMs,
+            repeatReminderPendingIntent()
+        )
+        debugLog(
+            "scheduled unread reminder count=${unreadReminderTracker.repeatCount} delayMs=$delayMs"
+        )
+    }
+
+    internal fun runRepeatReminderIfNeeded() {
+        if (!isConnected) {
+            cancelRepeatReminders()
+            return
+        }
+
+        if (!prefs.isEnabled() || !prefs.repeatReminderEnabled()) {
+            cancelRepeatReminders()
+            return
+        }
+
+        if (!retainActiveReminderNotifications()) {
+            debugLog("cancel unread reminder: active notifications unavailable")
+            cancelRepeatReminders()
+            return
+        }
+        if (unreadReminderTracker.isEmpty) {
+            cancelRepeatReminders()
+            return
+        }
+
+        if (!isDeviceLocked()) {
+            debugLog("cancel unread reminder: device unlocked")
+            cancelRepeatReminders()
+            return
+        }
+
+        if (prefs.isInQuietHours()) {
+            debugLog("cancel unread reminder: quiet hours")
+            cancelRepeatReminders()
+            return
+        }
+
+        if (isCallActive()) {
+            debugLog("defer unread reminder: call active")
+            scheduleRepeatReminder()
+            return
+        }
+
+        val maxCount = prefs.repeatReminderMaxCount()
+        if (unreadReminderTracker.repeatCount >= maxCount) {
+            cancelRepeatReminders()
+            return
+        }
+
+        val now = System.currentTimeMillis()
+        val minNextVibrationAt = lastVibrationAtMs + prefs.globalGapMs()
+        if (now < minNextVibrationAt) {
+            scheduleRepeatReminderAfter(minNextVibrationAt - now)
+            return
+        }
+
+        cancelPendingBurstWindow()
+        val latestPackage = unreadReminderTracker.latestPackage()
+            ?: return cancelRepeatReminders()
+        val result = vibrateNow(
+            now = now,
+            deviceLocked = true,
+            sbn = null,
+            reason = "unread_repeat",
+            sourcePackage = latestPackage
+        )
+        if (!result) {
+            cancelRepeatReminders()
+            return
+        }
+
+        unreadReminderTracker.markRepeated()
+        if (unreadReminderTracker.repeatCount < maxCount) {
+            scheduleRepeatReminder()
+        } else {
+            cancelRepeatReminders()
+        }
+    }
+
+    private fun retainActiveReminderNotifications(): Boolean {
+        val activeKeys = try {
+            activeNotifications
+                ?.asSequence()
+                ?.map { it.key }
+                ?.toSet()
+                ?: return false
+        } catch (e: Exception) {
+            Log.w(TAG, "activeNotifications unavailable: ${e.javaClass.simpleName}")
+            return false
+        }
+        unreadReminderTracker.retainActive(activeKeys)
+        return true
+    }
+
+    private fun cancelRepeatReminders() {
+        getSystemService(AlarmManager::class.java)?.cancel(repeatReminderPendingIntent())
+        unreadReminderTracker.clear()
+    }
+
+    private fun repeatReminderPendingIntent(): PendingIntent =
+        PendingIntent.getBroadcast(
+            this,
+            UNREAD_REMINDER_REQUEST_CODE,
+            Intent(this, UnreadReminderAlarmReceiver::class.java).apply {
+                action = UnreadReminderAlarmReceiver.ACTION_UNREAD_REMINDER_ALARM
+            },
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
 
     private fun scheduleTrailingVibration(delayMs: Long) {
         if (burstEndsAtMs <= System.currentTimeMillis()) return
@@ -293,6 +442,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         deviceLocked: Boolean,
         sbn: StatusBarNotification?,
         reason: String,
+        sourcePackage: String? = null,
     ): Boolean {
         val ms = prefs.vibrationMs().toLong()
         val amplitudePercent = prefs.vibrationAmplitude()
@@ -308,7 +458,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
                 ?.toString()?.take(30)?.replace('\n', ' ') ?: ""
             val category  = notif?.category ?: ""
             val channelId = notif?.channelId ?: ""
-            val pkg       = sbn?.packageName ?: reason
+            val pkg       = sbn?.packageName ?: sourcePackage ?: reason
             VibrationLogger.logVibrate(pkg, title, category, channelId, deviceLocked, reason)
         }
         return result
@@ -346,9 +496,14 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         return pm?.isInteractive == false
     }
 
-    private fun shouldSkipUnlockReplay(now: Long): Boolean {
+    private fun shouldSkipUnlockReplay(sbn: StatusBarNotification, now: Long): Boolean {
         val lastUserPresentAt = prefs.lastUserPresentAtMs()
-        return lastUserPresentAt > 0L && now - lastUserPresentAt in 0 until UNLOCK_REPLAY_SUPPRESS_MS
+        return shouldSuppressUnlockReplay(
+            notificationPostTimeMs = sbn.postTime,
+            lastUserPresentAtMs = lastUserPresentAt,
+            nowMs = now,
+            suppressWindowMs = UNLOCK_REPLAY_SUPPRESS_MS
+        )
     }
 
     private fun rememberCurrentlyActiveNotifications() {
@@ -457,6 +612,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         private const val MAX_RECENTLY_VIBRATED_KEYS = 256
         private const val TRAILING_BACKOFF_MAX_DELAY_MS = 60_000L
         private const val TRAILING_BACKOFF_MAX_MULTIPLIER = 4
+        private const val UNREAD_REMINDER_REQUEST_CODE = 2107
         private val CLOCK_PACKAGES = setOf(
             "com.android.deskclock",
             "com.google.android.deskclock"
@@ -483,5 +639,13 @@ class VibratingNotificationListenerService : NotificationListenerService() {
 
         @Volatile
         private var currentRebindIntervalMs: Long = INITIAL_REBIND_INTERVAL_MS
+
+        @Volatile
+        private var activeInstance: VibratingNotificationListenerService? = null
+
+        internal fun dispatchUnreadReminderAlarm() {
+            activeInstance?.runRepeatReminderIfNeeded()
+        }
     }
+
 }

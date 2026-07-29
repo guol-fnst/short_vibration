@@ -38,6 +38,11 @@
     <string name="notif_fg_text">通知监听已启用，等待消息</string>
     <string name="global_gap_sec_hint">防重复间隔 (秒)</string>
     <string name="global_gap_trailing_desc">连续通知补震会按防重复间隔递增，封顶约 60 秒（不短于当前间隔）</string>
+    <string name="repeat_reminder_title">锁屏未查看提醒</string>
+    <string name="repeat_reminder_subtitle">锁屏通知未查看时重复振动，解锁即停止</string>
+    <string name="repeat_interval_min_hint">提醒间隔</string>
+    <string name="repeat_max_count_hint">最多提醒次数</string>
+    <string name="repeat_reminder_desc">仅提醒白名单中的非持续通知；多条通知合并，系统休眠时可能略有延迟</string>
     <string name="decrease_value">减少数值</string>
     <string name="increase_value">增加数值</string>
     <string name="service_dead_title">服务已停止运行</string>

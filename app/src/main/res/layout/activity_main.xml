@@ -554,6 +554,175 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            app:cardBackgroundColor="?attr/colorSurfaceContainer"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="14dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="14dp"
+                android:paddingBottom="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:includeFontPadding="false"
+                            android:text="@string/repeat_reminder_title"
+                            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.65"
+                            android:text="@string/repeat_reminder_subtitle"
+                            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                            android:textColor="?attr/colorOnSurface" />
+                    </LinearLayout>
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switchRepeatReminder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutRepeatReminderOptions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="4dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/repeat_interval_min_hint"
+                            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                            android:textColor="?attr/colorOnSurface" />
+
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            android:id="@+id/btnRepeatIntervalMinus"
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:background="@drawable/bg_stepper_button"
+                            android:contentDescription="@string/decrease_value"
+                            android:padding="9dp"
+                            android:scaleType="center"
+                            android:src="@drawable/ic_minus" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etRepeatInterval"
+                            android:layout_width="64dp"
+                            android:layout_height="38dp"
+                            android:layout_marginStart="6dp"
+                            android:layout_marginEnd="6dp"
+                            android:background="@drawable/bg_number_input"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:selectAllOnFocus="true"
+                            android:singleLine="true"
+                            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                            android:textColor="@color/virb_on_primary_container" />
+
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            android:id="@+id/btnRepeatIntervalPlus"
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:background="@drawable/bg_stepper_button"
+                            android:contentDescription="@string/increase_value"
+                            android:padding="9dp"
+                            android:scaleType="center"
+                            android:src="@drawable/ic_plus" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/repeat_max_count_hint"
+                            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                            android:textColor="?attr/colorOnSurface" />
+
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            android:id="@+id/btnRepeatCountMinus"
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:background="@drawable/bg_stepper_button"
+                            android:contentDescription="@string/decrease_value"
+                            android:padding="9dp"
+                            android:scaleType="center"
+                            android:src="@drawable/ic_minus" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etRepeatCount"
+                            android:layout_width="64dp"
+                            android:layout_height="38dp"
+                            android:layout_marginStart="6dp"
+                            android:layout_marginEnd="6dp"
+                            android:background="@drawable/bg_number_input"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:selectAllOnFocus="true"
+                            android:singleLine="true"
+                            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                            android:textColor="@color/virb_on_primary_container" />
+
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            android:id="@+id/btnRepeatCountPlus"
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:background="@drawable/bg_stepper_button"
+                            android:contentDescription="@string/increase_value"
+                            android:padding="9dp"
+                            android:scaleType="center"
+                            android:src="@drawable/ic_plus" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.62"
+                        android:text="@string/repeat_reminder_desc"
+                        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                        android:textColor="?attr/colorOnSurface" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardQuietHours"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
