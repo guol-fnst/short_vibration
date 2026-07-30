@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Virb Lite</string>
-    <string name="title">Virb Lite</string>
+    <string name="app_name">NotifyPulse</string>
+    <string name="title">NotifyPulse</string>
     <string name="subtitle">轻量通知振动助手</string>
-    <string name="listener_service_label">Virb 通知监听</string>
+    <string name="listener_service_label">NotifyPulse 通知监听</string>
     <string name="open_notification_access">打开通知读取权限</string>
     <string name="timing_settings">振动参数</string>
     <string name="enable_switch">启用通知振动</string>
     <string name="lockscreen_only_switch">仅锁屏时振动</string>
-    <string name="ignore_system_switch">忽略系统应用通知</string>
     <string name="file_logging_switch">写入文件日志</string>
     <string name="whitelist_title">振动白名单</string>
     <string name="whitelist_manage">选择应用</string>
     <string name="whitelist_summary">%1$d 个应用会触发振动</string>
     <string name="whitelist_summary_empty">仅白名单中的应用消息会震动</string>
-    <string name="whitelist_empty">暂未选择应用。未加入白名单的通知不会震动。</string>
     <string name="whitelist_dialog_title">选择允许振动的应用</string>
     <string name="whitelist_clear">清空</string>
     <string name="whitelist_no_apps">未找到可选择的应用</string>
-    <string name="whitelist_remove_app">从白名单移除 %1$s</string>
     <string name="whitelist_search_hint">搜索应用名或包名</string>
     <string name="whitelist_selected_section">已选应用</string>
+    <string name="whitelist_recent_section">近期通知应用</string>
     <string name="whitelist_other_section">其他应用</string>
     <string name="whitelist_done">完成</string>
     <string name="vibration_ms_hint">振动时长 (ms)</string>
@@ -33,28 +31,70 @@
     <string name="test_done">已发送 %1$d ms 测试振动</string>
     <string name="silent_mode_warning">手机处于静音模式，请切换为振动或正常模式</string>
     <string name="fix_haptic">打开声音设置</string>
-    <string name="notif_channel_name">Virb 运行状态</string>
-    <string name="notif_fg_title">Virb Lite 正在运行</string>
+    <string name="notif_channel_name">NotifyPulse 运行状态</string>
+    <string name="notif_fg_title">NotifyPulse 正在运行</string>
     <string name="notif_fg_text">通知监听已启用，等待消息</string>
     <string name="global_gap_sec_hint">防重复间隔 (秒)</string>
     <string name="global_gap_trailing_desc">连续通知补震会按防重复间隔递增，封顶约 60 秒（不短于当前间隔）</string>
     <string name="repeat_reminder_title">锁屏未查看提醒</string>
     <string name="repeat_reminder_subtitle">锁屏通知未查看时重复振动，解锁即停止</string>
-    <string name="repeat_interval_min_hint">提醒间隔</string>
+    <string name="repeat_interval_min_hint">最早提醒间隔</string>
     <string name="repeat_max_count_hint">最多提醒次数</string>
-    <string name="repeat_reminder_desc">仅提醒白名单中的非持续通知；多条通知合并，系统休眠时可能略有延迟</string>
+    <string name="repeat_reminder_desc">仅提醒白名单中的非持续通知；多条通知合并，达到设置时间后由系统尽快提醒</string>
+    <string name="reminder_settings_title">提醒与免打扰</string>
+    <string name="reminder_settings_subtitle">设置未读重复提醒和按星期静默时段</string>
+    <string name="reminder_settings_open">打开</string>
     <string name="decrease_value">减少数值</string>
     <string name="increase_value">增加数值</string>
     <string name="service_dead_title">服务已停止运行</string>
-    <string name="service_dead_desc">振动功能暂时失效。请在应用详情中开启“自启动”权限，并在省电策略中选择“无限制”，防止 MIUI 后台限制本服务。</string>
+    <string name="service_dead_desc">振动功能暂时失效。请开启“自启动”，并在系统省电设置中手动将 NotifyPulse 设为不受限制。</string>
     <string name="btn_autostart">开启自启动</string>
-    <string name="btn_battery_opt">关闭省电限制</string>
+    <string name="btn_battery_opt">省电设置</string>
+    <string name="vibration_modes_title">应用振动模式</string>
+    <string name="vibration_modes_subtitle">用不同节奏区分通知来源</string>
+    <string name="vibration_modes_manage">设置模式</string>
+    <string name="vibration_modes_summary_empty">选择白名单应用后可分别设置</string>
+    <string name="vibration_modes_summary_default">全部使用默认振动</string>
+    <string name="vibration_modes_summary_custom">%1$d 个应用使用自定义模式</string>
+    <string name="vibration_modes_no_apps">请先选择白名单应用</string>
+    <string name="vibration_modes_dialog_title">选择要设置的应用</string>
+    <string name="vibration_mode_for_app">%1$s 的振动模式</string>
+    <string name="vibration_mode_app_row">%1$s · %2$s</string>
+    <string name="vibration_mode_default">默认</string>
+    <string name="vibration_mode_short">短振</string>
+    <string name="vibration_mode_double">双振</string>
+    <string name="vibration_mode_long">长振</string>
     <string name="quiet_hours_title">免打扰时段</string>
-    <string name="quiet_hours_subtitle">指定时间段内不触发振动</string>
+    <string name="quiet_hours_subtitle">按星期设置静默时间，未读通知在结束后再提醒</string>
     <string name="quiet_hours_add">+ 添加</string>
     <string name="quiet_hours_empty">暂无时段，点击“添加”配置</string>
     <string name="quiet_hours_pick_start">选择开始时间</string>
     <string name="quiet_hours_pick_end">选择结束时间</string>
+    <string name="quiet_hours_pick_days">选择生效星期</string>
+    <string name="quiet_hours_save">保存</string>
+    <string name="quiet_hours_same_time">开始和结束时间不能相同</string>
+    <string name="quiet_hours_no_days">请至少选择一天</string>
+    <string name="quiet_hours_overlap">该时段与已启用的免打扰时段重叠</string>
+    <string name="quiet_hours_enabled">启用该免打扰时段</string>
+    <string name="quiet_hours_edit">编辑免打扰时段</string>
+    <string name="quiet_hours_delete">删除免打扰时段</string>
+    <string name="quiet_hours_status_active">免打扰中，将于 %1$s 结束</string>
+    <string name="quiet_hours_status_inactive">%1$d 个时段已启用，当前不在免打扰时间</string>
+    <string name="quiet_hours_status_disabled">没有启用的免打扰时段</string>
+    <string name="quiet_hours_next_day">次日</string>
+    <string name="quiet_days_every_day">每天</string>
+    <string name="quiet_days_weekdays">工作日</string>
+    <string name="quiet_days_weekend">周末</string>
+    <string name="quiet_days_separator">、</string>
+    <string-array name="quiet_days_short">
+        <item>周一</item>
+        <item>周二</item>
+        <item>周三</item>
+        <item>周四</item>
+        <item>周五</item>
+        <item>周六</item>
+        <item>周日</item>
+    </string-array>
     <string name="vibration_amplitude_hint">振动强度</string>
     <string name="amplitude_percent">%1$d%%</string>
     <string name="amplitude_percent_default">100%</string>

@@ -9,15 +9,16 @@ internal class UnreadReminderTracker {
     val isEmpty: Boolean
         get() = notifications.isEmpty()
 
+    val size: Int
+        get() = notifications.size
+
     fun track(key: String, packageName: String) {
         notifications.remove(key)
         notifications[key] = packageName
         repeatCount = 0
     }
 
-    fun remove(key: String) {
-        notifications.remove(key)
-    }
+    fun remove(key: String): Boolean = notifications.remove(key) != null
 
     fun retainActive(activeKeys: Set<String>) {
         notifications.keys.retainAll(activeKeys)

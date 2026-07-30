@@ -5,6 +5,7 @@ import android.media.AudioAttributes
 import android.os.Build
 import android.os.PowerManager
 import android.os.VibrationEffect
+import android.os.VibrationAttributes
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.util.Log
@@ -12,23 +13,47 @@ import android.util.Log
 object VibrationHelper {
     private const val TAG = "VirbVibe"
 
-    fun vibrate(context: Context, durationMs: Long, amplitude: Int, acquireWakeLock: Boolean = true): Boolean {
-        val safeDuration = durationMs.coerceIn(1L, 1000L)
+    fun vibrate(
+        context: Context,
+        durationMs: Long,
+        amplitude: Int,
+        acquireWakeLock: Boolean = true,
+    ): Boolean = vibratePattern(
+        context = context,
+        pattern = VibrationPattern.DEFAULT,
+        defaultDurationMs = durationMs,
+        amplitude = amplitude,
+        acquireWakeLock = acquireWakeLock,
+    )
+
+    fun vibratePattern(
+        context: Context,
+        pattern: VibrationPattern,
+        defaultDurationMs: Long,
+        amplitude: Int,
+        acquireWakeLock: Boolean = true,
+    ): Boolean {
+        val safeDuration = defaultDurationMs.coerceIn(1L, 1000L)
         val safeAmplitude = amplitude.coerceIn(1, 255)
-        debugLog("vibrate() called: durationMs=$safeDuration amplitude=$safeAmplitude, SDK=${Build.VERSION.SDK_INT}, acquireWakeLock=$acquireWakeLock")
+        val effectDurationMs = pattern.effectDurationMs(safeDuration)
+        debugLog(
+            "vibratePattern() called: pattern=${pattern.storedValue} " +
+                    "durationMs=$effectDurationMs amplitude=$safeAmplitude, " +
+                    "SDK=${Build.VERSION.SDK_INT}, acquireWakeLock=$acquireWakeLock"
+        )
 
         val audioAttrs = AudioAttributes.Builder()
             .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
             .setUsage(AudioAttributes.USAGE_ALARM)
             .build()
 
-        val effect = VibrationEffect.createOneShot(safeDuration, safeAmplitude)
+        val effect = createEffect(pattern, safeDuration, safeAmplitude)
         val appCtx = context.applicationContext
         var wl: PowerManager.WakeLock? = null
         var keepWakeLockUntilTimeout = false
 
         return try {
-            wl = acquireVibrationWakeLock(appCtx, safeDuration, acquireWakeLock)
+            wl = acquireVibrationWakeLock(appCtx, effectDurationMs, acquireWakeLock)
             val result = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 val manager = appCtx.getSystemService(VibratorManager::class.java)
                 if (manager == null) {
@@ -41,7 +66,7 @@ object VibrationHelper {
                         Log.w(TAG, "hasVibrator=false on API31+, trying legacy")
                         legacyVibrate(appCtx, effect, audioAttrs)
                     } else {
-                        vibrator.vibrate(effect, audioAttrs)
+                        vibrateWithPlatformAttributes(vibrator, effect, audioAttrs)
                         debugLog("vibrate dispatched via VibratorManager+AudioAttrs")
                         true
                     }
@@ -60,6 +85,31 @@ object VibrationHelper {
             }
         }
     }
+
+    private fun createEffect(
+        pattern: VibrationPattern,
+        defaultDurationMs: Long,
+        amplitude: Int,
+    ): VibrationEffect =
+        when (pattern) {
+            VibrationPattern.DEFAULT ->
+                VibrationEffect.createOneShot(defaultDurationMs, amplitude)
+            VibrationPattern.SHORT ->
+                VibrationEffect.createOneShot(VibrationPattern.SHORT_DURATION_MS, amplitude)
+            VibrationPattern.DOUBLE ->
+                VibrationEffect.createWaveform(
+                    longArrayOf(
+                        0L,
+                        VibrationPattern.DOUBLE_PULSE_MS,
+                        VibrationPattern.DOUBLE_GAP_MS,
+                        VibrationPattern.DOUBLE_PULSE_MS,
+                    ),
+                    intArrayOf(0, amplitude, 0, amplitude),
+                    -1,
+                )
+            VibrationPattern.LONG ->
+                VibrationEffect.createOneShot(VibrationPattern.LONG_DURATION_MS, amplitude)
+        }
 
     private fun acquireVibrationWakeLock(
         appCtx: Context,
@@ -96,9 +146,25 @@ object VibrationHelper {
         }
         debugLog("legacy hasVibrator=${vibrator.hasVibrator()}")
         if (!vibrator.hasVibrator()) return false
-        vibrator.vibrate(effect, audioAttrs)
+        vibrateWithPlatformAttributes(vibrator, effect, audioAttrs)
         debugLog("vibrate dispatched via legacy Vibrator+AudioAttrs")
         return true
+    }
+
+    private fun vibrateWithPlatformAttributes(
+        vibrator: Vibrator,
+        effect: VibrationEffect,
+        audioAttrs: AudioAttributes,
+    ) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val vibrationAttrs = VibrationAttributes.Builder()
+                .setUsage(VibrationAttributes.USAGE_ALARM)
+                .build()
+            vibrator.vibrate(effect, vibrationAttrs)
+        } else {
+            @Suppress("DEPRECATION")
+            vibrator.vibrate(effect, audioAttrs)
+        }
     }
 
     private fun debugLog(message: String) {

@@ -43,13 +43,15 @@ class VibratingNotificationListenerService : NotificationListenerService() {
     private var burstEndsAtMs: Long = 0L
     private var trailingVibrationCount: Int = 0
     private var hasPendingTrailingVibration = false
+    private var pendingTrailingPackage: String? = null
+    private var scheduledReminderTriggerElapsedMs: Long = 0L
     private val trailingVibrationRunnable = Runnable { runTrailingVibrationIfNeeded() }
     private val userPresentReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action == Intent.ACTION_USER_PRESENT) {
                 prefs.markUserPresentNow(System.currentTimeMillis())
                 cancelPendingBurstWindow()
-                cancelRepeatReminders()
+                cancelRepeatReminders("user_present")
             }
         }
     }
@@ -70,7 +72,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         isConnected = false
         if (activeInstance === this) activeInstance = null
         cancelPendingBurstWindow()
-        cancelRepeatReminders()
+        cancelRepeatReminders("service_destroyed")
         try {
             unregisterReceiver(userPresentReceiver)
         } catch (_: Exception) {
@@ -81,10 +83,16 @@ class VibratingNotificationListenerService : NotificationListenerService() {
 
     override fun onNotificationRemoved(sbn: StatusBarNotification) {
         recentlyVibratedKeys.remove(sbn.key)
-        unreadReminderTracker.remove(sbn.key)
-        if (unreadReminderTracker.isEmpty) {
-            cancelRepeatReminders()
+        if (unreadReminderTracker.remove(sbn.key)) {
+            VibrationLogger.logEvent(
+                "unread_remove pkg=${sbn.packageName} pending=${unreadReminderTracker.size}"
+            )
+            if (unreadReminderTracker.isEmpty) {
+                cancelRepeatReminders("all_notifications_removed")
+                return
+            }
         }
+        runRepeatReminderIfDueFromNaturalWakeup("notification_removed")
     }
 
     override fun onListenerConnected() {
@@ -96,13 +104,14 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         rememberCurrentlyActiveNotifications()
         resetRebindBackoff()
         startForegroundRuntime()
+        runRepeatReminderIfDueFromNaturalWakeup("listener_connected")
     }
 
     override fun onListenerDisconnected() {
         super.onListenerDisconnected()
         isConnected = false
         cancelPendingBurstWindow()
-        cancelRepeatReminders()
+        cancelRepeatReminders("listener_disconnected")
         Log.w(TAG, "onListenerDisconnected — listener was killed by system")
         VibrationLogger.logEvent("listener_disconnected")
         stopForeground(STOP_FOREGROUND_REMOVE)
@@ -119,6 +128,8 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             debugLog("skip: own foreground/service notification")
             return
         }
+        prefs.rememberNotificationPackage(pkg)
+        runRepeatReminderIfDueFromNaturalWakeup("notification_posted")
         if (!prefs.isEnabled()) {
             debugLog("skip: switch disabled")
             return
@@ -127,12 +138,6 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         if (!prefs.isPackageAllowed(pkg)) {
             debugLog("skip: package not in whitelist pkg=$pkg")
             VibrationLogger.logSkip("not_in_whitelist", pkg)
-            return
-        }
-
-        if (prefs.isInQuietHours()) {
-            debugLog("skip: quiet hours active")
-            VibrationLogger.logSkip("quiet_hours", pkg)
             return
         }
 
@@ -188,6 +193,12 @@ class VibratingNotificationListenerService : NotificationListenerService() {
 
         trackRepeatReminder(sbn, deviceLocked)
 
+        if (prefs.isInQuietHours()) {
+            debugLog("skip immediate vibration: quiet hours active")
+            VibrationLogger.logSkip("quiet_hours", pkg)
+            return
+        }
+
         if (isCallActive()) {
             debugLog("skip immediate vibration: call is active")
             VibrationLogger.logSkip("call_active", pkg)
@@ -202,6 +213,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             debugLog("skip: within burst window, delta=$delta gap=$gapMs")
             VibrationLogger.logSkip("gap_${delta}ms", pkg)
             recentlyVibratedKeys[sbn.key] = sbn.postTime
+            pendingTrailingPackage = pkg
             scheduleTrailingVibration(burstEndsAtMs - now)
             return
         }
@@ -222,87 +234,212 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         sbn: StatusBarNotification,
         deviceLocked: Boolean,
     ) {
-        if (!prefs.repeatReminderEnabled() || !deviceLocked) return
-        if (sbn.notification.flags and Notification.FLAG_ONGOING_EVENT != 0) return
+        if (!prefs.repeatReminderEnabled()) return
+        if (!deviceLocked) {
+            VibrationLogger.logEvent(
+                "unread_not_tracked reason=unlocked pkg=${sbn.packageName}"
+            )
+            return
+        }
+        if (sbn.notification.flags and Notification.FLAG_ONGOING_EVENT != 0) {
+            VibrationLogger.logEvent(
+                "unread_not_tracked reason=ongoing pkg=${sbn.packageName}"
+            )
+            return
+        }
 
         unreadReminderTracker.track(sbn.key, sbn.packageName)
+        VibrationLogger.logEvent(
+            "unread_track pkg=${sbn.packageName} pending=${unreadReminderTracker.size} " +
+                    "interval_min=${prefs.repeatReminderIntervalMin()} " +
+                    "max=${prefs.repeatReminderMaxCount()}"
+        )
         scheduleRepeatReminder()
     }
 
     private fun scheduleRepeatReminder() {
         if (unreadReminderTracker.isEmpty || !prefs.repeatReminderEnabled()) return
 
+        if (prefs.isInQuietHours()) {
+            scheduleRepeatReminderAfterQuietHours()
+            return
+        }
+
         val delayMs = prefs.repeatReminderIntervalMin() * 60_000L
+        scheduleRepeatReminderAfter(delayMs)
+    }
+
+    private fun scheduleRepeatReminderAfterQuietHours() {
+        val delayMs = prefs.millisUntilQuietHoursEnd()
+        if (delayMs == null) {
+            cancelScheduledReminderAlarm()
+            scheduledReminderTriggerElapsedMs = 0L
+            VibrationLogger.logEvent(
+                "unread_deferred reason=quiet_hours_no_end"
+            )
+            return
+        }
+
+        VibrationLogger.logEvent(
+            "unread_deferred reason=quiet_hours delay_ms=$delayMs"
+        )
         scheduleRepeatReminderAfter(delayMs)
     }
 
     private fun scheduleRepeatReminderAfter(delayMs: Long) {
         val triggerAtMs = SystemClock.elapsedRealtime() + delayMs.coerceAtLeast(0L)
-        getSystemService(AlarmManager::class.java)?.setAndAllowWhileIdle(
-            AlarmManager.ELAPSED_REALTIME_WAKEUP,
-            triggerAtMs,
-            repeatReminderPendingIntent()
+        val alarmManager = getSystemService(AlarmManager::class.java)
+        if (alarmManager == null) {
+            VibrationLogger.logEvent(
+                "unread_schedule_failed reason=no_alarm_manager"
+            )
+            return
+        }
+        cancelScheduledReminderAlarm(alarmManager)
+        scheduledReminderTriggerElapsedMs = 0L
+        try {
+            alarmManager.setAndAllowWhileIdle(
+                AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                triggerAtMs,
+                repeatReminderPendingIntent(triggerAtMs)
+            )
+        } catch (e: Exception) {
+            scheduledReminderTriggerElapsedMs = 0L
+            VibrationLogger.logEvent(
+                "unread_schedule_failed reason=${e.javaClass.simpleName}"
+            )
+            return
+        }
+        scheduledReminderTriggerElapsedMs = triggerAtMs
+        VibrationLogger.logEvent(
+            "unread_scheduled delay_ms=${delayMs.coerceAtLeast(0L)} " +
+                    "trigger_elapsed_ms=$triggerAtMs " +
+                    "repeat_count=${unreadReminderTracker.repeatCount} " +
+                    "pending=${unreadReminderTracker.size}"
         )
         debugLog(
             "scheduled unread reminder count=${unreadReminderTracker.repeatCount} delayMs=$delayMs"
         )
     }
 
-    internal fun runRepeatReminderIfNeeded() {
+    internal fun runRepeatReminderIfNeeded(expectedTriggerElapsedMs: Long) {
+        val nowElapsedMs = SystemClock.elapsedRealtime()
+        val scheduledTriggerElapsedMs = scheduledReminderTriggerElapsedMs
+        VibrationLogger.logEvent(
+            "unread_alarm_received connected=$isConnected " +
+                    "now_elapsed_ms=$nowElapsedMs " +
+                    "expected_elapsed_ms=$expectedTriggerElapsedMs " +
+                    "scheduled_elapsed_ms=$scheduledTriggerElapsedMs " +
+                    "pending=${unreadReminderTracker.size} " +
+                    "repeat_count=${unreadReminderTracker.repeatCount}"
+        )
+        val decision = decideUnreadAlarmAction(
+            expectedTriggerElapsedMs = expectedTriggerElapsedMs,
+            scheduledTriggerElapsedMs = scheduledTriggerElapsedMs,
+            nowElapsedMs = nowElapsedMs,
+        )
+        when (decision.action) {
+            UnreadAlarmAction.IGNORE -> {
+                VibrationLogger.logEvent(
+                    "unread_alarm_ignored reason=stale_or_missing_trigger"
+                )
+                return
+            }
+
+            UnreadAlarmAction.DEFER -> {
+                VibrationLogger.logEvent(
+                    "unread_alarm_deferred reason=early_delivery " +
+                            "remaining_ms=${decision.offsetMs}"
+                )
+                scheduleRepeatReminderAfter(decision.offsetMs)
+                return
+            }
+
+            UnreadAlarmAction.RUN -> {
+                scheduledReminderTriggerElapsedMs = 0L
+                VibrationLogger.logEvent(
+                    "unread_alarm_due late_ms=${decision.offsetMs}"
+                )
+            }
+        }
+        runDueRepeatReminder()
+    }
+
+    private fun runRepeatReminderIfDueFromNaturalWakeup(source: String) {
+        val triggerElapsedMs = scheduledReminderTriggerElapsedMs
+        if (triggerElapsedMs <= 0L) return
+
+        val nowElapsedMs = SystemClock.elapsedRealtime()
+        if (nowElapsedMs < triggerElapsedMs) return
+
+        cancelScheduledReminderAlarm()
+        scheduledReminderTriggerElapsedMs = 0L
+        VibrationLogger.logEvent(
+            "unread_due_from_wakeup source=$source " +
+                    "late_ms=${nowElapsedMs - triggerElapsedMs}"
+        )
+        runDueRepeatReminder()
+    }
+
+    private fun runDueRepeatReminder() {
         if (!isConnected) {
-            cancelRepeatReminders()
+            cancelRepeatReminders("listener_not_connected")
             return
         }
 
         if (!prefs.isEnabled() || !prefs.repeatReminderEnabled()) {
-            cancelRepeatReminders()
+            cancelRepeatReminders("feature_disabled")
             return
         }
 
         if (!retainActiveReminderNotifications()) {
             debugLog("cancel unread reminder: active notifications unavailable")
-            cancelRepeatReminders()
+            cancelRepeatReminders("active_notifications_unavailable")
             return
         }
         if (unreadReminderTracker.isEmpty) {
-            cancelRepeatReminders()
+            cancelRepeatReminders("no_active_notifications")
             return
         }
 
         if (!isDeviceLocked()) {
             debugLog("cancel unread reminder: device unlocked")
-            cancelRepeatReminders()
+            cancelRepeatReminders("device_unlocked")
             return
         }
 
         if (prefs.isInQuietHours()) {
-            debugLog("cancel unread reminder: quiet hours")
-            cancelRepeatReminders()
+            debugLog("defer unread reminder: quiet hours")
+            scheduleRepeatReminderAfterQuietHours()
             return
         }
 
         if (isCallActive()) {
             debugLog("defer unread reminder: call active")
+            VibrationLogger.logEvent("unread_deferred reason=call_active")
             scheduleRepeatReminder()
             return
         }
 
         val maxCount = prefs.repeatReminderMaxCount()
         if (unreadReminderTracker.repeatCount >= maxCount) {
-            cancelRepeatReminders()
+            cancelRepeatReminders("max_count_reached")
             return
         }
 
         val now = System.currentTimeMillis()
         val minNextVibrationAt = lastVibrationAtMs + prefs.globalGapMs()
         if (now < minNextVibrationAt) {
+            VibrationLogger.logEvent(
+                "unread_deferred reason=global_gap delay_ms=${minNextVibrationAt - now}"
+            )
             scheduleRepeatReminderAfter(minNextVibrationAt - now)
             return
         }
 
         cancelPendingBurstWindow()
         val latestPackage = unreadReminderTracker.latestPackage()
-            ?: return cancelRepeatReminders()
+            ?: return cancelRepeatReminders("source_package_missing")
         val result = vibrateNow(
             now = now,
             deviceLocked = true,
@@ -311,16 +448,30 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             sourcePackage = latestPackage
         )
         if (!result) {
-            cancelRepeatReminders()
+            cancelRepeatReminders("vibration_failed")
             return
         }
 
         unreadReminderTracker.markRepeated()
+        VibrationLogger.logEvent(
+            "unread_repeat_complete count=${unreadReminderTracker.repeatCount} " +
+                    "max=$maxCount pending=${unreadReminderTracker.size}"
+        )
         if (unreadReminderTracker.repeatCount < maxCount) {
             scheduleRepeatReminder()
         } else {
-            cancelRepeatReminders()
+            cancelRepeatReminders("max_count_completed")
         }
+    }
+
+    private fun onReminderSettingsChanged() {
+        if (unreadReminderTracker.isEmpty) return
+        if (!prefs.isEnabled() || !prefs.repeatReminderEnabled()) {
+            cancelRepeatReminders("feature_disabled")
+            return
+        }
+        VibrationLogger.logEvent("reminder_settings_changed rescheduling_unread=true")
+        scheduleRepeatReminder()
     }
 
     private fun retainActiveReminderNotifications(): Boolean {
@@ -338,20 +489,54 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         return true
     }
 
-    private fun cancelRepeatReminders() {
-        getSystemService(AlarmManager::class.java)?.cancel(repeatReminderPendingIntent())
+    private fun cancelRepeatReminders(reason: String) {
+        val pending = unreadReminderTracker.size
+        val repeatCount = unreadReminderTracker.repeatCount
+        val triggerElapsedMs = scheduledReminderTriggerElapsedMs
+        cancelScheduledReminderAlarm()
+        scheduledReminderTriggerElapsedMs = 0L
         unreadReminderTracker.clear()
+        if (pending > 0 || repeatCount > 0 || triggerElapsedMs > 0L) {
+            VibrationLogger.logEvent(
+                "unread_cancelled reason=$reason pending=$pending repeat_count=$repeatCount"
+            )
+        }
     }
 
-    private fun repeatReminderPendingIntent(): PendingIntent =
+    private fun cancelScheduledReminderAlarm(
+        alarmManager: AlarmManager? = getSystemService(AlarmManager::class.java),
+    ) {
+        val pendingIntent = PendingIntent.getBroadcast(
+            this,
+            UNREAD_REMINDER_REQUEST_CODE,
+            unreadReminderIntent(),
+            PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
+        )
+        if (alarmManager != null && pendingIntent != null) {
+            alarmManager.cancel(pendingIntent)
+        }
+    }
+
+    private fun repeatReminderPendingIntent(
+        triggerElapsedMs: Long? = null,
+    ): PendingIntent =
         PendingIntent.getBroadcast(
             this,
             UNREAD_REMINDER_REQUEST_CODE,
-            Intent(this, UnreadReminderAlarmReceiver::class.java).apply {
-                action = UnreadReminderAlarmReceiver.ACTION_UNREAD_REMINDER_ALARM
-            },
+            unreadReminderIntent(triggerElapsedMs),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
+
+    private fun unreadReminderIntent(triggerElapsedMs: Long? = null): Intent =
+        Intent(this, UnreadReminderAlarmReceiver::class.java).apply {
+            action = UnreadReminderAlarmReceiver.ACTION_UNREAD_REMINDER_ALARM
+            if (triggerElapsedMs != null) {
+                putExtra(
+                    UnreadReminderAlarmReceiver.EXTRA_TRIGGER_ELAPSED_MS,
+                    triggerElapsedMs
+                )
+            }
+        }
 
     private fun scheduleTrailingVibration(delayMs: Long) {
         if (burstEndsAtMs <= System.currentTimeMillis()) return
@@ -372,6 +557,7 @@ class VibratingNotificationListenerService : NotificationListenerService() {
 
     private fun cancelPendingBurstWindow() {
         hasPendingTrailingVibration = false
+        pendingTrailingPackage = null
         burstStartedAtMs = 0L
         burstEndsAtMs = 0L
         trailingVibrationCount = 0
@@ -422,8 +608,16 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         }
 
         hasPendingTrailingVibration = false
+        val sourcePackage = pendingTrailingPackage
+        pendingTrailingPackage = null
         val deviceLocked = isDeviceLocked()
-        val result = vibrateNow(now, deviceLocked, null, "trailing")
+        val result = vibrateNow(
+            now = now,
+            deviceLocked = deviceLocked,
+            sbn = null,
+            reason = "trailing",
+            sourcePackage = sourcePackage,
+        )
         if (result) {
             val gapMs = prefs.globalGapMs().toLong()
             trailingVibrationCount += 1
@@ -444,11 +638,24 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         reason: String,
         sourcePackage: String? = null,
     ): Boolean {
+        val pkg = sbn?.packageName ?: sourcePackage
+        val pattern = pkg
+            ?.let(prefs::vibrationPatternFor)
+            ?: com.virb.lite.vibe.VibrationPattern.DEFAULT
         val ms = prefs.vibrationMs().toLong()
         val amplitudePercent = prefs.vibrationAmplitude()
         val amplitude = ((amplitudePercent * 255 + 50) / 100).coerceIn(1, 255)
-        debugLog("vibrating for $reason ms=$ms amplitude=$amplitude")
-        val result = VibrationHelper.vibrate(this, ms, amplitude, acquireWakeLock = deviceLocked)
+        debugLog(
+            "vibrating for $reason pattern=${pattern.storedValue} " +
+                    "ms=$ms amplitude=$amplitude"
+        )
+        val result = VibrationHelper.vibratePattern(
+            context = this,
+            pattern = pattern,
+            defaultDurationMs = ms,
+            amplitude = amplitude,
+            acquireWakeLock = deviceLocked,
+        )
         if (result) {
             lastVibrationAtMs = now
             prefs.markVibrationNow(now)
@@ -458,8 +665,15 @@ class VibratingNotificationListenerService : NotificationListenerService() {
                 ?.toString()?.take(30)?.replace('\n', ' ') ?: ""
             val category  = notif?.category ?: ""
             val channelId = notif?.channelId ?: ""
-            val pkg       = sbn?.packageName ?: sourcePackage ?: reason
-            VibrationLogger.logVibrate(pkg, title, category, channelId, deviceLocked, reason)
+            VibrationLogger.logVibrate(
+                pkg = pkg ?: reason,
+                title = title,
+                category = category,
+                channelId = channelId,
+                locked = deviceLocked,
+                reason = reason,
+                pattern = pattern.storedValue,
+            )
         }
         return result
     }
@@ -643,8 +857,16 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         @Volatile
         private var activeInstance: VibratingNotificationListenerService? = null
 
-        internal fun dispatchUnreadReminderAlarm() {
-            activeInstance?.runRepeatReminderIfNeeded()
+        internal fun dispatchUnreadReminderAlarm(
+            expectedTriggerElapsedMs: Long,
+        ): Boolean {
+            val instance = activeInstance ?: return false
+            instance.runRepeatReminderIfNeeded(expectedTriggerElapsedMs)
+            return true
+        }
+
+        internal fun dispatchReminderSettingsChanged() {
+            activeInstance?.onReminderSettingsChanged()
         }
     }
 

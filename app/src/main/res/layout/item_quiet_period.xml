@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/switchQuietPeriodEnabled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/quiet_hours_enabled" />
+
+    <TextView
+        android:id="@+id/tvQuietPeriodLabel"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="6dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+        android:textColor="?attr/colorOnSurface" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btnEditQuietPeriod"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:background="@drawable/bg_stepper_button"
+        android:contentDescription="@string/quiet_hours_edit"
+        android:padding="9dp"
+        android:src="@drawable/ic_edit" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btnDeleteQuietPeriod"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="4dp"
+        android:background="@drawable/bg_stepper_button"
+        android:contentDescription="@string/quiet_hours_delete"
+        android:padding="9dp"
+        android:src="@drawable/ic_delete" />
+</LinearLayout>

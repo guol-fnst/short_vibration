@@ -6,8 +6,12 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
-    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+    </queries>
 
     <application
         android:allowBackup="true"
@@ -26,6 +30,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ReminderSettingsActivity"
+            android:exported="false" />
+
         <service
             android:name=".listener.VibratingNotificationListenerService"
             android:exported="false"
@@ -34,7 +42,7 @@
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <property
                 android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="Keeps the notification listener process active so OEM memory cleanup does not silently drop notification vibration callbacks." />
+                android:value="Maintains the user-enabled notification listener so selected notifications can trigger immediate and unread-reminder vibrations while the screen is locked. Deferring the service would miss these time-sensitive callbacks." />
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>

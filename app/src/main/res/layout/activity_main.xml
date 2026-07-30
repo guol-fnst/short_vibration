@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingStart="14dp"
         android:paddingTop="10dp"
@@ -20,8 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@android:color/transparent"
-            app:cardCornerRadius="18dp"
-            app:cardElevation="6dp">
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -30,10 +30,7 @@
                 android:baselineAligned="false"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingStart="18dp"
-                android:paddingTop="14dp"
-                android:paddingEnd="14dp"
-                android:paddingBottom="14dp">
+                android:padding="14dp">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -64,7 +61,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:alpha="0.92"
                         android:text="@string/access_unknown"
                         android:textAppearance="@style/TextAppearance.Material3.BodySmall"
                         android:textColor="@color/virb_on_primary"
@@ -75,8 +71,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="1dp"
-                        android:alpha="0.78"
-                        android:text=""
                         android:textAppearance="@style/TextAppearance.Material3.BodySmall"
                         android:textColor="@color/virb_on_primary"
                         android:visibility="gone" />
@@ -96,14 +90,12 @@
                         android:background="@drawable/bg_circle_icon_button"
                         android:contentDescription="@string/test_vibration"
                         android:padding="11dp"
-                        android:scaleType="center"
                         android:src="@drawable/ic_vibration" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:alpha="0.82"
                         android:text="@string/test_vibration"
                         android:textColor="@color/virb_on_primary"
                         android:textSize="11sp" />
@@ -111,7 +103,6 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- 服务已停止警告卡片，正常运行时隐藏 -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardServiceDead"
             android:layout_width="match_parent"
@@ -119,17 +110,13 @@
             android:layout_marginTop="8dp"
             android:visibility="gone"
             app:cardBackgroundColor="?attr/colorErrorContainer"
-            app:cardCornerRadius="14dp"
-            app:cardElevation="2dp">
+            app:cardCornerRadius="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingStart="16dp"
-                android:paddingTop="14dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="14dp">
+                android:padding="14dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -159,9 +146,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:minHeight="38dp"
+                        android:minHeight="40dp"
                         android:text="@string/btn_autostart"
-                        app:cornerRadius="10dp" />
+                        app:cornerRadius="8dp" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnBatteryOpt"
@@ -170,9 +157,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_weight="1"
-                        android:minHeight="38dp"
+                        android:minHeight="40dp"
                         android:text="@string/btn_battery_opt"
-                        app:cornerRadius="10dp" />
+                        app:cornerRadius="8dp" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -182,7 +169,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:baselineAligned="false"
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
@@ -193,19 +179,19 @@
                 android:layout_weight="1"
                 android:minHeight="42dp"
                 android:text="@string/open_notification_access"
-                app:cornerRadius="12dp" />
+                app:cornerRadius="8dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnFixHaptic"
                 style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
                 android:minHeight="42dp"
                 android:text="@string/fix_haptic"
                 android:visibility="gone"
-                app:cornerRadius="12dp" />
+                app:cornerRadius="8dp" />
         </LinearLayout>
 
         <com.google.android.material.card.MaterialCardView
@@ -213,21 +199,18 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:cardBackgroundColor="?attr/colorSurfaceContainer"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp">
+            app:cardCornerRadius="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingStart="14dp"
-                android:paddingTop="4dp"
-                android:paddingEnd="14dp"
-                android:paddingBottom="4dp">
+                android:paddingEnd="14dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="44dp"
+                    android:layout_height="48dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -248,12 +231,11 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:alpha="0.45"
                     android:background="?attr/colorOutlineVariant" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="44dp"
+                    android:layout_height="48dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -274,12 +256,11 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:alpha="0.45"
                     android:background="?attr/colorOutlineVariant" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="44dp"
+                    android:layout_height="48dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -297,14 +278,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="32dp"
                         android:layout_marginEnd="6dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
                         android:minHeight="0dp"
                         android:minWidth="0dp"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
                         android:text="@string/view_log_short"
-                        app:cornerRadius="8dp"
-                        android:insetTop="0dp"
-                        android:insetBottom="0dp" />
+                        app:cornerRadius="8dp" />
 
                     <com.google.android.material.materialswitch.MaterialSwitch
                         android:id="@+id/switchFileLogging"
@@ -315,22 +294,17 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardWhitelist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             app:cardBackgroundColor="?attr/colorSurfaceContainer"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp">
+            app:cardCornerRadius="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingStart="14dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="14dp"
-                android:paddingBottom="8dp">
+                android:padding="14dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -347,7 +321,6 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:includeFontPadding="false"
                             android:text="@string/whitelist_title"
                             android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
                             android:textColor="?attr/colorOnSurface"
@@ -368,10 +341,65 @@
                         style="@style/Widget.Material3.Button.TonalButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="0dp"
-                        android:minWidth="0dp"
+                        android:minHeight="38dp"
                         android:text="@string/whitelist_manage"
-                        app:cornerRadius="10dp" />
+                        app:cornerRadius="8dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="?attr/colorOutlineVariant" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/vibration_modes_title"
+                            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.65"
+                            android:text="@string/vibration_modes_subtitle"
+                            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                            android:textColor="?attr/colorOnSurface" />
+
+                        <TextView
+                            android:id="@+id/tvVibrationModesSummary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="@string/vibration_modes_summary_empty"
+                            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                            android:textColor="?attr/colorPrimary" />
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnManageVibrationModes"
+                        style="@style/Widget.Material3.Button.TonalButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:minHeight="38dp"
+                        android:text="@string/vibration_modes_manage"
+                        app:cornerRadius="8dp" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -379,24 +407,19 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="6dp"
             app:cardBackgroundColor="?attr/colorSurfaceContainer"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp">
+            app:cardCornerRadius="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingStart="14dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="14dp"
-                android:paddingBottom="10dp">
+                android:padding="14dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:includeFontPadding="false"
                     android:text="@string/timing_settings"
                     android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
                     android:textColor="?attr/colorOnSurface"
@@ -405,7 +428,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
-                    android:layout_marginTop="6dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -424,21 +446,18 @@
                         android:background="@drawable/bg_stepper_button"
                         android:contentDescription="@string/decrease_value"
                         android:padding="9dp"
-                        android:scaleType="center"
                         android:src="@drawable/ic_minus" />
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etDuration"
                         android:layout_width="64dp"
                         android:layout_height="38dp"
-                        android:layout_marginStart="6dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_marginHorizontal="6dp"
                         android:background="@drawable/bg_number_input"
                         android:gravity="center"
                         android:inputType="number"
                         android:selectAllOnFocus="true"
                         android:singleLine="true"
-                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
                         android:textColor="@color/virb_on_primary_container" />
 
                     <androidx.appcompat.widget.AppCompatImageButton
@@ -448,7 +467,6 @@
                         android:background="@drawable/bg_stepper_button"
                         android:contentDescription="@string/increase_value"
                         android:padding="9dp"
-                        android:scaleType="center"
                         android:src="@drawable/ic_plus" />
                 </LinearLayout>
 
@@ -473,21 +491,18 @@
                         android:background="@drawable/bg_stepper_button"
                         android:contentDescription="@string/decrease_value"
                         android:padding="9dp"
-                        android:scaleType="center"
                         android:src="@drawable/ic_minus" />
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etGlobalGap"
                         android:layout_width="64dp"
                         android:layout_height="38dp"
-                        android:layout_marginStart="6dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_marginHorizontal="6dp"
                         android:background="@drawable/bg_number_input"
                         android:gravity="center"
                         android:inputType="number"
                         android:selectAllOnFocus="true"
                         android:singleLine="true"
-                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
                         android:textColor="@color/virb_on_primary_container" />
 
                     <androidx.appcompat.widget.AppCompatImageButton
@@ -497,24 +512,21 @@
                         android:background="@drawable/bg_stepper_button"
                         android:contentDescription="@string/increase_value"
                         android:padding="9dp"
-                        android:scaleType="center"
                         android:src="@drawable/ic_plus" />
                 </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="-2dp"
                     android:alpha="0.62"
                     android:text="@string/global_gap_trailing_desc"
                     android:textAppearance="@style/TextAppearance.Material3.BodySmall"
                     android:textColor="?attr/colorOnSurface" />
 
-                <!-- 振动强度滑块 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="4dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -529,24 +541,19 @@
                         android:id="@+id/sliderAmplitude"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_marginStart="10dp"
-                        android:layout_marginEnd="2dp"
+                        android:layout_weight="1"
+                        android:stepSize="10"
                         android:valueFrom="10"
                         android:valueTo="100"
-                        android:stepSize="10"
-                        app:haloRadius="14dp"
-                        app:labelBehavior="gone"
-                        app:thumbRadius="9dp"
-                        app:trackHeight="4dp" />
+                        app:labelBehavior="gone" />
 
                     <TextView
                         android:id="@+id/tvAmplitudeValue"
-                        android:layout_width="36dp"
+                        android:layout_width="40dp"
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="@string/amplitude_percent_default"
-                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                         android:textColor="?attr/colorPrimary"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -558,252 +565,49 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             app:cardBackgroundColor="?attr/colorSurfaceContainer"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp">
+            app:cardCornerRadius="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingStart="14dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="14dp"
-                android:paddingBottom="10dp">
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="14dp">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:includeFontPadding="false"
-                            android:text="@string/repeat_reminder_title"
-                            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
-                            android:textColor="?attr/colorOnSurface"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:alpha="0.65"
-                            android:text="@string/repeat_reminder_subtitle"
-                            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                            android:textColor="?attr/colorOnSurface" />
-                    </LinearLayout>
-
-                    <com.google.android.material.materialswitch.MaterialSwitch
-                        android:id="@+id/switchRepeatReminder"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layoutRepeatReminderOptions"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:layout_marginTop="4dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/repeat_interval_min_hint"
-                            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                            android:textColor="?attr/colorOnSurface" />
-
-                        <androidx.appcompat.widget.AppCompatImageButton
-                            android:id="@+id/btnRepeatIntervalMinus"
-                            android:layout_width="38dp"
-                            android:layout_height="38dp"
-                            android:background="@drawable/bg_stepper_button"
-                            android:contentDescription="@string/decrease_value"
-                            android:padding="9dp"
-                            android:scaleType="center"
-                            android:src="@drawable/ic_minus" />
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etRepeatInterval"
-                            android:layout_width="64dp"
-                            android:layout_height="38dp"
-                            android:layout_marginStart="6dp"
-                            android:layout_marginEnd="6dp"
-                            android:background="@drawable/bg_number_input"
-                            android:gravity="center"
-                            android:inputType="number"
-                            android:selectAllOnFocus="true"
-                            android:singleLine="true"
-                            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
-                            android:textColor="@color/virb_on_primary_container" />
-
-                        <androidx.appcompat.widget.AppCompatImageButton
-                            android:id="@+id/btnRepeatIntervalPlus"
-                            android:layout_width="38dp"
-                            android:layout_height="38dp"
-                            android:background="@drawable/bg_stepper_button"
-                            android:contentDescription="@string/increase_value"
-                            android:padding="9dp"
-                            android:scaleType="center"
-                            android:src="@drawable/ic_plus" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/repeat_max_count_hint"
-                            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                            android:textColor="?attr/colorOnSurface" />
-
-                        <androidx.appcompat.widget.AppCompatImageButton
-                            android:id="@+id/btnRepeatCountMinus"
-                            android:layout_width="38dp"
-                            android:layout_height="38dp"
-                            android:background="@drawable/bg_stepper_button"
-                            android:contentDescription="@string/decrease_value"
-                            android:padding="9dp"
-                            android:scaleType="center"
-                            android:src="@drawable/ic_minus" />
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etRepeatCount"
-                            android:layout_width="64dp"
-                            android:layout_height="38dp"
-                            android:layout_marginStart="6dp"
-                            android:layout_marginEnd="6dp"
-                            android:background="@drawable/bg_number_input"
-                            android:gravity="center"
-                            android:inputType="number"
-                            android:selectAllOnFocus="true"
-                            android:singleLine="true"
-                            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
-                            android:textColor="@color/virb_on_primary_container" />
-
-                        <androidx.appcompat.widget.AppCompatImageButton
-                            android:id="@+id/btnRepeatCountPlus"
-                            android:layout_width="38dp"
-                            android:layout_height="38dp"
-                            android:background="@drawable/bg_stepper_button"
-                            android:contentDescription="@string/increase_value"
-                            android:padding="9dp"
-                            android:scaleType="center"
-                            android:src="@drawable/ic_plus" />
-                    </LinearLayout>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:alpha="0.62"
-                        android:text="@string/repeat_reminder_desc"
+                        android:text="@string/reminder_settings_title"
+                        android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.65"
+                        android:text="@string/reminder_settings_subtitle"
                         android:textAppearance="@style/TextAppearance.Material3.BodySmall"
                         android:textColor="?attr/colorOnSurface" />
                 </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnReminderSettings"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:minHeight="38dp"
+                    android:text="@string/reminder_settings_open"
+                    app:cornerRadius="8dp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardQuietHours"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            app:cardBackgroundColor="?attr/colorSurfaceContainer"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp">
-
-            <LinearLayout
-                android:id="@+id/layoutQuietHoursContent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingStart="14dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="14dp"
-                android:paddingBottom="10dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:includeFontPadding="false"
-                            android:text="@string/quiet_hours_title"
-                            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
-                            android:textColor="?attr/colorOnSurface"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:alpha="0.65"
-                            android:text="@string/quiet_hours_subtitle"
-                            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                            android:textColor="?attr/colorOnSurface" />
-                    </LinearLayout>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnAddQuietPeriod"
-                        style="@style/Widget.Material3.Button.TonalButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minHeight="0dp"
-                        android:minWidth="0dp"
-                        android:text="@string/quiet_hours_add"
-                        app:cornerRadius="10dp" />
-                </LinearLayout>
-
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chipGroupQuietPeriods"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp" />
-
-                <TextView
-                    android:id="@+id/tvQuietPeriodsEmpty"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:alpha="0.55"
-                    android:text="@string/quiet_hours_empty"
-                    android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                    android:textColor="?attr/colorOnSurface"
-                    android:visibility="visible" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSave"
@@ -814,6 +618,6 @@
             android:minHeight="48dp"
             android:text="@string/save"
             android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-            app:cornerRadius="14dp" />
+            app:cornerRadius="8dp" />
     </LinearLayout>
 </ScrollView>

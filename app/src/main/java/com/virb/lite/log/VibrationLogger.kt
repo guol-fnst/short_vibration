@@ -12,7 +12,7 @@ import java.util.Locale
  * Lightweight file-based logger for vibration events.
  *
  * Log format (one entry per line):
- *   MM-dd HH:mm:ss.SSS VIB pkg=... title="..." cat=... ch=... locked=... reason=...
+     *   MM-dd HH:mm:ss.SSS VIB pkg=... title="..." cat=... ch=... locked=... reason=...
  *   MM-dd HH:mm:ss.SSS SKP reason=... pkg=...
  *   MM-dd HH:mm:ss.SSS EVT ...
  *
@@ -46,8 +46,13 @@ object VibrationLogger {
         channelId: String,
         locked: Boolean,
         reason: String,
+        pattern: String = "default",
     ) {
-        write("VIB pkg=$pkg title=\"$title\" cat=${category.ifEmpty { "-" }} ch=${channelId.ifEmpty { "-" }} locked=$locked reason=$reason")
+        write(
+            "VIB pkg=$pkg title=\"$title\" cat=${category.ifEmpty { "-" }} " +
+                    "ch=${channelId.ifEmpty { "-" }} locked=$locked " +
+                    "reason=$reason pattern=$pattern"
+        )
     }
 
     fun logSkip(reason: String, pkg: String = "") {

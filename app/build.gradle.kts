@@ -11,8 +11,8 @@ android {
         applicationId = "com.virb.lite"
         minSdk = 26
         targetSdk = 36
-        versionCode = 26
-        versionName = "1.0.26"
+        versionCode = 32
+        versionName = "1.0.32"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -40,21 +40,26 @@ android {
         viewBinding = true
     }
 
+    lint {
+        // Core 1.19 requires API 37 and AGP 9.1; keep API 36 on the latest compatible line.
+        disable += "GradleDependency"
+    }
+
     applicationVariants.all {
         outputs.all {
             @Suppress("DEPRECATION")
             (this as com.android.build.gradle.internal.api.BaseVariantOutputImpl)
-                .outputFileName = "short_vibration-${name}.apk"
+                .outputFileName = "NotifyPulse-${name}.apk"
         }
     }
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.12.0")
+    implementation("androidx.core:core-ktx:1.17.0")
+    implementation("androidx.appcompat:appcompat:1.7.1")
+    implementation("com.google.android.material:material:1.14.0")
 
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    androidTestImplementation("androidx.test.ext:junit:1.3.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
 }

@@ -35,17 +35,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
-import com.google.android.material.chip.Chip
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.TimeFormat
 import com.virb.lite.databinding.ActivityMainBinding
 import com.virb.lite.listener.VibratingNotificationListenerService
 import com.virb.lite.log.VibrationLogger
 import com.virb.lite.prefs.AppPrefs
-import com.virb.lite.prefs.QuietPeriod
 import com.virb.lite.vibe.VibrationHelper
-import java.util.Calendar
+import com.virb.lite.vibe.VibrationPattern
 import java.util.LinkedHashSet
 import java.util.Locale
 
@@ -91,12 +88,8 @@ class MainActivity : AppCompatActivity() {
         binding.etGlobalGap.setText(msToSeconds(prefs.globalGapMs()).toString())
         binding.sliderAmplitude.value = prefs.vibrationAmplitude().toFloat()
         updateAmplitudeLabel(prefs.vibrationAmplitude())
-        binding.switchRepeatReminder.isChecked = prefs.repeatReminderEnabled()
-        binding.etRepeatInterval.setText(prefs.repeatReminderIntervalMin().toString())
-        binding.etRepeatCount.setText(prefs.repeatReminderMaxCount().toString())
-        updateRepeatReminderOptions(prefs.repeatReminderEnabled())
         refreshWhitelistUi()
-        refreshQuietPeriodsUi()
+        refreshVibrationModesUi()
     }
 
     private fun bindListeners() {
@@ -113,13 +106,11 @@ class MainActivity : AppCompatActivity() {
             VibrationLogger.setFileLoggingEnabled(isChecked)
         }
 
-        binding.switchRepeatReminder.setOnCheckedChangeListener { _, isChecked ->
-            prefs.setRepeatReminderEnabled(isChecked)
-            updateRepeatReminderOptions(isChecked)
-        }
-
         binding.btnManageWhitelist.setOnClickListener {
             showWhitelistDialog()
+        }
+        binding.btnManageVibrationModes.setOnClickListener {
+            showVibrationModesDialog()
         }
 
         binding.sliderAmplitude.addOnChangeListener { _, value, _ ->
@@ -166,55 +157,11 @@ class MainActivity : AppCompatActivity() {
             ) { binding.etGlobalGap.setText(it.toString()) }
         }
 
-        binding.btnRepeatIntervalMinus.setOnClickListener {
-            stepNumber(
-                currentText = binding.etRepeatInterval.text?.toString(),
-                delta = -1,
-                min = AppPrefs.MIN_REPEAT_INTERVAL_MIN,
-                max = AppPrefs.MAX_REPEAT_INTERVAL_MIN,
-                defaultValue = AppPrefs.DEFAULT_REPEAT_INTERVAL_MIN
-            ) { binding.etRepeatInterval.setText(it.toString()) }
-        }
-
-        binding.btnRepeatIntervalPlus.setOnClickListener {
-            stepNumber(
-                currentText = binding.etRepeatInterval.text?.toString(),
-                delta = 1,
-                min = AppPrefs.MIN_REPEAT_INTERVAL_MIN,
-                max = AppPrefs.MAX_REPEAT_INTERVAL_MIN,
-                defaultValue = AppPrefs.DEFAULT_REPEAT_INTERVAL_MIN
-            ) { binding.etRepeatInterval.setText(it.toString()) }
-        }
-
-        binding.btnRepeatCountMinus.setOnClickListener {
-            stepNumber(
-                currentText = binding.etRepeatCount.text?.toString(),
-                delta = -1,
-                min = AppPrefs.MIN_REPEAT_MAX_COUNT,
-                max = AppPrefs.MAX_REPEAT_MAX_COUNT,
-                defaultValue = AppPrefs.DEFAULT_REPEAT_MAX_COUNT
-            ) { binding.etRepeatCount.setText(it.toString()) }
-        }
-
-        binding.btnRepeatCountPlus.setOnClickListener {
-            stepNumber(
-                currentText = binding.etRepeatCount.text?.toString(),
-                delta = 1,
-                min = AppPrefs.MIN_REPEAT_MAX_COUNT,
-                max = AppPrefs.MAX_REPEAT_MAX_COUNT,
-                defaultValue = AppPrefs.DEFAULT_REPEAT_MAX_COUNT
-            ) { binding.etRepeatCount.setText(it.toString()) }
-        }
-
         binding.btnSave.setOnClickListener {
             val duration = binding.etDuration.text.toString().toIntOrNull()
             val gapSeconds = binding.etGlobalGap.text.toString().toIntOrNull()
-            val repeatInterval = binding.etRepeatInterval.text.toString().toIntOrNull()
-            val repeatCount = binding.etRepeatCount.text.toString().toIntOrNull()
 
-            if (duration == null || gapSeconds == null ||
-                repeatInterval == null || repeatCount == null
-            ) {
+            if (duration == null || gapSeconds == null) {
                 toast(getString(R.string.invalid_input))
                 return@setOnClickListener
             }
@@ -222,19 +169,17 @@ class MainActivity : AppCompatActivity() {
             prefs.setVibrationMs(duration)
             prefs.setGlobalGapMs(secondsToMs(gapSeconds))
             prefs.setVibrationAmplitude(binding.sliderAmplitude.value.toInt())
-            prefs.setRepeatReminderIntervalMin(repeatInterval)
-            prefs.setRepeatReminderMaxCount(repeatCount)
 
             binding.etDuration.setText(prefs.vibrationMs().toString())
             binding.etGlobalGap.setText(msToSeconds(prefs.globalGapMs()).toString())
-            binding.etRepeatInterval.setText(prefs.repeatReminderIntervalMin().toString())
-            binding.etRepeatCount.setText(prefs.repeatReminderMaxCount().toString())
             toast(getString(R.string.saved))
         }
 
         binding.btnAutoStart.setOnClickListener { openAutoStartSettings() }
         binding.btnBatteryOpt.setOnClickListener { openBatteryOptSettings() }
-        binding.btnAddQuietPeriod.setOnClickListener { showAddQuietPeriodDialog() }
+        binding.btnReminderSettings.setOnClickListener {
+            startActivity(Intent(this, ReminderSettingsActivity::class.java))
+        }
 
         binding.btnOpenAccess.setOnClickListener {
             startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
@@ -330,20 +275,18 @@ class MainActivity : AppCompatActivity() {
 
         // 权限未开启时在 header 中显示警告；已开启则不显示任何状态文字
         if (enabled) {
-            binding.tvAccessStatus.visibility = android.view.View.GONE
+            binding.tvAccessStatus.isVisible = false
         } else {
             binding.tvAccessStatus.text = getString(R.string.access_disabled)
-            binding.tvAccessStatus.visibility = android.view.View.VISIBLE
+            binding.tvAccessStatus.isVisible = true
         }
 
         // 访问按钮：权限未开启时显示，已开启时隐藏
-        binding.btnOpenAccess.visibility =
-            if (enabled) android.view.View.GONE else android.view.View.VISIBLE
+        binding.btnOpenAccess.isVisible = !enabled
 
         // 已开通权限但服务未连接（被 MIUI 杀掉）→ 显示警告卡
         val serviceDead = enabled && !VibratingNotificationListenerService.isConnected
-        binding.cardServiceDead.visibility =
-            if (serviceDead) android.view.View.VISIBLE else android.view.View.GONE
+        binding.cardServiceDead.isVisible = serviceDead
 
         if (serviceDead) {
             requestListenerRebindIfNeeded()
@@ -357,20 +300,18 @@ class MainActivity : AppCompatActivity() {
         when (ringerMode) {
             AudioManager.RINGER_MODE_SILENT -> {
                 binding.tvHapticStatus.text = getString(R.string.silent_mode_warning)
-                binding.tvHapticStatus.visibility = android.view.View.VISIBLE
-                binding.btnFixHaptic.visibility = android.view.View.VISIBLE
+                binding.tvHapticStatus.isVisible = true
+                binding.btnFixHaptic.isVisible = true
             }
             else -> {
-                binding.tvHapticStatus.visibility = android.view.View.GONE
-                binding.btnFixHaptic.visibility = android.view.View.GONE
+                binding.tvHapticStatus.isVisible = false
+                binding.btnFixHaptic.isVisible = false
             }
         }
 
         // 整个访问按钮行：两个按钮都隐藏时隐藏整行
-        binding.rowAccessButtons.visibility =
-            if (binding.btnOpenAccess.visibility == android.view.View.VISIBLE
-                || binding.btnFixHaptic.visibility == android.view.View.VISIBLE
-            ) android.view.View.VISIBLE else android.view.View.GONE
+        binding.rowAccessButtons.isVisible =
+            binding.btnOpenAccess.isVisible || binding.btnFixHaptic.isVisible
     }
 
     private fun requestListenerRebindIfNeeded() {
@@ -421,14 +362,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun openBatteryOptSettings() {
         try {
-            startActivity(
-                Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
-                    data = Uri.fromParts("package", packageName, null)
-                }
-            )
+            startActivity(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))
         } catch (_: Exception) {
             try {
-                startActivity(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))
+                startActivity(
+                    Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                        data = Uri.fromParts("package", packageName, null)
+                    }
+                )
             } catch (_: Exception) {
                 startActivity(Intent(Settings.ACTION_SETTINGS))
             }
@@ -454,20 +395,6 @@ class MainActivity : AppCompatActivity() {
         binding.tvAmplitudeValue.text = getString(R.string.amplitude_percent, percent)
     }
 
-    private fun updateRepeatReminderOptions(enabled: Boolean) {
-        binding.layoutRepeatReminderOptions.alpha = if (enabled) 1f else 0.45f
-        setViewTreeEnabled(binding.layoutRepeatReminderOptions, enabled)
-    }
-
-    private fun setViewTreeEnabled(view: View, enabled: Boolean) {
-        view.isEnabled = enabled
-        if (view is ViewGroup) {
-            for (index in 0 until view.childCount) {
-                setViewTreeEnabled(view.getChildAt(index), enabled)
-            }
-        }
-    }
-
     private fun refreshWhitelistUi() {
         val selectedPackages = prefs.allowedPackages()
         binding.tvWhitelistSummary.text = if (selectedPackages.isEmpty()) {
@@ -475,7 +402,86 @@ class MainActivity : AppCompatActivity() {
         } else {
             getString(R.string.whitelist_summary, selectedPackages.size)
         }
+        refreshVibrationModesUi()
     }
+
+    private fun refreshVibrationModesUi() {
+        val selectedPackages = prefs.allowedPackages()
+        val customCount = prefs.customVibrationPatternCount(selectedPackages)
+        binding.tvVibrationModesSummary.text = when {
+            selectedPackages.isEmpty() ->
+                getString(R.string.vibration_modes_summary_empty)
+            customCount == 0 ->
+                getString(R.string.vibration_modes_summary_default)
+            else ->
+                getString(R.string.vibration_modes_summary_custom, customCount)
+        }
+        binding.btnManageVibrationModes.isEnabled = selectedPackages.isNotEmpty()
+    }
+
+    private fun showVibrationModesDialog() {
+        val selectedPackages = prefs.allowedPackages()
+        if (selectedPackages.isEmpty()) {
+            toast(getString(R.string.vibration_modes_no_apps))
+            return
+        }
+
+        val observedPackages = prefs.observedNotificationPackages()
+        val loadedApps = loadInstalledApps().associateBy { it.packageName }
+        val apps = selectedPackages
+            .map { packageName ->
+                loadedApps[packageName]
+                    ?: resolveWhitelistApp(packageName, packageName in observedPackages)
+            }
+            .sortedWith(compareBy({ it.label.lowercase(Locale.getDefault()) }, { it.packageName }))
+        val labels = apps.map { app ->
+            getString(
+                R.string.vibration_mode_app_row,
+                app.label,
+                vibrationPatternLabel(prefs.vibrationPatternFor(app.packageName)),
+            )
+        }.toTypedArray()
+
+        AlertDialog.Builder(this)
+            .setTitle(R.string.vibration_modes_dialog_title)
+            .setItems(labels) { _, which -> showVibrationPatternDialog(apps[which]) }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
+    }
+
+    private fun showVibrationPatternDialog(app: WhitelistApp) {
+        val patterns = VibrationPattern.entries
+        val labels = patterns.map(::vibrationPatternLabel).toTypedArray()
+        val current = prefs.vibrationPatternFor(app.packageName)
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.vibration_mode_for_app, app.label))
+            .setSingleChoiceItems(labels, patterns.indexOf(current)) { dialog, which ->
+                val pattern = patterns[which]
+                prefs.setVibrationPattern(app.packageName, pattern)
+                refreshVibrationModesUi()
+                val amplitudePercent = prefs.vibrationAmplitude()
+                VibrationHelper.vibratePattern(
+                    context = this,
+                    pattern = pattern,
+                    defaultDurationMs = prefs.vibrationMs().toLong(),
+                    amplitude = ((amplitudePercent * 255 + 50) / 100).coerceIn(1, 255),
+                    acquireWakeLock = false,
+                )
+                dialog.dismiss()
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
+    }
+
+    private fun vibrationPatternLabel(pattern: VibrationPattern): String =
+        getString(
+            when (pattern) {
+                VibrationPattern.DEFAULT -> R.string.vibration_mode_default
+                VibrationPattern.SHORT -> R.string.vibration_mode_short
+                VibrationPattern.DOUBLE -> R.string.vibration_mode_double
+                VibrationPattern.LONG -> R.string.vibration_mode_long
+            }
+        )
 
     private fun showWhitelistDialog() {
         val apps = loadInstalledApps()
@@ -566,14 +572,19 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
-        fun sortedApps(source: List<WhitelistApp>): Pair<List<WhitelistApp>, List<WhitelistApp>> {
+        fun sortedApps(
+            source: List<WhitelistApp>,
+        ): Triple<List<WhitelistApp>, List<WhitelistApp>, List<WhitelistApp>> {
             val selected = source
                 .filter { it.packageName in selectedPackages }
                 .sortedWith(compareBy({ it.label.lowercase(Locale.getDefault()) }, { it.packageName }))
-            val unselected = source
-                .filter { it.packageName !in selectedPackages }
+            val recent = source
+                .filter { it.packageName !in selectedPackages && it.observed }
                 .sortedWith(compareBy({ it.label.lowercase(Locale.getDefault()) }, { it.packageName }))
-            return selected to unselected
+            val other = source
+                .filter { it.packageName !in selectedPackages && !it.observed }
+                .sortedWith(compareBy({ it.label.lowercase(Locale.getDefault()) }, { it.packageName }))
+            return Triple(selected, recent, other)
         }
 
         fun applyFilter(query: String) {
@@ -586,15 +597,19 @@ class MainActivity : AppCompatActivity() {
                     app.packageName.lowercase(Locale.getDefault()).contains(normalized)
                 }
             }
-            val (selectedApps, unselectedApps) = sortedApps(filtered)
+            val (selectedApps, recentApps, otherApps) = sortedApps(filtered)
             rowItems.clear()
             if (selectedApps.isNotEmpty()) {
                 rowItems.add(WhitelistDialogRow.Header(getString(R.string.whitelist_selected_section)))
                 rowItems.addAll(selectedApps.map { WhitelistDialogRow.AppItem(it) })
             }
-            if (unselectedApps.isNotEmpty()) {
+            if (recentApps.isNotEmpty()) {
+                rowItems.add(WhitelistDialogRow.Header(getString(R.string.whitelist_recent_section)))
+                rowItems.addAll(recentApps.map { WhitelistDialogRow.AppItem(it) })
+            }
+            if (otherApps.isNotEmpty()) {
                 rowItems.add(WhitelistDialogRow.Header(getString(R.string.whitelist_other_section)))
-                rowItems.addAll(unselectedApps.map { WhitelistDialogRow.AppItem(it) })
+                rowItems.addAll(otherApps.map { WhitelistDialogRow.AppItem(it) })
             }
             adapter.notifyDataSetChanged()
         }
@@ -644,27 +659,32 @@ class MainActivity : AppCompatActivity() {
     private fun loadInstalledApps(): List<WhitelistApp> {
         installedAppsCache?.let { return it }
 
-        val installedApps = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            packageManager.getInstalledApplications(PackageManager.ApplicationInfoFlags.of(0))
+        val launcherIntent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
+        val launcherActivities = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            packageManager.queryIntentActivities(
+                launcherIntent,
+                PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_ALL.toLong()),
+            )
         } else {
             @Suppress("DEPRECATION")
-            packageManager.getInstalledApplications(0)
+            packageManager.queryIntentActivities(launcherIntent, PackageManager.MATCH_ALL)
         }
 
+        val observedPackages = prefs.observedNotificationPackages()
         val seenPackages = LinkedHashSet<String>()
-        val apps = installedApps.mapNotNull { appInfo ->
-            val pkg = appInfo.packageName
+        val apps = launcherActivities.mapNotNull { resolveInfo ->
+            val pkg = resolveInfo.activityInfo?.packageName ?: return@mapNotNull null
             if (pkg == packageName || !seenPackages.add(pkg)) {
                 return@mapNotNull null
             }
-            val label = packageManager.getApplicationLabel(appInfo).toString().trim()
+            val label = resolveInfo.loadLabel(packageManager).toString().trim()
             if (label.isEmpty()) return@mapNotNull null
-            WhitelistApp(pkg, label)
+            WhitelistApp(pkg, label, pkg in observedPackages)
         }.toMutableList()
 
-        prefs.allowedPackages().forEach { pkg ->
+        (observedPackages + prefs.allowedPackages()).forEach { pkg ->
             if (pkg != packageName && seenPackages.add(pkg)) {
-                apps.add(resolveWhitelistApp(pkg))
+                apps.add(resolveWhitelistApp(pkg, pkg in observedPackages))
             }
         }
 
@@ -673,7 +693,7 @@ class MainActivity : AppCompatActivity() {
         return apps
     }
 
-    private fun resolveWhitelistApp(packageName: String): WhitelistApp {
+    private fun resolveWhitelistApp(packageName: String, observed: Boolean): WhitelistApp {
         val label = try {
             val appInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 packageManager.getApplicationInfo(
@@ -688,7 +708,7 @@ class MainActivity : AppCompatActivity() {
         } catch (_: Exception) {
             ""
         }
-        return WhitelistApp(packageName, label.ifEmpty { packageName })
+        return WhitelistApp(packageName, label.ifEmpty { packageName }, observed)
     }
 
     private fun stepNumber(
@@ -709,68 +729,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun secondsToMs(seconds: Int): Int = seconds.coerceAtLeast(1) * 1000
 
-    private fun refreshQuietPeriodsUi() {
-        val periods = prefs.quietPeriods()
-        binding.tvQuietPeriodsEmpty.visibility =
-            if (periods.isEmpty()) android.view.View.VISIBLE else android.view.View.GONE
-        binding.chipGroupQuietPeriods.removeAllViews()
-        periods.forEachIndexed { index, period ->
-            val chip = Chip(this).apply {
-                text = formatQuietPeriod(period)
-                isCloseIconVisible = true
-                isCheckable = false
-                setOnCloseIconClickListener {
-                    val updated = prefs.quietPeriods().toMutableList()
-                    updated.removeAt(index)
-                    prefs.setQuietPeriods(updated)
-                    refreshQuietPeriodsUi()
-                }
-            }
-            binding.chipGroupQuietPeriods.addView(chip)
-        }
-    }
-
-    private fun showAddQuietPeriodDialog() {
-        val cal = Calendar.getInstance()
-
-        val startPicker = MaterialTimePicker.Builder()
-            .setTimeFormat(TimeFormat.CLOCK_24H)
-            .setInputMode(MaterialTimePicker.INPUT_MODE_KEYBOARD)
-            .setHour(cal.get(Calendar.HOUR_OF_DAY))
-            .setMinute(cal.get(Calendar.MINUTE))
-            .setTitleText(getString(R.string.quiet_hours_pick_start))
-            .build()
-
-        startPicker.addOnPositiveButtonClickListener {
-            val startMin = startPicker.hour * 60 + startPicker.minute
-
-            val endPicker = MaterialTimePicker.Builder()
-                .setTimeFormat(TimeFormat.CLOCK_24H)
-                .setInputMode(MaterialTimePicker.INPUT_MODE_KEYBOARD)
-                .setHour(startPicker.hour)
-                .setMinute(startPicker.minute)
-                .setTitleText(getString(R.string.quiet_hours_pick_end))
-                .build()
-
-            endPicker.addOnPositiveButtonClickListener {
-                val period = QuietPeriod(startMin, endPicker.hour * 60 + endPicker.minute)
-                val updated = prefs.quietPeriods().toMutableList()
-                updated.add(period)
-                prefs.setQuietPeriods(updated)
-                refreshQuietPeriodsUi()
-            }
-
-            endPicker.show(supportFragmentManager, "end_time_picker")
-        }
-
-        startPicker.show(supportFragmentManager, "start_time_picker")
-    }
-
-    private fun formatQuietPeriod(period: QuietPeriod): String {
-        fun fmt(min: Int) = String.format(Locale.US, "%02d:%02d", min / 60, min % 60)
-        return "${fmt(period.startMin)} ~ ${fmt(period.endMin)}"
-    }
-
     companion object {
         private const val SERVICE_STATE_REFRESH_MS = 1500L
         private const val FORCE_REBIND_INTERVAL_MS = 15_000L
@@ -780,6 +738,7 @@ class MainActivity : AppCompatActivity() {
 private data class WhitelistApp(
     val packageName: String,
     val label: String,
+    val observed: Boolean,
 ) {
     val displayText: String
         get() = "$label\n$packageName"

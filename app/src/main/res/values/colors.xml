@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ic_launcher_background">#0E1B2A</color>
+    <color name="ic_launcher_background">#061426</color>
     
     <!-- 更现代的绿色调，参考Material You设计 -->
     <color name="virb_primary">#1F8B6D</color>

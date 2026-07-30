@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "VirbLite"
+rootProject.name = "NotifyPulse"
 include(":app")
