@@ -46,8 +46,8 @@
     <string name="reminder_settings_open">打开</string>
     <string name="decrease_value">减少数值</string>
     <string name="increase_value">增加数值</string>
-    <string name="service_dead_title">服务已停止运行</string>
-    <string name="service_dead_desc">振动功能暂时失效。请开启“自启动”，并在系统省电设置中手动将 NotifyPulse 设为不受限制。</string>
+    <string name="service_dead_title">通知监听服务未连接</string>
+    <string name="service_dead_desc">已开启通知读取权限，但监听服务当前未连接。请确认“自启动”和省电策略允许 NotifyPulse 在后台运行。</string>
     <string name="btn_autostart">开启自启动</string>
     <string name="btn_battery_opt">省电设置</string>
     <string name="vibration_modes_title">应用振动模式</string>

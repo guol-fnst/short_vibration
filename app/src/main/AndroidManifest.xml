@@ -43,6 +43,9 @@
             <property
                 android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
                 android:value="Maintains the user-enabled notification listener so selected notifications can trigger immediate and unread-reminder vibrations while the screen is locked. Deferring the service would miss these time-sensitive callbacks." />
+            <meta-data
+                android:name="android.service.notification.default_autobind_listenerservice"
+                android:value="true" />
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>

@@ -51,8 +51,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var prefs: AppPrefs
     private var installedAppsCache: List<WhitelistApp>? = null
     private var lastForceRebindElapsedMs: Long = 0L
+    private var listenerStateCheckStartedElapsedMs: Long = 0L
     private val handler = Handler(Looper.getMainLooper())
     private val permissionRefreshRunnable = Runnable { refreshPermissionState() }
+    private val listenerRebindRunnable = Runnable { requestListenerRebindNow() }
     private var currentToast: Toast? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,6 +73,7 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         installedAppsCache = null
         lastForceRebindElapsedMs = 0L
+        listenerStateCheckStartedElapsedMs = SystemClock.elapsedRealtime()
         refreshPermissionState()
         refreshWhitelistUi()
     }
@@ -284,15 +287,27 @@ class MainActivity : AppCompatActivity() {
         // 访问按钮：权限未开启时显示，已开启时隐藏
         binding.btnOpenAccess.isVisible = !enabled
 
-        // 已开通权限但服务未连接（被 MIUI 杀掉）→ 显示警告卡
-        val serviceDead = enabled && !VibratingNotificationListenerService.isConnected
+        // 连接回调可能会晚于 Activity 的 onResume，先给系统一段时间完成绑定。
+        val waitingForListener = enabled &&
+                !VibratingNotificationListenerService.isConnected &&
+                SystemClock.elapsedRealtime() - listenerStateCheckStartedElapsedMs <
+                LISTENER_CONNECTION_GRACE_MS
+
+        // 已开通通知读取权限但监听服务未连接。厂商自启动开关没有公开的通用查询 API，
+        // 因此不能把这个状态直接当成“自启动权限未开启”。
+        val serviceDead = enabled &&
+                !VibratingNotificationListenerService.isConnected &&
+                !waitingForListener
         binding.cardServiceDead.isVisible = serviceDead
 
-        if (serviceDead) {
-            requestListenerRebindIfNeeded()
+        if (enabled && !VibratingNotificationListenerService.isConnected) {
+            if (!waitingForListener) {
+                requestListenerRebindIfNeeded()
+            }
             schedulePermissionRefresh()
         } else {
             handler.removeCallbacks(permissionRefreshRunnable)
+            handler.removeCallbacks(listenerRebindRunnable)
         }
 
         val am = getSystemService(AudioManager::class.java)
@@ -323,11 +338,33 @@ class MainActivity : AppCompatActivity() {
         }
 
         try {
-            val component = ComponentName(this, VibratingNotificationListenerService::class.java)
-            NotificationListenerService.requestRebind(component)
+            val component = ComponentName(packageName, VibratingNotificationListenerService::class.java.name)
+
+            // Android 14+ 提供了静态 requestUnbind。先让系统清理旧的绑定，再延迟请求重绑定，
+            // 可恢复“进程被杀后权限仍在但服务没有重新连上”的状态。
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                try {
+                    NotificationListenerService.requestUnbind(component)
+                } catch (e: Exception) {
+                    Log.w("VirbMain", "requestUnbind failed: ${e.message}")
+                }
+                handler.removeCallbacks(listenerRebindRunnable)
+                handler.postDelayed(listenerRebindRunnable, LISTENER_REBIND_DELAY_MS)
+            } else {
+                NotificationListenerService.requestRebind(component)
+            }
             lastForceRebindElapsedMs = nowElapsed
         } catch (e: Exception) {
             Log.w("VirbMain", "requestRebind failed: ${e.message}")
+        }
+    }
+
+    private fun requestListenerRebindNow() {
+        try {
+            val component = ComponentName(packageName, VibratingNotificationListenerService::class.java.name)
+            NotificationListenerService.requestRebind(component)
+        } catch (e: Exception) {
+            Log.w("VirbMain", "delayed requestRebind failed: ${e.message}")
         }
     }
 
@@ -732,6 +769,8 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val SERVICE_STATE_REFRESH_MS = 1500L
         private const val FORCE_REBIND_INTERVAL_MS = 15_000L
+        private const val LISTENER_CONNECTION_GRACE_MS = 4_000L
+        private const val LISTENER_REBIND_DELAY_MS = 300L
     }
 }
 
