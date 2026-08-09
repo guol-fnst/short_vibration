@@ -292,7 +292,7 @@ class AppPrefs(context: Context) {
         const val MAX_VIBRATION_AMPLITUDE = 100
         const val VIBRATION_AMPLITUDE_STEP = 10
 
-        const val DEFAULT_GLOBAL_GAP_MS = 3000
+        const val DEFAULT_GLOBAL_GAP_MS = 15_000
         const val MIN_GLOBAL_GAP_MS = 500
         const val MAX_GLOBAL_GAP_MS = 99000
 

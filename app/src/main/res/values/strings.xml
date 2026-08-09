@@ -40,7 +40,7 @@
     <string name="global_gap_trailing_desc">连续通知补震会按防重复间隔递增，封顶约 60 秒（不短于当前间隔）</string>
     <string name="repeat_reminder_title">锁屏未查看提醒</string>
     <string name="repeat_reminder_subtitle">锁屏通知未查看时重复振动，解锁即停止</string>
-    <string name="repeat_interval_min_hint">最早提醒间隔</string>
+    <string name="repeat_interval_min_hint">最早提醒间隔（分钟）</string>
     <string name="repeat_max_count_hint">最多提醒次数</string>
     <string name="repeat_reminder_desc">仅提醒白名单中的非持续通知；多条通知合并，达到设置时间后由系统尽快提醒</string>
     <string name="reminder_settings_title">提醒与免打扰</string>
