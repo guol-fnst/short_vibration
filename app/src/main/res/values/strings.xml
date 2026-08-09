@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">NotifyPulse</string>
     <string name="title">NotifyPulse</string>
+    <string name="version_label">v%1$s</string>
     <string name="subtitle">轻量通知振动助手</string>
     <string name="listener_service_label">NotifyPulse 通知监听</string>
     <string name="open_notification_access">打开通知读取权限</string>

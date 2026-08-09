@@ -84,6 +84,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun bindInitialUi() {
+        binding.tvVersionName.text = getString(R.string.version_label, appVersionName())
         binding.switchEnabled.isChecked = prefs.isEnabled()
         binding.switchLockedOnly.isChecked = prefs.vibrateOnlyWhenLocked()
         binding.switchPauseInVibrateMode.isChecked = prefs.pauseInVibrateMode()
@@ -235,6 +236,10 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnViewLog.setOnClickListener { showVibrationLogDialog() }
     }
+
+    @Suppress("DEPRECATION")
+    private fun appVersionName(): String =
+        packageManager.getPackageInfo(packageName, 0).versionName.orEmpty()
 
     private fun showVibrationLogDialog() {
         val logText = VibrationLogger.readTail(100).ifBlank { getString(R.string.log_empty) }
