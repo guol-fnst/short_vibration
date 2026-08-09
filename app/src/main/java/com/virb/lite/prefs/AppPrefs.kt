@@ -23,6 +23,13 @@ class AppPrefs(context: Context) {
         prefs.edit { putBoolean(KEY_LOCKED_ONLY, lockedOnly) }
     }
 
+    fun pauseInVibrateMode(): Boolean =
+        prefs.getBoolean(KEY_PAUSE_IN_VIBRATE_MODE, true)
+
+    fun setPauseInVibrateMode(pause: Boolean) {
+        prefs.edit { putBoolean(KEY_PAUSE_IN_VIBRATE_MODE, pause) }
+    }
+
     fun fileLoggingEnabled(): Boolean = prefs.getBoolean(KEY_FILE_LOGGING, true)
 
     fun setFileLoggingEnabled(enabled: Boolean) {
@@ -261,6 +268,7 @@ class AppPrefs(context: Context) {
         private const val PREF_FILE = "virb_prefs"
         private const val KEY_ENABLED = "enabled"
         private const val KEY_LOCKED_ONLY = "locked_only"
+        private const val KEY_PAUSE_IN_VIBRATE_MODE = "pause_in_vibrate_mode"
         private const val KEY_FILE_LOGGING = "file_logging"
         private const val KEY_ALLOWED_PACKAGES = "allowed_packages"
         private const val KEY_OBSERVED_NOTIFICATION_PACKAGES = "observed_notification_packages"

@@ -86,6 +86,7 @@ class MainActivity : AppCompatActivity() {
     private fun bindInitialUi() {
         binding.switchEnabled.isChecked = prefs.isEnabled()
         binding.switchLockedOnly.isChecked = prefs.vibrateOnlyWhenLocked()
+        binding.switchPauseInVibrateMode.isChecked = prefs.pauseInVibrateMode()
         binding.switchFileLogging.isChecked = prefs.fileLoggingEnabled()
         binding.etDuration.setText(prefs.vibrationMs().toString())
         binding.etGlobalGap.setText(msToSeconds(prefs.globalGapMs()).toString())
@@ -102,6 +103,10 @@ class MainActivity : AppCompatActivity() {
 
         binding.switchLockedOnly.setOnCheckedChangeListener { _, isChecked ->
             prefs.setVibrateOnlyWhenLocked(isChecked)
+        }
+
+        binding.switchPauseInVibrateMode.setOnCheckedChangeListener { _, isChecked ->
+            prefs.setPauseInVibrateMode(isChecked)
         }
 
         binding.switchFileLogging.setOnCheckedChangeListener { _, isChecked ->

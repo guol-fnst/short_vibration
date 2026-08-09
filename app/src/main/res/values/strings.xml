@@ -8,6 +8,7 @@
     <string name="timing_settings">振动参数</string>
     <string name="enable_switch">启用通知振动</string>
     <string name="lockscreen_only_switch">仅锁屏时振动</string>
+    <string name="pause_in_vibrate_mode_switch">手机处于振动模式时暂停</string>
     <string name="file_logging_switch">写入文件日志</string>
     <string name="whitelist_title">振动白名单</string>
     <string name="whitelist_manage">选择应用</string>

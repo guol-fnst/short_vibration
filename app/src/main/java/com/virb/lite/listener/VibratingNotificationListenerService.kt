@@ -193,6 +193,12 @@ class VibratingNotificationListenerService : NotificationListenerService() {
 
         trackRepeatReminder(sbn, deviceLocked)
 
+        if (shouldPauseForVibrateMode()) {
+            debugLog("skip immediate vibration: phone is in vibrate mode")
+            VibrationLogger.logSkip("phone_vibrate_mode", pkg)
+            return
+        }
+
         if (prefs.isInQuietHours()) {
             debugLog("skip immediate vibration: quiet hours active")
             VibrationLogger.logSkip("quiet_hours", pkg)
@@ -421,6 +427,13 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             return
         }
 
+        if (shouldPauseForVibrateMode()) {
+            debugLog("defer unread reminder: phone is in vibrate mode")
+            VibrationLogger.logEvent("unread_deferred reason=phone_vibrate_mode")
+            scheduleRepeatReminder()
+            return
+        }
+
         val maxCount = prefs.repeatReminderMaxCount()
         if (unreadReminderTracker.repeatCount >= maxCount) {
             cancelRepeatReminders("max_count_reached")
@@ -590,7 +603,12 @@ class VibratingNotificationListenerService : NotificationListenerService() {
         if (!hasPendingTrailingVibration) return
 
         val now = System.currentTimeMillis()
-        if (!prefs.isEnabled() || prefs.isInQuietHours() || isCallActive()) {
+        if (
+            !prefs.isEnabled() ||
+            prefs.isInQuietHours() ||
+            isCallActive() ||
+            shouldPauseForVibrateMode()
+        ) {
             cancelPendingBurstWindow()
             return
         }
@@ -676,6 +694,12 @@ class VibratingNotificationListenerService : NotificationListenerService() {
             )
         }
         return result
+    }
+
+    private fun shouldPauseForVibrateMode(): Boolean {
+        if (!prefs.pauseInVibrateMode()) return false
+        val audioManager = getSystemService(Context.AUDIO_SERVICE) as? AudioManager
+        return audioManager?.ringerMode == AudioManager.RINGER_MODE_VIBRATE
     }
 
     private fun requestListenerRebind() {
